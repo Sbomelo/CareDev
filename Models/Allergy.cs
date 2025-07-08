@@ -12,7 +12,7 @@ namespace CareDev.Models
         [StringLength(50)]
         public required string Name { get; set; }
 
-       public ICollection<Patient> Patients { get; set; } 
+       public ICollection<Patient> Patients { get; set; } //
        
     }
 }
