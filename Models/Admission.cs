@@ -18,13 +18,13 @@ namespace CareDev.Models
         [Required]
         public int PatientId { get; set; }  
         [Required]
-        public int DoctorId { get; set; }
+        public int? DoctorId { get; set; }
         [Required]
         public int WardId { get; set; }
         [Required]
         public int BedId { get; set; }
-        [Required]
-        public string RoomId { get; set; }
+        //[Required]
+        //public string? RoomId { get; set; } 
 
         // Navigation Proproperties 
         public virtual Patient Patient { get; set; } = null!; // Non-nullable reference type, must be initialized
