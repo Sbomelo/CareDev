@@ -17,12 +17,12 @@ namespace CareDev.Models
 
         [Required]
         [EmailAddress(ErrorMessage ="Please Enter a valid email address.")]
-        [Display(Name = "Email Address")]
+        [Display(Name = "Email Address", Prompt ="example.@gmail.com")]
         public required string Email { get; set; } 
 
         [Required]
         [StringLength(50)]
-        public required string Specialization { get; set; }
+        public required string Specialization { get; set; } 
 
 
         // Navigation Properties
