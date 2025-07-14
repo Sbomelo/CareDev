@@ -15,7 +15,7 @@ namespace CareDev.Models
         public int WardId { get; set; }
         
         // Navigation Property
-        public virtual Ward Ward { get; set; }// = null!; // Non-nullable reference type, must be initialized 
+        public virtual Ward Ward { get; set; } = null!; // Non-nullable reference type, must be initialized 
 
     }
 }
