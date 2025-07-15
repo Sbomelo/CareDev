@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CareDev.Models
@@ -52,12 +51,6 @@ namespace CareDev.Models
         public virtual ICollection<Discharge> Discharge { get; set; } = new List<Discharge>();
         public virtual PatientFolder? PatientFolder { get; set; } 
         
-
-
-
-
-
-
 
     }
 }

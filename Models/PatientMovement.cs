@@ -21,7 +21,7 @@ namespace CareDev.Models
         public int RoomId { get; set; }
 
         // Navigation Property
-        public virtual Patient Patient { get; set; } = null!; // Non-nullable reference type, must be initialized
-        public virtual RoomType Room { get; set; } = null!; // Non-nullable reference type, must be initialized
+        public virtual Patient Patient { get; set; } = null!;
+        public virtual RoomType Room { get; set; } = null!;
     }
 }

@@ -11,7 +11,7 @@ namespace CareDev.Models
         [StringLength(50)]
         public required string Name { get; set; }
         
-        // Navigation property for related patients
+        // Navigation property 
         public ICollection<Patient> Patients { get; set; } = new List<Patient>();
     }
 }

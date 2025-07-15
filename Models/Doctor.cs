@@ -26,6 +26,6 @@ namespace CareDev.Models
 
 
         // Navigation Properties
-        public virtual ICollection<Admission> Admissions { get; set; } //= new List<Admission>();
+        public virtual ICollection<Admission> Admissions { get; set; } = new List<Admission>();
     }
 }

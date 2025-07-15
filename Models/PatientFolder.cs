@@ -20,6 +20,6 @@ namespace CareDev.Models
         public int PatientId { get; set; }
 
         // Navigation Property
-        public virtual Patient Patient { get; set; } = null!; // Non-nullable reference type, must be initialized 
+        public virtual Patient Patient { get; set; } = null!;
     }
 }

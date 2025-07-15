@@ -12,8 +12,8 @@ namespace CareDev.Models
         public required string Name { get; set; }
 
         // Navigation Properties
-        public virtual ICollection<Admission> Admissions { get; set; } //= new List<Admission>();
-        public virtual ICollection<Bed> Beds { get; set; } //= new List<Bed>();
+        public virtual ICollection<Admission> Admissions { get; set; } = new List<Admission>();
+        public virtual ICollection<Bed> Beds { get; set; } = new List<Bed>();
 
     }
 }

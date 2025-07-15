@@ -11,9 +11,9 @@ namespace CareDev.Models
         [StringLength(50)]
         public required string RoomName { get; set; } // e.g., "General", "ICU", "Private"
 
-        public bool IsAvailable { get; set; } = true; // Indicates if the room type is currently available
+        public bool IsAvailable { get; set; } = true;
 
-        public virtual ICollection<Admission> Admissions { get; set; }// = new List<Admission>(); // Navigation property for related admissions
+        public virtual ICollection<Admission> Admissions { get; set; }= new List<Admission>();
 
 
 
