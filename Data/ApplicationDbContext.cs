@@ -23,6 +23,10 @@ namespace CareDev.Data
         public DbSet<Discharge> Discharges { get; set; }
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientFolder> PatientFolders { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Vital> Vitals { get; set; } 
+        public DbSet<TreatPatient> TreatPatients { get; set; }
+        public DbSet<DoctorInstruction> DoctorInstructions { get; set; } 
 
         //look-up tables
         public DbSet<GenderOption> GenderOptions { get; set; }
