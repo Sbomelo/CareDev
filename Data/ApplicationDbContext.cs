@@ -16,14 +16,16 @@ namespace CareDev.Data
 
         //Core entities
         public DbSet<Patient> Patients { get; set; }
-        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+       // public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<Bed> Beds { get; set; }
         public DbSet<Admission> Admissions { get; set; }
         public DbSet<Discharge> Discharges { get; set; }
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientFolder> PatientFolders { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<Vital> Vitals { get; set; } 
         public DbSet<TreatPatient> TreatPatients { get; set; }
         public DbSet<DoctorInstruction> DoctorInstructions { get; set; } 
@@ -48,26 +50,52 @@ namespace CareDev.Data
 
             //PATIENT relationships
             modelBuilder.Entity<Patient>()
-                .HasMany(p => p.Gender)
+                .HasOne(p => p.Gender)
                 .WithMany()
                 .HasForeignKey(p => p.GenderOptionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Patient>()
+               /*modelBuilder.Entity<Patient>()
                 .HasMany(p => p.Allergies)
-                .WithOne(pa => pa.Patient)
-                .HasForeignKey(pa => pa.PatientId);
+                .WithOne(a => a.Patient)
+                .HasForeignKey(pa => pa.PatientId); */
 
-            modelBuilder.Entity<Patient>()
+             /* modelBuilder.Entity<Patient>()
                 .HasMany(p => p.ChronicConditions)
                 .WithOne(pc => pc.Patient) 
-                .HasForeignKey(pc => pc.PatientId);
+                .HasForeignKey(pc => pc.PatientId);*/
+
 
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.PatientFolder)
                 .WithOne(pf => pf.Patient)
                 .HasForeignKey<PatientFolder>(pf => pf.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //EMPLOYEE relationships
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Role)
+                .WithMany(r => r.Employees)
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany (e => e.Admissions)
+                .WithOne(a => a.Employee)
+                .HasForeignKey(a => a.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.TreatPatients)
+                .WithOne(tp => tp.Employee)
+                .HasForeignKey(tp => tp.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+           /* modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Medications)
+                .WithOne(m => m.Employee)
+                .HasForeignKey(m => m.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);*/
 
             //ADMISSION relationships
             modelBuilder.Entity<Admission>()
@@ -83,20 +111,20 @@ namespace CareDev.Data
 
             modelBuilder.Entity<Admission>()
                 .HasOne(a => a.Bed)
-                .WithMany(b => b.Admissions)
-                .HasForeignKey(a => a.BedId)
+                .WithOne() 
+                .HasForeignKey<Admission>(a => a.BedId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Admission>()
-                .HasOne(a => a.Doctor)
+                .HasOne(a => a.Employee)
                 .WithMany(d => d.Admissions)
-                .HasForeignKey(a => a.DoctorId)
+                .HasForeignKey(a => a.EmployeeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //Discharge relationships
-            modelBuilder.Entity<Discharge>()
-                .HasOne(d => d.Patient)
-                .WithMany(p => p.PatientId) 
+           modelBuilder.Entity<Discharge>()
+                .HasOne(d => d.Patient) 
+                .WithMany() 
                 .HasForeignKey(d => d.PatientId);
 
             modelBuilder.Entity<Discharge>()
@@ -112,11 +140,11 @@ namespace CareDev.Data
                 .HasForeignKey(pm => pm.PatientId);
 
             //Ward to Bed relationships 
-            modelBuilder.Entity<Ward>()
+           /* modelBuilder.Entity<Ward>()
                 .HasMany(w => w.Beds)
                 .WithOne(b => b.Ward)
                 .HasForeignKey(b => b.WardId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
 
             //seed look up data
             SeedLookupData(modelBuilder);
