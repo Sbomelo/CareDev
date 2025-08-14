@@ -45,12 +45,14 @@ namespace CareDev.Models
         //Relationships
         public virtual ICollection<Admission> Admissions { get; set; } = new List<Admission>();
         public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
-        public virtual ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
-        public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new List<ChronicCondition>();
+        //public virtual ICollection<Allergy> Allergies { get; set; } = new List<ChronicCondition>();
+        public virtual Allergy? Allergies { get; set; } 
+        //public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new List<ChronicCondition>();
+        public virtual ChronicCondition? ChronicConditions { get; set; }
         public virtual ICollection<PatientMovement> Movement { get; set; } = new List<PatientMovement>();
         public virtual ICollection<Discharge> Discharge { get; set; } = new List<Discharge>();
         public virtual PatientFolder? PatientFolder { get; set; } 
-        
+
 
     }
 }

@@ -7,14 +7,20 @@ namespace CareDev.Models
     {
         [Key]
         public long TreatmentID{ get; set; }
-        public long PatientID { get; set; }
-        public Patient Patient { get; set; }
+       /* public long PatientID { get; set; }
+        public Patient Patient { get; set; }*/
         public DateTime TreatmentDate { get; set; } 
         public string TreatmentDescription { get; set; }
 
         public bool IsFollowUpRequired { get; set; }
 
         public DateTime? FollowUpDate { get; set; } 
+
+        public int EmployeeId { get; set; }
+        public int PatientId { get; set; }
+
+        public virtual Employee Employee { get; set; } 
+        public virtual Patient Patient { get; set; } 
 
     }
 }

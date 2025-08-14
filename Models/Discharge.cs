@@ -16,6 +16,7 @@ namespace CareDev.Models
         // Foreign Key
         [Required]
         public int AdmissionId { get; set; }
+        public int PatientId { get; set; }
 
         // Navigation Property
         public virtual Admission Admission { get; set; } = null!; 

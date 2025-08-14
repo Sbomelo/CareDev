@@ -22,7 +22,7 @@ namespace CareDev.Models
         [Required]
         public int PatientId { get; set; }  
         [Required]
-        public int? DoctorId { get; set; }
+        public int? EmployeeId { get; set; }
         [Required]
         public int WardId { get; set; }
         [Required]
@@ -31,11 +31,11 @@ namespace CareDev.Models
         public string? RoomId { get; set; }
 
         // Navigation Proproperties 
-        public virtual Patient Patient { get; set; } = null!;
-        public virtual Doctor Doctor { get; set; } = null!;
-        public virtual Ward Ward { get; set; } = null!; 
-        public virtual Bed Bed { get; set; } = null!;
-        public virtual RoomType Room { get; set; } = null!;
+        public virtual Patient Patient { get; set; } 
+        public virtual Employee Employee { get; set; } 
+        public virtual Ward Ward { get; set; } 
+        public virtual Bed Bed { get; set; } 
+        public virtual RoomType Room { get; set; } 
 
 
 
