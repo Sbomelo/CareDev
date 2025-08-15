@@ -20,10 +20,10 @@ namespace CareDev.Models
         [Range(0, 120)]
         public int Age { get; set; }
 
-        [Required]
+       /* [Required]
         public int GenderOptionId { get; set; }
         [ForeignKey("GenderOptionID")]
-        public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); 
+        public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); */
 
         [Required]
         [Display(Name = "Phone Number", Prompt ="012345678")]

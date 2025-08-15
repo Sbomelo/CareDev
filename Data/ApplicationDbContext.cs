@@ -31,7 +31,7 @@ namespace CareDev.Data
         public DbSet<DoctorInstruction> DoctorInstructions { get; set; } 
 
         //look-up tables
-        public DbSet<GenderOption> GenderOptions { get; set; }
+       // public DbSet<GenderOption> GenderOptions { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<ChronicCondition> ChronicConditions { get; set; }
@@ -49,11 +49,11 @@ namespace CareDev.Data
             modelBuilder.Entity<Medication>().HasKey(m => new { m.Patients, m.MedicationId });
 
             //PATIENT relationships
-            modelBuilder.Entity<Patient>()
+           /* modelBuilder.Entity<Patient>()
                 .HasOne(p => p.Gender)
                 .WithMany()
                 .HasForeignKey(p => p.GenderOptionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict);*/
 
                /*modelBuilder.Entity<Patient>()
                 .HasMany(p => p.Allergies)
@@ -153,11 +153,11 @@ namespace CareDev.Data
         private void SeedLookupData(ModelBuilder modelBuilder)
         {
             //seed GenderOptions
-            modelBuilder.Entity<GenderOption>().HasData(
+          /*  modelBuilder.Entity<GenderOption>().HasData(
                 new GenderOption { GenderOptionId = 1, Name = "Male" },
                 new GenderOption { GenderOptionId = 2, Name = "Female" },
                 new GenderOption { GenderOptionId = 3, Name = "Other" }
-                );
+                );*/
 
             //seed Allergy Options
             modelBuilder.Entity<Allergy>().HasData(
