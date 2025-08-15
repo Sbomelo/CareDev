@@ -13,7 +13,7 @@ namespace CareDev.Models
 
         [Required]
         [StringLength(100)]
-        public string Schedule { get; set; } 
+        public  string Schedule { get; set; } 
 
         [StringLength(500)]
         [Display(Name = "Usage Notes")] 

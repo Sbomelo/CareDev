@@ -48,7 +48,7 @@ namespace CareDev.Models
 
         //public virtual ICollection<Allergy> Allergies { get; set; } = new List<ChronicCondition>();
         //public virtual Allergy? Allergies { get; set; }
-        public virtual ICollection<Allergy> Allergy { get; set; } = new HashSet<Allergy>();
+        //public virtual ICollection<Allergy> Allergy { get; set; } = new HashSet<Allergy>();
 
 
         //public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new List<ChronicCondition>();
