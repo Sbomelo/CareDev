@@ -7,7 +7,8 @@ namespace CareDev.Models
     public class Vital
     {
         [Key]
-        public long VitalId { get; set; }
+        public int VitalId { get; set; }
+
         public long PatientId { get; set; }
         public IEnumerable<SelectListItem> patients { get; set; }
         public Patient Patient { get; set; }

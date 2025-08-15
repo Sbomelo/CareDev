@@ -26,9 +26,8 @@ namespace CareDev.Models
         public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); */
 
         [Required]
-        [Display(Name = "Phone Number", Prompt ="012345678")]
         [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone number must be 10 digits long.")]
+        [StringLength(10)]
         public string PhoneNumber { get; set; } = string.Empty;
 
         ////Foreign Keys
@@ -43,16 +42,26 @@ namespace CareDev.Models
         //public virtual ICollection<ChronicCondition>ChronicCondition { get; set; } = new List<ChronicCondition>();
 
         //Relationships
-        public virtual ICollection<Admission> Admissions { get; set; } = new List<Admission>();
-        public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();
+        public virtual ICollection<MedicationAdministration> MedicationAdministrations { get; set; } = new HashSet<MedicationAdministration>();
+
+
         //public virtual ICollection<Allergy> Allergies { get; set; } = new List<ChronicCondition>();
-        public virtual Allergy? Allergies { get; set; } 
+        //public virtual Allergy? Allergies { get; set; }
+        public virtual ICollection<Allergy> Allergy { get; set; } = new HashSet<Allergy>();
+
+
         //public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new List<ChronicCondition>();
-        public virtual ChronicCondition? ChronicConditions { get; set; }
-        public virtual ICollection<PatientMovement> Movement { get; set; } = new List<PatientMovement>();
+        public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new HashSet<ChronicCondition>();
+        //public virtual ChronicCondition? ChronicConditions { get; set; }
+        public virtual ICollection<PatientMovement> Movement { get; set; } = new HashSet<PatientMovement>();
         public virtual ICollection<Discharge> Discharge { get; set; } = new List<Discharge>();
-        public virtual PatientFolder? PatientFolder { get; set; } 
+        public virtual PatientFolder? PatientFolder { get; set; }
 
-
+        public virtual ICollection<Vital> Vitals { get; set; } = new HashSet<Vital>();
+        public virtual ICollection<TreatPatient> TreatPatients { get; set; } = new HashSet<TreatPatient>();
+        //public virtual ICollection<Medication> Medications { get; set; } = new HashSet<Medication>();
+        public virtual ICollection<PatientAllergy> PatientAllergies { get; set; } = new HashSet<PatientAllergy>();
+        public virtual ICollection<PatientCondition> PatientConditions { get; set; } = new HashSet<PatientCondition>();
     }
 }

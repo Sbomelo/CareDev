@@ -40,10 +40,10 @@ namespace CareDev.Models
         public virtual Role Role { get; set; }
 
         //Relationships 
-        public virtual ICollection<Admission> Admissions { get; set; }
-        public virtual ICollection<TreatPatient> TreatPatients { get; set; }
-        public virtual ICollection<Medication> Medications { get; set; } 
-       
+        public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();
+        public virtual ICollection<TreatPatient> TreatPatients { get; set; } = new HashSet<TreatPatient>();
+        public virtual ICollection<Medication> Medications { get; set; } = new HashSet<Medication>();
+
 
     }
 }

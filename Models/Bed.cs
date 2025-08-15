@@ -14,11 +14,12 @@ namespace CareDev.Models
         //Foreign Key
         [Required]
         public int WardId { get; set; }
-        public int? AdmissionId { get; set; }
+        //public int? AdmissionId { get; set; }
 
         // Navigation Properies
-        public virtual ICollection<Ward> Wards{ get; set; }
-        public virtual ICollection<Admission> Admissions { get; set; }
+        [ForeignKey("WardId")]
+        public virtual Ward Ward { get; set; } 
+        public virtual Admission? Admissions { get; set; } 
 
         [NotMapped]
         public string BedStatus => Status ? "Available" : "Occupied";
