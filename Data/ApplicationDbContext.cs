@@ -44,6 +44,7 @@ namespace CareDev.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Ignore<Microsoft.AspNetCore.Mvc.Rendering.SelectListGroup>();
+            modelBuilder.Ignore<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
 
             //configure compositr keys for junction tables
             modelBuilder.Entity<PatientFolder>().HasKey(pf => new { pf.PatientId, pf.PatientFolderId });
@@ -222,11 +223,11 @@ namespace CareDev.Data
 
             //seed Medications
             modelBuilder.Entity<Medication>().HasData(
-                new Medication { MedicationId = 1, Name = "Paracetamol" },
-                new Medication { MedicationId = 2, Name = "Ibuprofen" },
-                new Medication { MedicationId = 3, Name = "Amoxicillin" },
-                new Medication { MedicationId = 4, Name = "Aspirin" },
-                new Medication { MedicationId = 5, Name = "Metformin" }
+                new Medication { MedicationId = 1, Name = "Paracetamol", Schedule="PRN" },
+                new Medication { MedicationId = 2, Name = "Ibuprofen", Schedule = "PRN" },
+                new Medication { MedicationId = 3, Name = "Amoxicillin" , Schedule = "Scheduled" },
+                new Medication { MedicationId = 4, Name = "Aspirin", Schedule = "Schedules"},
+                new Medication { MedicationId = 5, Name = "Metformin", Schedule = "PRN" }
             );
         }
     }
