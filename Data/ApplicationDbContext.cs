@@ -27,7 +27,7 @@ namespace CareDev.Data
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientFolder> PatientFolders { get; set; }
         //public DbSet<User> Users { get; set; }
-        public DbSet<Vital> Vitals { get; set; } 
+        public DbSet<Vital> Vitals { get; set; }  
         public DbSet<TreatPatient> TreatPatients { get; set; }
         public DbSet<DoctorInstruction> DoctorInstructions { get; set; } 
 
@@ -42,6 +42,8 @@ namespace CareDev.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Ignore<Microsoft.AspNetCore.Mvc.Rendering.SelectListGroup>();
 
             //configure compositr keys for junction tables
             modelBuilder.Entity<PatientFolder>().HasKey(pf => new { pf.PatientId, pf.PatientFolderId });
