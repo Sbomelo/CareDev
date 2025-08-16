@@ -230,5 +230,7 @@ namespace CareDev.Data
                 new Medication { MedicationId = 5, Name = "Metformin", Schedule = "PRN" }
             );
         }
+        public DbSet<CareDev.Models.PatientAllergy> PatientAllergy { get; set; } = default!;
+        public DbSet<CareDev.Models.PatientCondition> PatientCondition { get; set; } = default!;
     }
 }
