@@ -26,6 +26,26 @@ namespace CareDev.Areas.Identity.Pages.Account
 
         public class InputModel
             {
+
+            [Required]
+            [StringLength(30, ErrorMessage = "The Name Cannnot Be Longer than 30 Characters")]
+            public string Name { get; set; }
+
+            [Required]
+            [StringLength(30, ErrorMessage = "The Name Cannnot Be Longer than 30 Characters")]
+            public string SurName { get; set; }
+
+            [Required]
+            [Range(1, 100, ErrorMessage = "Age Must Be Between 1 AND 100 Years Old")]
+            public int Age { get; set; }
+
+            [Required]
+            public string Gender { get; set; }
+
+            [Required]
+            [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
+            [StringLength(10)]
+            public string PhoneNumber { get; set; }
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
