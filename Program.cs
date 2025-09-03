@@ -13,7 +13,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>(); 
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -23,22 +28,22 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 });
 
-builder.Services.AddRazorPages();
-
-builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
 
-//Calling the DbInitilaizer
-/*using (var scope = app.Services.CreateScope())
+
+//Seeding roles
+ using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-
-    await CareDev.Data.DbInitializer.InitializeAsync(roleManager, userManager);
-} */ 
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roles = { "Admin", "WardAdmin", "Doctor", "Nurse", "Patient" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
