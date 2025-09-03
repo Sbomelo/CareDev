@@ -123,6 +123,10 @@
             background-color: rgba(25,25,25,0.3);
     }
 
+    a{
+        text-decoration: none;
+    }
+
     .login-icon {
         position: absolute;
         margin-left: 10px;
@@ -137,40 +141,40 @@
     }
 </style>
 <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="login-container">
+   <div class="login-container">
+    <form method="post">
+            <h3 class="text-center fw-bold">LOGIN <i class="bi bi-hospital"></i></h3>
+            <p class="text-center mb-4">WELCOME BACK</p>
 
-        <h3 class="text-center fw-bold">LOGIN <i class="bi bi-hospital"></i></h3>
-        <p class="text-center mb-4">WELCOME BACK</p><form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-       
-        <div class="mb-4 position-relative">
-            <i class="bi bi-person login-icon"></i>
-            <input asp-for="Input.Email" placeholder="Username or Email" class="form-control" />
-            <span asp-validation-for="Input.Email" class="text-danger small"></span>
-        </div>
+            <div class="mb-4 position-relative">
+                <i class="bi bi-person login-icon"></i>
+                <input asp-for="Input.Email" placeholder="Username or Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+            </div>
 
+
+            <div class="mb-4 position-relative">
+                <i class="bi bi-lock login-icon"></i>
+                <input asp-for="Input.Password" placeholder="Enter Password" type="password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+            </div>
+
+
+            <div class="mb-3 text-end">
+                <a asp-page="./ForgotPassword" class="text-light">Forgot Password?</a>
+            </div>
+
+
+            <div class="mb-3">
+                <button type="submit" class="btn login-btn">LOGIN</button>
+            </div>
+    </form> 
         
-        <div class="mb-4 position-relative">
-            <i class="bi bi-lock login-icon"></i>
-            <input asp-for="Input.Password" placeholder="Enter Password" type="password" class="form-control" />
-            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+        <div class="d-flex justify-content-between bottom-links">
+            <a asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl" class="fw-bold">CREATE ACCOUNT</a>
+            <a href="#">NEED HELP?</a>
         </div>
-
-        
-        <div class="mb-3 text-end">
-            <a asp-page="./ForgotPassword" class="text-light">Forgot Password?</a>
-        </div>
-
-        
-        <div class="mb-3">
-            <button type="submit" class="btn login-btn">LOGIN</button>
-        </div>
-    </form>
-
-    
-    <div class="d-flex justify-content-between bottom-links">
-        <a asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">CREATE ACCOUNT</a>
-        <a href="#">NEED HELP?</a>
-    </div>
+   </div> 
 </div>
 
 
@@ -178,5 +182,5 @@
         <partial name="_ValidationScriptsPartial" />
     }
 @*  </body>
-</html> *@
+</html> *@ 
 

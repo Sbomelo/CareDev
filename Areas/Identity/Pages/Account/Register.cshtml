@@ -1,8 +1,5 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
 
 @* <h1>@ViewData["Title"]</h1>
 
@@ -61,172 +58,157 @@
         </section>
     </div> 
 </div>*@ 
-<style>
-    .form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        max-width: 350px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 20px;
-        position: relative;
-    }
+<!DOCTYPE html> 
+<html> 
+ <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - REDACTED_PROJECT_NAME</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+   <style> 
+       body{
+            background-color: rgb(124, 155, 255); 
+           /* background: rgb(150, 220, 248) ; */
+          /*  filter: brightness(60%); */
+            font-family: 'Segoe UI', sans-serif;
 
-    .title {
-        font-size: 28px;
-        color: royalblue;
-        font-weight: 600;
-        letter-spacing: -1px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding-left: 30px;
-    }
+        }
+        #registerForm{
+            border: none;
+         
+        }
+        input{
+            border:none;
+            background: none;
+            background-color: none;
+            width: 60%;
 
-        .title::before, .title::after {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            left: 0px;
-            background-color: royalblue;
         }
 
-        .title::before {
-            width: 18px;
-            height: 18px;
-            background-color: royalblue;
+        a:link{
+            text-decoration: none;
         }
 
-        .title::after {
-            width: 18px;
-            height: 18px;
-            animation: pulse 1s linear infinite;
+        .divs{
+            background-color:rgba(174, 174, 174, 0.5); 
+            padding: 10px 10px;
+            margin: 10px 10px;
+
+
+        }
+        #Container{
+            width: 440px;
+            /* background-color: rgba(25,25,25,0.3); */
+            background-color: rgba(21, 96, 130, 0.8 );
+            border-radius: 40px;
+/*             backdrop-filter: blur(8px); */
+            padding: 30px 30px;
+            /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25); */
+            font-family: 'Segoe UI', sans-serif;
+            font-size: large;
+            color: white;
+
+
+        }
+        span{
+            color:red;
         }
 
-    .message, .signin {
-        color: rgba(88, 87, 87, 0.822);
-        font-size: 14px;
-    }
-
-    .signin {
-        text-align: center;
-    }
-
-        .signin a {
-            color: royalblue;
+        #registerSubmit{
+            background-color: rgba(217, 217, 217) ;
         }
 
-            .signin a:hover {
-                text-decoration: underline royalblue;
-            }
-
-    .flex {
-        display: flex;
-        width: 100%;
-        gap: 6px;
-    }
-
-    .form label {
-        position: relative;
-    }
-
-        .form label .input {
-            width: 100%;
-            padding: 10px 10px 20px 10px;
-            outline: 0;
-            border: 1px solid rgba(105, 105, 105, 0.397);
-            border-radius: 10px;
+        #registerSubmit:hover{
+            background-color: rgb(70, 70, 70); 
         }
 
-            .form label .input + span {
-                position: absolute;
-                left: 10px;
-                top: 15px;
-                color: grey;
-                font-size: 0.9em;
-                cursor: text;
-                transition: 0.3s ease;
-            }
-
-            .form label .input:placeholder-shown + span {
-                top: 15px;
-                font-size: 0.9em;
-            }
-
-            .form label .input:focus + span, .form label .input:valid + span {
-                top: 30px;
-                font-size: 0.7em;
-                font-weight: 600;
-            }
-
-            .form label .input:valid + span {
-                color: green;
-            }
-
-    .submit {
-        border: none;
-        outline: none;
-        background-color: royalblue;
-        padding: 10px;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 16px;
-        transform: .3s ease;
-    }
-
-        .submit:hover {
-            background-color: rgb(56, 90, 194);
+        #emailInpit::placeholder {
+        color: rgba(255, 255, 255, 0.8); 
         }
-<!-- keyframes pulse {
-  from {
-    transform: scale(0.9);
-    opacity: 1;
-  }
 
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}  --> 
-</style>
+        .Icon-Div{
+            margin-left: 220px;
+            color: white;
+        }
+
+        .register-icon{
+            font-size: 8rem;
+            color: white;
+        }
 
 
+   </style>  
+ </head>   
+   <body id="registerPage-body">  
+     <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">  
+       <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>  
+       <div id="Container" class="container mt-4 mb-4 pt-4 pb-4"> 
 
-<form class="form" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post> 
-    <p class="title">Register </p>
-    <p class="message">Signup now and get full access to our app. </p>
-    <div class="flex">
-        <label >
-            <input required="" placeholder="" type="text" class="input">
-            <span>Firstname</span>
-        </label>
+            <h1 class="fw-bold text-center"> <i class="bi bi-person-circle register-icon"> </i></h1> 
+     
+            <div class="container rounded-pill divs"> 
+                <label asp-for="Input.Name">Name: </label><input asp-for="Input.Name">
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
 
-        <label>
-            <input required="" placeholder="" type="text" class="input">
-            <span>Lastname</span>
-        </label>
-    </div>
+            <div class="container rounded-pill divs"> 
+                <label asp-for="Input.SurName">SurName: </label><input asp-for="Input.SurName">
+                <span asp-validation-for="Input.SurName" class="text-danger"></span>
+            </div> 
 
-    <label asp-for="Input.Email">
-        <input asp-for="Input.Email" class="form-control input" autocomplete="username" placeholder="name@example.com" >
-        <span>Email</span>
-    </label>
+            <div class="container rounded-pill divs"> 
+                <label asp-for="Input.Age">Age: </label><input asp-for="Input.Age">
+                <span asp-validation-for="Input.Age" class="text-danger"></span>
+            </div>
 
-    <label>
-        <input required="" placeholder="" type="password" class="input">
-        <span>Password</span>
-    </label>
-    <label asp-for="Input.Password"> 
-        <input asp-for="Input.Password" class="input" autocomplete="new-password" aria-required="true" placeholder="password" >
-        <span>Confirm password</span>
-    </label>
-    <button class="submit">Submit</button>
-    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
-</form> 
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.Gender">Gender: </label><input asp-for="Input.Gender">
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+            <div class="container rounded-pill divs"> 
+                <label asp-for="Input.PhoneNumber">PhoneNumber: </label><input asp-for="Input.PhoneNumber">
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.Medication">Medication: </label><input asp-for="Input.Medication">
+                <span asp-validation-for="Input.Medication" class="text-danger"></span>
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.Allergies">Allergies: </label><input asp-for="Input.Allergies">
+                <span asp-validation-for="Input.Allergies" class="text-danger"></span>
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.ChronicCondition">ChronicCondition: </label><input asp-for="Input.ChronicCondition">
+                <span asp-validation-for="Input.ChronicCondition" class="text-danger"></span> 
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.Email">Email Address: </label><input asp-for="Input.Email" placeholder="example@gmai.lcom" id="emailInput">
+                <span asp-validation-for="Input.Email" class="text-Email"></span>
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.Password">Password: </label><input asp-for="Input.Password">
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="container rounded-pill divs">
+                <label asp-for="Input.ConfirmPassword">ConfirmPassword: </label><input asp-for="Input.ConfirmPassword">
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span> 
+            </div> 
+
+            <div>
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg rounded-pill">CREATE ACCOUNT</button> 
+            </div>
+       </div>
+       
+     </form>
+    
+   </body> 
+</html>
