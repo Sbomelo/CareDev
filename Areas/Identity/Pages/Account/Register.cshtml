@@ -86,6 +86,11 @@
             width: 60%;
 
         }
+        input:hove{
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1, 1.1);
+            border: none;
+        }
 
         a:link{
             text-decoration: none;
@@ -95,7 +100,10 @@
             background-color:rgba(174, 174, 174, 0.5); 
             padding: 10px 10px;
             margin: 10px 10px;
-
+        }
+       .divs:hover{
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1, 1.1);
 
         }
         #Container{
@@ -122,6 +130,7 @@
 
         #registerSubmit:hover{
             background-color: rgb(70, 70, 70); 
+            color:white;
         }
 
         #emailInpit::placeholder {
@@ -145,8 +154,8 @@
      <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">  
        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>  
        <div id="Container" class="container mt-4 mb-4 pt-4 pb-4"> 
-
-            <h1 class="fw-bold text-center"> <i class="bi bi-person-circle register-icon"> </i></h1> 
+            <h4 class="fw-bold text-center"> PATIENT REGISTRATION</h4>
+            <h2 class="fw-bold text-center"> <i class="bi bi-person-circle register-icon"> </i></h2> 
      
             <div class="container rounded-pill divs"> 
                 <label asp-for="Input.Name">Name: </label><input asp-for="Input.Name">
@@ -204,7 +213,7 @@
             </div> 
 
             <div>
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg rounded-pill">CREATE ACCOUNT</button> 
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg rounded-pill fw-bold">CREATE ACCOUNT</button> 
             </div>
        </div>
        
