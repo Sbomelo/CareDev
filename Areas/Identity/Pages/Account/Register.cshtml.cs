@@ -141,7 +141,15 @@ namespace CareDev.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+
+                if (Input.Email.EndsWith("@site.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    ModelState.AddModelError(string.Empty, "Admin registration is not allowed here");
+                    return Page();
+                }
+
+                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                //var user2 = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -149,7 +157,12 @@ namespace CareDev.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    string role = DetermineRoleFromEmail(Input.Email);
+                    await _userManager.AddToRoleAsync(user, role);
+
                     _logger.LogInformation("User created a new account with password.");
+
+                    return LocalRedirect(returnUrl);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -183,6 +196,18 @@ namespace CareDev.Areas.Identity.Pages.Account
             return Page();
         }
 
+        private string DetermineRoleFromEmail(string email )
+        {
+            if (email.EndsWith("@Wadmin.com", StringComparison.OrdinalIgnoreCase))
+                return "WardAdmin";
+            else if (email.EndsWith("@doctor.com", StringComparison.OrdinalIgnoreCase))
+                return "Doctor";
+            else if (email.EndsWith("@nurse.com", StringComparison.OrdinalIgnoreCase))
+                return "Nurse";
+            else
+                return "Patient";
+
+        }
         private IdentityUser CreateUser()
         {
             try
