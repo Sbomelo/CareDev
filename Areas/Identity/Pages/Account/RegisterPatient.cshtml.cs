@@ -142,9 +142,27 @@ namespace CareDev.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
 
-                if (Input.Email.EndsWith("@site.com", StringComparison.OrdinalIgnoreCase))
+                if ((Input.Email.EndsWith("@site.com", StringComparison.OrdinalIgnoreCase)))
                 {
                     ModelState.AddModelError(string.Empty, "Admin registration is not allowed here");
+                    return Page();
+                }
+
+                if ((Input.Email.EndsWith("@Wadmin.com", StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError(string.Empty, "Ward Admin registration is not allowed here");
+                    return Page();
+                }
+
+                if ((Input.Email.EndsWith("@doctor.com", StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError(string.Empty, "Doctor registration is not allowed here");
+                    return Page();
+                }
+
+                if ((Input.Email.EndsWith("@nurse.com", StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError(string.Empty, "Nurse registration is not allowed here");
                     return Page();
                 }
 
@@ -199,11 +217,11 @@ namespace CareDev.Areas.Identity.Pages.Account
         private string DetermineRoleFromEmail(string email )
         {
             if (email.EndsWith("@Wadmin.com", StringComparison.OrdinalIgnoreCase))
-                return "WardAdmin";
+                return "Error Cannot Register Ward Admin here";
             else if (email.EndsWith("@doctor.com", StringComparison.OrdinalIgnoreCase))
-                return "Doctor";
+                return "Error Cannot Register Ward Admin here";
             else if (email.EndsWith("@nurse.com", StringComparison.OrdinalIgnoreCase))
-                return "Nurse";
+                return "Error Cannot Register Ward Admin here";
             else
                 return "Patient";
 
