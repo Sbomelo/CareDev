@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Client;
@@ -9,8 +10,12 @@ namespace CareDev.Areas.Identity.Pages.Account
 {
     [Authorize(Roles = "Admin")]
     public class RegisterAdminModel : PageModel
-    {
+    { 
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger<RegisterAdminModel> _logger;
 
         public RegisterAdminModel(UserManager<IdentityUser> userManager, ILogger<RegisterAdminModel> logger)
