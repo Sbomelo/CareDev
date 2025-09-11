@@ -26,10 +26,10 @@
             border: none;
             background: none;
             background-color: none;
-            width: 60%;
+            border-radius: 40px;
         }
 
-            input:hove {
+            input:hover {
                 background-color: rgba(255, 255, 255, 0.5);
                 transform: scale(1.1, 1.1);
                 border: none;
@@ -90,55 +90,100 @@
             color: white;
         }
 
+        h4 {
+            color: red;
+            width: 2%;
+        }
+
     </style>
 </head>
 <body id="registerPage-body">
     <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <div id="Container" class="container mt-4 mb-4 pt-4 pb-4">
-            <h4 class="fw-bold text-center"> EMPLOYEE REGISTRATION</h4>
+            <h3 class="fw-bold text-center"> EMPLOYEE REGISTRATION</h3>
             <h2 class="fw-bold text-center"> <i class="bi bi-person-circle register-icon"> </i></h2>
 
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.Name">Name: </label><input asp-for="Input.Name">
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Name" style="width:20%">Name: </label><input asp-for="Input.Name" style="width:78%">
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.SurName">SurName: </label><input asp-for="Input.SurName">
-                <span asp-validation-for="Input.SurName" class="text-danger"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.SurName" style="width:27%">SurName: </label><input asp-for="Input.SurName" style="width:71%">
+                    <span asp-validation-for="Input.SurName" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.Age">Age: </label><input asp-for="Input.Age">
-                <span asp-validation-for="Input.Age" class="text-danger"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Age" style="width:15%">Age: </label><input asp-for="Input.Age" style="width:83%">
+                    <span asp-validation-for="Input.Age" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.Gender">Gender: </label><input asp-for="Input.Gender">
-                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Gender" style="width:22%">Gender: </label><input asp-for="Input.Gender" style="width:76%">
+                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.PhoneNumber">PhoneNumber: </label><input asp-for="Input.PhoneNumber">
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.PhoneNumber" style="width:39%">PhoneNumber: </label><input asp-for="Input.PhoneNumber" style="width:59%">
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.Email">Email Address: </label><input asp-for="Input.Email" placeholder="example@gmai.lcom" id="emailInput">
-                <span asp-validation-for="Input.Email" class="text-Email"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Email" style="width:37%">EmailAddress: </label><input asp-for="Input.Email" placeholder="example@gmail2.com" id="emailInput" style="width:62%">
+                    <span asp-validation-for="Input.Email" class="text-Email"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
-            <div class="container rounded-pill divs">
-                <label asp-for="Input.Password">Password: </label><input asp-for="Input.Password">
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Password" style="width:27%">Password: </label><input asp-for="Input.Password" style="width:71%">
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
             </div>
-
+            
+          <div class="d-flex justify-content-center-align-items-center">
             <div class="container rounded-pill divs">
-                <label asp-for="Input.ConfirmPassword">ConfirmPassword: </label><input asp-for="Input.ConfirmPassword">
+                    <label asp-for="Input.ConfirmPassword" style="width:45%">ConfirmPassword: </label><input asp-for="Input.ConfirmPassword" style="width:50%">
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-
+                <div>
+                    <h4>*</h4>
+                </div> 
+          </div>
+            
             <div>
                 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg rounded-pill fw-bold">CREATE ACCOUNT</button>
             </div>
