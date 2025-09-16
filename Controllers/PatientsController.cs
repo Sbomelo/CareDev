@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
@@ -18,7 +19,12 @@ namespace CareDev.Controllers
         {
             _context = context;
         }
-
+        //Patient Portal
+        [Authorize (Roles="Patient")]
+        public async Task<IActionResult> Portal()
+        {
+            return View(); 
+        }
         // GET: Patients
         public async Task<IActionResult> Index()
         {
