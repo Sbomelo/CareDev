@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CareDev.Data;
+using CareDev.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CareDev.Data;
-using CareDev.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CareDev.Controllers
 {
@@ -17,6 +18,30 @@ namespace CareDev.Controllers
         public EmployeesController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminPortal()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "WardAdmin")]
+        public async Task<IActionResult> WardAdminPortal()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> DoctorPortal()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Nurse")]
+        public async Task<IActionResult> NursePortal()
+        {
+            return View("Employee/NursePortal");
         }
 
         // GET: Employees
