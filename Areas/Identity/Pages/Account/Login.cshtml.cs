@@ -123,10 +123,13 @@ namespace CareDev.Areas.Identity.Pages.Account
                     var roles = await _userManager.GetRolesAsync(user);
 
                     if(roles.Contains("Admin"))
-                     return LocalRedirect(returnUrl);
+                     return RedirectToAction("AdminPortal","Employees");
 
-                    if (roles.Contains("Doctor") || roles.Contains("Nurse") || roles.Contains("WardAdmin"))
-                        return RedirectToAction("Index", "Employees");
+                    if (roles.Contains("WardAdmin"))
+                        return RedirectToAction("WardAdminPortal", "Employees");
+
+                    if (roles.Contains("Nurse"))
+                        return RedirectToAction("NursePortal", "Employees");
 
                     if (roles.Contains("Patient"))
                         return RedirectToAction("Portal","Patients");
