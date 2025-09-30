@@ -5,20 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
+using CareDev.Models;
 
 namespace CareDev.Areas.Identity.Pages.Account
 {
     [Authorize(Roles = "Admin")]
     public class RegisterAdminModel : PageModel
     { 
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<RegisterAdminModel> _logger;
 
-        public RegisterAdminModel(UserManager<IdentityUser> userManager, ILogger<RegisterAdminModel> logger)
+        public RegisterAdminModel(UserManager<ApplicationUser> userManager, ILogger<RegisterAdminModel> logger)
         {
             _userManager = userManager;
             _logger = logger;
@@ -85,7 +86,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, "Incorrect email used for admin");
                     return Page();
                 }
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
