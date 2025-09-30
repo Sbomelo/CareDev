@@ -223,11 +223,12 @@ namespace CareDev.Data
 
             //seed Medications
             modelBuilder.Entity<Medication>().HasData(
-                new Medication { MedicationId = 1, Name = "Paracetamol", Schedule="PRN" },
-                new Medication { MedicationId = 2, Name = "Ibuprofen", Schedule = "PRN" },
-                new Medication { MedicationId = 3, Name = "Amoxicillin" , Schedule = "Scheduled" },
-                new Medication { MedicationId = 4, Name = "Aspirin", Schedule = "Schedules"},
-                new Medication { MedicationId = 5, Name = "Metformin", Schedule = "PRN" }
+                new Medication {MedicationId  = 1, Name ="None", Schedule="N/A" },
+                new Medication { MedicationId = 2, Name = "Paracetamol", Schedule="PRN" },
+                new Medication { MedicationId = 3, Name = "Ibuprofen", Schedule = "PRN" },
+                new Medication { MedicationId = 4, Name = "Amoxicillin" , Schedule = "Scheduled" },
+                new Medication { MedicationId = 5, Name = "Aspirin", Schedule = "Schedules"},
+                new Medication { MedicationId = 6, Name = "Metformin", Schedule = "PRN" }
             );
         }
         public DbSet<CareDev.Models.PatientAllergy> PatientAllergy { get; set; } = default!;
