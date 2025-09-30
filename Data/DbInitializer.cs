@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Configuration;
 using System.Drawing;
+using CareDev.Models;
 
 namespace CareDev.Data
 {
     public class DbInitializer
     {
-        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             //seeding roles
             string[] roleNames = { "Admin", "WardAdmin", "Doctor", "Nurse", "Patient" };
@@ -42,11 +43,11 @@ namespace CareDev.Data
                         EmailConfirmed = true
 
                     };
-                    var createResult = await userManager.CreateAsync(user, password);
+                    var createResult = await userManager.CreateAsync((ApplicationUser)user, password);
                     if (createResult.Succeeded)
                     {
                         //Assign role
-                        await userManager.AddToRoleAsync(user, role);
+                        await userManager.AddToRoleAsync((ApplicationUser)user, role);
                     }
                     else
                     {
