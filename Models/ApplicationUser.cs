@@ -40,6 +40,9 @@ namespace CareDev.Models
         [ForeignKey(nameof(ChronicConditionId))]
         public virtual ChronicCondition? ChronicCondition { get; set; }
 
+        public bool MustChangePassword { get; set; } = false;
 
+        //Navigation property for Patient profile (if applicable)
+        public Patient? Patient { get; set; }
     }
 }

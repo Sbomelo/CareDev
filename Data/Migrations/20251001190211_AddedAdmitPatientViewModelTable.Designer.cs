@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251001190211_AddedAdmitPatientViewModelTable")]
+    partial class AddedAdmitPatientViewModelTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +37,11 @@ namespace CareDev.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("AdmissionReason")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("BedId")
+                    b.Property<int>("BedId")
                         .HasColumnType("int");
 
                     b.Property<int?>("BedId1")
@@ -46,19 +50,18 @@ namespace CareDev.Data.Migrations
                     b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("EmployeeId")
+                        .IsRequired()
                         .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoomTypeRoomId")
+                    b.Property<string>("RoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoomId1")
                         .HasColumnType("int");
 
                     b.Property<int>("WardId")
@@ -67,20 +70,17 @@ namespace CareDev.Data.Migrations
                     b.HasKey("AdmissionId");
 
                     b.HasIndex("BedId")
-                        .IsUnique()
-                        .HasFilter("[BedId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("BedId1")
                         .IsUnique()
                         .HasFilter("[BedId1] IS NOT NULL");
 
-                    b.HasIndex("DoctorId");
-
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("PatientId");
 
-                    b.HasIndex("RoomTypeRoomId");
+                    b.HasIndex("RoomId1");
 
                     b.HasIndex("WardId");
 
@@ -333,38 +333,6 @@ namespace CareDev.Data.Migrations
                     b.HasIndex("PatientId1");
 
                     b.ToTable("Discharges");
-                });
-
-            modelBuilder.Entity("CareDev.Models.Doctor", b =>
-                {
-                    b.Property<int>("DoctorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("SurName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("DoctorId");
-
-                    b.ToTable("Doctor");
                 });
 
             modelBuilder.Entity("CareDev.Models.DoctorInstruction", b =>
@@ -997,20 +965,18 @@ namespace CareDev.Data.Migrations
                     b.HasOne("CareDev.Models.Bed", "Bed")
                         .WithOne()
                         .HasForeignKey("CareDev.Models.Admission", "BedId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("CareDev.Models.Bed", null)
                         .WithOne("Admissions")
                         .HasForeignKey("CareDev.Models.Admission", "BedId1");
 
-                    b.HasOne("CareDev.Models.Doctor", "Doctor")
-                        .WithMany("Admissions")
-                        .HasForeignKey("DoctorId");
-
                     b.HasOne("CareDev.Models.Employee", "Employee")
                         .WithMany("Admissions")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("CareDev.Models.Patient", "Patient")
                         .WithMany("Admissions")
@@ -1018,9 +984,11 @@ namespace CareDev.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CareDev.Models.RoomType", null)
+                    b.HasOne("CareDev.Models.RoomType", "Room")
                         .WithMany("Admissions")
-                        .HasForeignKey("RoomTypeRoomId");
+                        .HasForeignKey("RoomId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CareDev.Models.Ward", "Ward")
                         .WithMany("Admissions")
@@ -1030,11 +998,11 @@ namespace CareDev.Data.Migrations
 
                     b.Navigation("Bed");
 
-                    b.Navigation("Doctor");
-
                     b.Navigation("Employee");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Room");
 
                     b.Navigation("Ward");
                 });
@@ -1332,11 +1300,6 @@ namespace CareDev.Data.Migrations
             modelBuilder.Entity("CareDev.Models.ChronicCondition", b =>
                 {
                     b.Navigation("PatientConditions");
-                });
-
-            modelBuilder.Entity("CareDev.Models.Doctor", b =>
-                {
-                    b.Navigation("Admissions");
                 });
 
             modelBuilder.Entity("CareDev.Models.Employee", b =>

@@ -103,6 +103,7 @@ namespace CareDev.Areas.Identity.Pages.Account.Manage
             }
 
             var user = await _userManager.GetUserAsync(User);
+            user.MustChangePassword = false; // Set MustChangePassword to false when the user changes their password
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");

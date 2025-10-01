@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CareDev.Data;
+using CareDev.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CareDev.Data;
-using CareDev.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CareDev.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AllergiesController : Controller
     {
         private readonly ApplicationDbContext _context;

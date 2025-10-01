@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
+    [Authorize(Roles = "Admin,WardAdmin")]
     public class BedsController : Controller
-    {
+    { 
         private readonly ApplicationDbContext _context;
 
         public BedsController(ApplicationDbContext context)

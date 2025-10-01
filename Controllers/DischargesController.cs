@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
+    [Authorize(Roles = "WardAdmin,Doctor")]
     public class DischargesController : Controller
     {
         private readonly ApplicationDbContext _context;
