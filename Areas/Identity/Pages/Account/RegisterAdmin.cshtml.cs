@@ -86,7 +86,18 @@ namespace CareDev.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, "Incorrect email used for admin");
                     return Page();
                 }
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Name = Input.Name,
+                    SurName = Input.SurName,
+                    Age = Input.Age,
+                    Gender = Input.Gender,
+                    EmailConfirmed = true
+
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

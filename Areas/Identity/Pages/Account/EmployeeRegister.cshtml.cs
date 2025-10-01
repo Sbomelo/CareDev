@@ -137,7 +137,17 @@ namespace CareDev.Areas.Identity.Pages.Account
                     return Page();
                 }
 
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Name = Input.Name,
+                    SurName = Input.SurName,
+                    Age = Input.Age,
+                    Gender = Input.Gender,
+                    EmailConfirmed = true
+
+                };
                 //var user2 = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
