@@ -30,9 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Active)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Role)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -57,9 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
-            <td>
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.Role.Permissions)
-            </td>
+            </td> *@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |

@@ -13,6 +13,7 @@ namespace CareDev.Models
 
         //Foreign Key
         [Required]
+        [Display(Name = "Ward Name")]
         public int WardId { get; set; }
         //public int? AdmissionId { get; set; }
 

@@ -20,22 +20,31 @@ namespace CareDev.Models
 
         //Foreign Keys
         [Required]
+        [Display (Name ="Patient Name")]
         public int PatientId { get; set; }  
+
         [Required]
+        [Display (Name = "Doctor")]
         public int? EmployeeId { get; set; }
+
         [Required]
+        [Display (Name = "Ward")]
         public int WardId { get; set; }
+
         [Required]
+        [Display (Name = "Bed Number")]
         public int BedId { get; set; }
+
         [Required]
+        [Display (Name = "Room Type")]
         public string? RoomId { get; set; }
 
         // Navigation Proproperties 
-        public virtual Patient Patient { get; set; } 
-        public virtual Employee Employee { get; set; } 
-        public virtual Ward Ward { get; set; } 
-        public virtual Bed Bed { get; set; } 
-        public virtual RoomType Room { get; set; } 
+        public Patient Patient { get; set; } 
+        public Employee Employee { get; set; } 
+        public Ward Ward { get; set; } 
+        public Bed Bed { get; set; } 
+        public RoomType Room { get; set; } 
 
 
 

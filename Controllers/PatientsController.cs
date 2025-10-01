@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
+    [Authorize] 
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,6 +51,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Create
+        [Authorize(Roles = "WardAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -58,6 +60,7 @@ namespace CareDev.Controllers
         // POST: Patients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,PhoneNumber")] Patient patient)
@@ -72,6 +75,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

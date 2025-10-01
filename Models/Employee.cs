@@ -10,9 +10,6 @@ namespace CareDev.Models
         public int EmployeeId { get; set; }
 
         [Required]
-        public int RoleId { get; set; }
-
-        [Required]
         [StringLength(50)]
         public string Username { get; set; } 
 
@@ -35,9 +32,6 @@ namespace CareDev.Models
         [Required]
         public bool Active { get; set; } = true;
 
-        //Navigation Properties
-        [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
 
         //Relationships 
         public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();

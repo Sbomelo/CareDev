@@ -15,7 +15,10 @@ namespace CareDev.Models
 
         // Foreign Key
         [Required]
+        [Display (Name = "Admission")]
         public int AdmissionId { get; set; }
+        [Required]
+        [Display (Name = "Patient Name")]
         public int PatientId { get; set; }
 
         // Navigation Property

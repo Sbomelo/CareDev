@@ -47,7 +47,7 @@ namespace CareDev.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Employees.Include(e => e.Role);
+            var applicationDbContext = _context.Employees;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -60,7 +60,7 @@ namespace CareDev.Controllers
             }
 
             var employee = await _context.Employees
-                .Include(e => e.Role)
+                
                 .FirstOrDefaultAsync(m => m.EmployeeId == id);
             if (employee == null)
             {
@@ -90,7 +90,6 @@ namespace CareDev.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Permissions", employee.RoleId);
             return View(employee);
         }
 
@@ -107,7 +106,6 @@ namespace CareDev.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Permissions", employee.RoleId);
             return View(employee);
         }
 
@@ -143,7 +141,6 @@ namespace CareDev.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Permissions", employee.RoleId);
             return View(employee);
         }
 
@@ -156,7 +153,6 @@ namespace CareDev.Controllers
             }
 
             var employee = await _context.Employees
-                .Include(e => e.Role)
                 .FirstOrDefaultAsync(m => m.EmployeeId == id);
             if (employee == null)
             {

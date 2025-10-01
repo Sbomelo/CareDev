@@ -20,47 +20,46 @@ namespace CareDev.Models
         [Range(0, 120)]
         public int Age { get; set; }
 
-       /* [Required]
-        public int GenderOptionId { get; set; }
-        [ForeignKey("GenderOptionID")]
-        public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); */
+        [Required]
+        [StringLength(100)]
+        public string Gender { get; set; } = string.Empty;
+
+        /* [Required]
+         public int GenderOptionId { get; set; }
+         [ForeignKey("GenderOptionID")]
+         public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); */
 
         [Required]
         [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
         [StringLength(10)]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        ////Foreign Keys
-        //public int? MedicationId { get; set; }
-        //public int? AllergyId { get; set; }
-        //public int? ChronicConditionId { get; set; }
+        //Foreign Keys
+        [Display(Name="Medication")]
+        public int? MedicationId { get; set; }
+        public Medication? Medications { get; set; }
 
+        [Display(Name = "Allergy")]
+        public int? AllergyId { get; set; }
+        public Allergy? Allergy { get; set; }
 
-        ////Navigation Properties and virtual for lazy loading
-        //public virtual ICollection<Medication> Medication { get; set; } = new List<Medication>();
-        //public virtual ICollection<Allergy> Allergy { get; set; } = new List<Allergy>();
-        //public virtual ICollection<ChronicCondition>ChronicCondition { get; set; } = new List<ChronicCondition>();
+        [Display(Name = "Chronic Condition")]
+        public int? ChronicConditionId { get; set; }
+        public ChronicCondition? ChronicCondition { get; set; }
+
+        //Link to identity user
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
+
 
         //Relationships
         public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();
         public virtual ICollection<MedicationAdministration> MedicationAdministrations { get; set; } = new HashSet<MedicationAdministration>();
-
-
-        //public virtual ICollection<Allergy> Allergies { get; set; } = new List<ChronicCondition>();
-        //public virtual Allergy? Allergies { get; set; }
-        //public virtual ICollection<Allergy> Allergy { get; set; } = new HashSet<Allergy>();
-
-
-        //public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new List<ChronicCondition>();
-        public virtual ICollection<ChronicCondition> ChronicConditions { get; set; } = new HashSet<ChronicCondition>();
-        //public virtual ChronicCondition? ChronicConditions { get; set; }
         public virtual ICollection<PatientMovement> Movement { get; set; } = new HashSet<PatientMovement>();
         public virtual ICollection<Discharge> Discharge { get; set; } = new List<Discharge>();
         public virtual PatientFolder? PatientFolder { get; set; }
-
         public virtual ICollection<Vital> Vitals { get; set; } = new HashSet<Vital>();
         public virtual ICollection<TreatPatient> TreatPatients { get; set; } = new HashSet<TreatPatient>();
-        //public virtual ICollection<Medication> Medications { get; set; } = new HashSet<Medication>();
         public virtual ICollection<PatientAllergy> PatientAllergies { get; set; } = new HashSet<PatientAllergy>();
         public virtual ICollection<PatientCondition> PatientConditions { get; set; } = new HashSet<PatientCondition>();
     }
