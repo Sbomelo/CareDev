@@ -188,6 +188,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                     Name = Input.Name,
                     SurName = Input.SurName,
                     Age = Input.Age,
+                    Gender = Input.Gender,
                     MedicationId = Input.MedicationID,
                     AllergyId = Input.AllergyId,
                     ChronicConditionId= Input.ChronicConditionId,
