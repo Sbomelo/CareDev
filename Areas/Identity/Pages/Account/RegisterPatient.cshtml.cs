@@ -208,7 +208,7 @@ namespace CareDev.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
-                    return RedirectToAction("Index", "Patients");
+                    return RedirectToAction("Portal", "Patients");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
