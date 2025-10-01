@@ -35,6 +35,13 @@
                 border: none;
             }
 
+        .Select {
+            border: none;
+            background: none;
+            background-color: none;
+            border-radius: 40px;
+        }
+
         a:link {
             text-decoration: none;
         }
@@ -135,9 +142,23 @@
                 </div>
             </div>
             
-            <div class="d-flex justify-content-center-align-items-center">
+           @*  <div class="d-flex justify-content-center-align-items-center">
                 <div class="container rounded-pill divs">
                     <label asp-for="Input.Gender" style="width:22%">Gender: </label><input asp-for="Input.Gender" style="width:76%">
+                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
+            </div> *@
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Gender" style="width:22%">Gender: </label><Select asp-for="Input.Gender" class="Select" style="width:76%">
+                        <option value="">--SELECT GENDER--</option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                        <option value="OTHER">OTHER</option>
+                    </Select>
                     <span asp-validation-for="Input.Gender" class="text-danger"></span>
                 </div>
                 <div>

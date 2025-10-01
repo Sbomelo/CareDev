@@ -84,6 +84,9 @@
             background-color: none;
             border-radius:40px;
         }
+
+       
+
         label{
 
         }
@@ -91,6 +94,13 @@
             background-color: rgba(255, 255, 255, 0.5);
             transform: scale(1.1, 1.1);
             border: none;
+        }
+
+        .Select {
+            border: none;
+            background: none;
+            background-color: none;
+            border-radius: 40px;
         }
 
         a:link{
@@ -193,7 +203,7 @@
                 </div>
             </div>
            
-            <div class="d-flex justify-content-center-align-items-center">
+            @* <div class="d-flex justify-content-center-align-items-center">
                 <div class="container rounded-pill divs">
                     <label asp-for="Input.Gender" style="width:22%">Gender: </label><input asp-for="Input.Gender" style="width:76%">
                     <span asp-validation-for="Input.Gender" class="text-danger"></span>
@@ -201,7 +211,21 @@
                 <div>
                     <h4>*</h4>
                 </div>
-            </div>
+            </div> *@
+            <div class="d-flex justify-content-center-align-items-center">
+                <div class="container rounded-pill divs">
+                    <label asp-for="Input.Gender" style="width:22%">Gender: </label><Select asp-for="Input.Gender" class="Select" style="width:76%">
+                        <option value="">--SELECT GENDER--</option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                        <option value="OTHER">OTHER</option>
+                    </Select>
+                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                </div>
+                <div>
+                    <h4>*</h4>
+                </div>
+            </div> 
            
             <div class="d-flex justify-content-center-align-items-center">
                 <div class="container rounded-pill divs">
@@ -215,8 +239,8 @@
 
             <div>
                 <div class="container rounded-pill divs">
-                    <label asp-for="Input.MedicationID" style="width:31%">Medication: </label><Select asp-for="Input.MedicationID" asp-items="Model.MedicationList" style="width:67%">
-                        <option value="">-- Select Medication --</option>
+                    <label asp-for="Input.MedicationID" style="width:31%">Medication: </label><Select asp-for="Input.MedicationID" asp-items="Model.MedicationList" class="Select" style="width:67%">
+                        <option value="">--Select Medication--</option>
                     </Select>
                     <span asp-validation-for="Input.MedicationID" class="text-danger"></span> 
 
@@ -225,7 +249,7 @@
            
             <div class="d-flex justify-content-center-align-items-center">
                 <div class="container rounded-pill divs">
-                    <label asp-for="Input.AllergyId" style="width:25%">Allergies: </label><Select asp-for="Input.AllergyId" asp-items="Model.AlleryList" style="width:73%">
+                    <label asp-for="Input.AllergyId" style="width:25%">Allergies: </label><Select asp-for="Input.AllergyId" asp-items="Model.AlleryList" class="Select" style="width:73%">
                         <option value="">-- Select Allergy --</option>
                     </Select>
                     <span asp-validation-for="Input.AllergyId" class="text-danger"></span>
@@ -234,8 +258,8 @@
 
             <div>
                 <div class="container rounded-pill divs">
-                    <label asp-for="Input.ChronicConditionId" style="width:43%">ChronicCondition: </label><Select asp-for="Input.ChronicConditionId" asp-items="Model.ChronicConditionList" style="width:55%">
-                       <option value="">-- Select ChronicCondition --</option>
+                    <label asp-for="Input.ChronicConditionId" style="width:43%">ChronicCondition: </label><Select asp-for="Input.ChronicConditionId" asp-items="Model.ChronicConditionList" class="Select" style="width:55%">
+                       <option value="">--Select Condition--</option>
                     </Select>
                     <span asp-validation-for="Input.ChronicConditionId" class="text-danger"></span>
                 </div>
