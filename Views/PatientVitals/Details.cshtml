@@ -1,0 +1,191 @@
+﻿@model IEnumerable<CareDev.Models.PatientVitals>
+
+@{
+    ViewData["Title"] = "Patient Vitals";
+}
+
+<!-- Optional Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f4f6f9;
+    }
+
+    .vitals-container {
+        max-width: 95%;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        margin-top: 30px;
+    }
+
+        .vitals-container h2 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+
+    .vital-card {
+        background-color: #ffffff;
+        border: 1px solid #e3e6ef;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .vital-label {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .vital-value {
+        color: #2c3e50;
+    }
+
+    .btn-back {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-weight: 500;
+        border-radius: 8px;
+    }
+
+    .vital-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+
+    .vital-item {
+        background-color: #f8f9fc;
+        border-radius: 8px;
+        padding: 10px 14px;
+    }
+</style>
+
+<div class="vitals-container">
+    <h2>Vitals for <span class="text-primary">@ViewData["PatientName"]</span></h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">No vitals recorded for this patient.</div>
+    }
+    else
+    {
+        @foreach (var vital in Model)
+        {
+            <div class="vital-card">
+                <div class="mb-2"><span class="vital-label">Date Recorded:</span> <span class="vital-value">@vital.RecordedDate.ToString("g")</span></div>
+                <div class="vital-grid">
+                    <div class="vital-item">
+                        <span class="vital-label">Temperature (°C):</span><br />
+                        <span class="vital-value">@vital.Temperature</span>
+                    </div>
+                    <div class="vital-item">
+                        <span class="vital-label">Heart Rate:</span><br />
+                        <span class="vital-value">@vital.HeartRate</span>
+                    </div>
+                    <div class="vital-item">
+                        <span class="vital-label">Respiratory Rate:</span><br />
+                        <span class="vital-value">@vital.RespiratoryRate</span>
+                    </div>
+                    <div class="vital-item">
+                        <span class="vital-label">Blood Pressure:</span><br />
+                        <span class="vital-value">@vital.BloodPressure</span>
+                    </div>
+                    <div class="vital-item">
+                        <span class="vital-label">Oxygen Saturation (%):</span><br />
+                        <span class="vital-value">@vital.OxygenSaturation</span>
+                    </div>
+                    <div class="vital-item">
+                        <span class="vital-label">Glucose Level:</span><br />
+                        <span class="vital-value">@vital.GlucoseLevel</span>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="vital-label">Recorded By:</span> <span class="vital-value">@vital.Nurse?.Name ?? "N/A"</span>
+                </div>
+            </div>
+        }
+        <div class="vital-card">
+            <div class="mb-2">
+                <span class="vital-label">Date Recorded:</span>
+                <span class="vital-value">2025-10-02 09:30</span>
+            </div>
+            <div class="vital-grid">
+                <div class="vital-item">
+                    <span class="vital-label">Temperature (°C):</span><br />
+                    <span class="vital-value">37.2</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Heart Rate:</span><br />
+                    <span class="vital-value">82 bpm</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Respiratory Rate:</span><br />
+                    <span class="vital-value">18 /min</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Blood Pressure:</span><br />
+                    <span class="vital-value">120/80 mmHg</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Oxygen Saturation (%):</span><br />
+                    <span class="vital-value">98%</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Glucose Level:</span><br />
+                    <span class="vital-value">5.6 mmol/L</span>
+                </div>
+            </div>
+            <div class="mt-3">
+                <span class="vital-label">Recorded By:</span>
+                <span class="vital-value">Nurse Nomsa Dlamini</span>
+            </div>
+        </div>
+
+        <div class="vital-card">
+            <div class="mb-2">
+                <span class="vital-label">Date Recorded:</span>
+                <span class="vital-value">2025-10-01 15:45</span>
+            </div>
+            <div class="vital-grid">
+                <div class="vital-item">
+                    <span class="vital-label">Temperature (°C):</span><br />
+                    <span class="vital-value">36.8</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Heart Rate:</span><br />
+                    <span class="vital-value">76 bpm</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Respiratory Rate:</span><br />
+                    <span class="vital-value">17 /min</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Blood Pressure:</span><br />
+                    <span class="vital-value">118/79 mmHg</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Oxygen Saturation (%):</span><br />
+                    <span class="vital-value">97%</span>
+                </div>
+                <div class="vital-item">
+                    <span class="vital-label">Glucose Level:</span><br />
+                    <span class="vital-value">5.2 mmol/L</span>
+                </div>
+            </div>
+            <div class="mt-3">
+                <span class="vital-label">Recorded By:</span>
+                <span class="vital-value">Nurse Thabo Mokoena</span>
+            </div>
+        </div>
+
+    }
+
+    <a asp-action="Patients" class="btn btn-secondary btn-back">← Back to Patients</a>
+</div>
