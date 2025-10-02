@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace CareDev.Controllers
 {
-   [Authorize(Roles = "Admin,WardAdmin,Doctor,Nurse")]
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;

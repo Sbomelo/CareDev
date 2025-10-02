@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251002185541_MedicationUpdate")]
+    partial class MedicationUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,6 +474,9 @@ namespace CareDev.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Schedule")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -586,6 +592,9 @@ namespace CareDev.Data.Migrations
                     b.Property<int?>("MedicationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MedicationsMedicationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -611,7 +620,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasIndex("ChronicConditionId");
 
-                    b.HasIndex("MedicationId");
+                    b.HasIndex("MedicationsMedicationId");
 
                     b.ToTable("Patients");
                 });
@@ -1148,7 +1157,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasOne("CareDev.Models.Medication", "Medications")
                         .WithMany()
-                        .HasForeignKey("MedicationId");
+                        .HasForeignKey("MedicationsMedicationId");
 
                     b.Navigation("Allergy");
 

@@ -10,8 +10,7 @@ using CareDev.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
-{
-    [Authorize] 
+{ 
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext _context;
