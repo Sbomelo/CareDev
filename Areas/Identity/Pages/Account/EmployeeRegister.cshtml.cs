@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
+using CareDev.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using CareDev.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CareDev.Areas.Identity.Pages.Account
 {
@@ -158,10 +159,22 @@ namespace CareDev.Areas.Identity.Pages.Account
                 {
                     string role = DetermineRoleFromEmail(Input.Email);
                     await _userManager.AddToRoleAsync(user, role);
+                    var roles = await _userManager.GetRolesAsync(user);
 
                     _logger.LogInformation("User created a new account with password.");
 
-                    return RedirectToAction("WardAdminPortal", "Employees"); 
+                    if (roles.Contains("WardAdmin"))
+                        return RedirectToAction("WardAdminPortal", "Employees");
+                    else if (roles.Contains("Doctor"))
+                        return RedirectToAction("DoctorPortal", "Employees");
+                    else if (roles.Contains("Nurse"))
+                        return RedirectToAction("NursePortal", "Employees");
+                    else if (roles.Contains("Erro Registration"))
+                    {
+                        await _userManager.DeleteAsync(user); // Delete the user if role assignment failed
+                        ModelState.AddModelError(string.Empty, "Invalid email domain for registration.");
+                        return Page();
+                    } 
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
