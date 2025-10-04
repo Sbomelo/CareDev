@@ -25,9 +25,21 @@
             }
             .optionsDiv{
                 height:30px;
-                width: fit-content;
+                width: 25em;
                 margin-bottom: 20px;
                 margin-top:20px;
+            }
+
+            .optionsDiv:hover {
+                transform: scale(1.1, 1.1);
+            }
+
+        .option {
+            padding: 10px;
+        }
+
+            .option:hover {
+                border: 3px solid white;
             }
 
       </style>
@@ -41,7 +53,7 @@
      <div class="d-flex flex-column justify-content-end float-end">
         <div class="optionsDiv">
             <a asp-area="Identity" asp-page="/Account/RegisterAdmin">
-                <div class="rounded-pill bg-black" style="padding:10px;">
+                <div class="rounded-pill bg-black option" style="padding:10px;">
                     <h3 class="text-white">REGISTER ADMIN</h3>
                 </div>
             </a>
@@ -49,24 +61,24 @@
 
      
         <div class="optionsDiv">
-            <a asp-controller="Employees" asp-action="Create">
-                <div class="rounded-pill bg-black" style="padding:10px;">
-                    <h3 class="text-white">CREATE EMPLOYEES</h3>
+            <a asp-controller="Employees" asp-action="Index">
+                <div class="rounded-pill bg-black option" style="padding:10px;">
+                    <h3 class="text-white">Manage Employees</h3>
                 </div>
             </a>
         </div>
 
         <div class="optionsDiv">
-            <a asp-controller="Roles" asp-action="Create">
-                <div class="rounded-pill bg-black" style="padding:10px;">
-                    <h3 class="text-white">CREATE ROLES</h3>
+            <a asp-controller="Roles" asp-action="Index">
+                <div class="rounded-pill bg-black option" style="padding:10px;">
+                    <h3 class="text-white">Manage Roles</h3>
                 </div>
-            </a>
+            </a> 
         </div>
 
         <div class="optionsDiv">
-            <a>
-                <div class="rounded-pill bg-black" style="padding:10px;"> 
+            <a asp-controller="Employees" asp-action="Delete">
+                <div class="rounded-pill bg-black option" style="padding:10px;"> 
                    <h3 class="text-white">DE-ACTIVATE ACCOUNTS</h3>
                 </div>
             </a>
