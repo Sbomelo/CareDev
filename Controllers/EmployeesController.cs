@@ -20,14 +20,14 @@ namespace CareDev.Controllers
             _context = context;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminPortal()
         {
             return View();
         }
 
-        //[Authorize(Roles = "WardAdmin")]
-        public async Task<IActionResult> WardAdminPortal()
+        [Authorize(Roles = "WardAdmin")]
+        public async Task<IActionResult> WardAdminPortal() 
         {
             return View();
         }

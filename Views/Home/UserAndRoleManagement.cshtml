@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>USER AND ROLE MANAGEMENT</title>
+      <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+      <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+      <script src="~/lib/jquery/dist/jquery.min.js"></script>
+      <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="~/js/site.js" asp-append-version="true"></script>
+
+      <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: rgb(38,38,38);
+            }
+
+            a{
+                text-decoration:none;
+            }
+
+            div{
+                text-align:center;
+            }
+            .optionsDiv{
+                height:30px;
+                width: fit-content;
+                margin-bottom: 20px;
+                margin-top:20px;
+            }
+
+      </style>
+   </head>
+
+   <body>
+       <div>
+            <h1 class="text-white">USER AND ROLE MANAGEMENT</h1>
+       </div>
+
+     <div class="d-flex flex-column justify-content-end float-end">
+        <div class="optionsDiv">
+            <a asp-area="Identity" asp-page="/Account/RegisterAdmin">
+                <div class="rounded-pill bg-black" style="padding:10px;">
+                    <h3 class="text-white">REGISTER ADMIN</h3>
+                </div>
+            </a>
+        </div> 
+
+     
+        <div class="optionsDiv">
+            <a asp-controller="Employees" asp-action="Create">
+                <div class="rounded-pill bg-black" style="padding:10px;">
+                    <h3 class="text-white">CREATE EMPLOYEES</h3>
+                </div>
+            </a>
+        </div>
+
+        <div class="optionsDiv">
+            <a asp-controller="Roles" asp-action="Create">
+                <div class="rounded-pill bg-black" style="padding:10px;">
+                    <h3 class="text-white">CREATE ROLES</h3>
+                </div>
+            </a>
+        </div>
+
+        <div class="optionsDiv">
+            <a>
+                <div class="rounded-pill bg-black" style="padding:10px;"> 
+                   <h3 class="text-white">DE-ACTIVATE ACCOUNTS</h3>
+                </div>
+            </a>
+        </div>
+
+     </div>
+
+   </body>
+</html>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
