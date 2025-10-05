@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 { 
+    [Authorize]
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -32,6 +33,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,6 +42,9 @@ namespace CareDev.Controllers
             }
 
             var patient = await _context.Patients
+                .Include(m => m.Medications)
+                .Include(a => a.Allergy)
+                .Include(c => c.ChronicCondition)
                 .FirstOrDefaultAsync(m => m.PatientId == id);
             if (patient == null)
             {
@@ -53,6 +58,9 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         public IActionResult Create()
         {
+            ViewData["MedicationId"] = new SelectList(_context.Wards, "MedicationId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
             return View();
         }
 
@@ -62,7 +70,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId")] Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +78,9 @@ namespace CareDev.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MedicationId"] = new SelectList(_context.Wards, "MedicationId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
             return View(patient);
         }
 
@@ -87,6 +98,9 @@ namespace CareDev.Controllers
             {
                 return NotFound();
             }
+            ViewData["MedicationId"] = new SelectList(_context.Wards, "MedicationId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
             return View(patient);
         }
 
@@ -95,7 +109,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,PhoneNumber")] Patient patient)
+        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId")] Patient patient)
         {
             if (id != patient.PatientId)
             {
@@ -122,6 +136,9 @@ namespace CareDev.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MedicationId"] = new SelectList(_context.Wards, "MedicationId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
+            ViewData["AllergyId"] = new SelectList(_context.Wards, "AllergyId", "Name");
             return View(patient);
         }
 
@@ -134,6 +151,9 @@ namespace CareDev.Controllers
             }
 
             var patient = await _context.Patients
+                .Include(m => m.Medications)
+                .Include(a => a.Allergy)
+                .Include(c => c.ChronicCondition)
                 .FirstOrDefaultAsync(m => m.PatientId == id);
             if (patient == null)
             {

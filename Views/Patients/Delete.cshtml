@@ -29,12 +29,39 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Age)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicationId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicationId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AllergyId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AllergyId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChronicConditionId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChronicConditionId)
+        </dd>
+
+
     </dl>
     
     <form asp-action="Delete">
