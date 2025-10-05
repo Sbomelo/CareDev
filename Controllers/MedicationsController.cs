@@ -56,7 +56,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MedicationId,Name,Schedule,UsageNotes,PatientId,EmployeeId")] Medication medication)
+        public async Task<IActionResult> Create([Bind("MedicationId,Name,Schedule,UsageNotes")] Medication medication)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedicationId,Name,Schedule,UsageNotes,PatientId,EmployeeId")] Medication medication)
+        public async Task<IActionResult> Edit(int id, [Bind("MedicationId,Name,Schedule,UsageNotes")] Medication medication)
         {
             if (id != medication.MedicationId)
             {

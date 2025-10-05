@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
-    [Authorize(Roles = "WardAdmin")]
     public class PatientMovementsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,13 +21,15 @@ namespace CareDev.Controllers
         }
 
         // GET: PatientMovements
+        [Authorize(Roles = "WardAdmin")] 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PatientMovements.Include(p => p.Patient).Include(p => p.Room);
+            var applicationDbContext = _context.PatientMovements.Include(p => p.Patient);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: PatientMovements/Details/5
+        [Authorize(Roles = "WardAdmin,Patient")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,7 +39,6 @@ namespace CareDev.Controllers
 
             var patientMovement = await _context.PatientMovements
                 .Include(p => p.Patient)
-                .Include(p => p.Room)
                 .FirstOrDefaultAsync(m => m.MovementId == id);
             if (patientMovement == null)
             {
@@ -49,16 +49,18 @@ namespace CareDev.Controllers
         }
 
         // GET: PatientMovements/Create
+        [Authorize(Roles = "WardAdmin")]
         public IActionResult Create()
         {
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name");
-            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "RoomId", "RoomName");
+            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "WardId", "WardName");
             return View();
         }
 
         // POST: PatientMovements/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovementId,MovementDate,Location,PatientId,RoomId")] PatientMovement patientMovement)
@@ -70,11 +72,11 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
-            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "RoomId", "RoomName", patientMovement.RoomId);
             return View(patientMovement);
         }
 
         // GET: PatientMovements/Edit/5
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,16 +90,16 @@ namespace CareDev.Controllers
                 return NotFound();
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
-            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "RoomId", "RoomName", patientMovement.RoomId);
             return View(patientMovement);
         }
 
         // POST: PatientMovements/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovementId,MovementDate,Location,PatientId,RoomId")] PatientMovement patientMovement)
+        public async Task<IActionResult> Edit(int id, [Bind("MovementId,MovementDate,Location,PatientId,WardId")] PatientMovement patientMovement)
         {
             if (id != patientMovement.MovementId)
             {
@@ -125,11 +127,11 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
-            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "RoomId", "RoomName", patientMovement.RoomId);
             return View(patientMovement);
         }
 
         // GET: PatientMovements/Delete/5
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,7 +141,6 @@ namespace CareDev.Controllers
 
             var patientMovement = await _context.PatientMovements
                 .Include(p => p.Patient)
-                .Include(p => p.Room)
                 .FirstOrDefaultAsync(m => m.MovementId == id);
             if (patientMovement == null)
             {
@@ -150,6 +151,7 @@ namespace CareDev.Controllers
         }
 
         // POST: PatientMovements/Delete/5
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

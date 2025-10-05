@@ -18,10 +18,10 @@ namespace CareDev.Models
         [Required]
         public int PatientId { get; set; } 
         [Required]
-        public int RoomId { get; set; }
+        public int WardId { get; set; }
 
         // Navigation Property
         public virtual Patient Patient { get; set; } = null!;
-        public virtual RoomType Room { get; set; } = null!;
+        public virtual Ward Ward { get; set; } = null!; 
     }
 }

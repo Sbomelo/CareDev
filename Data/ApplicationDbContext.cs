@@ -170,11 +170,11 @@ namespace CareDev.Data
                 .HasForeignKey(pm => pm.PatientId);
 
             //Ward to Bed relationships 
-           /* modelBuilder.Entity<Ward>()
+           modelBuilder.Entity<Ward>()
                 .HasMany(w => w.Beds)
                 .WithOne(b => b.Ward)
-                .HasForeignKey(b => b.WardId)
-                .OnDelete(DeleteBehavior.Cascade);*/
+                .HasForeignKey(b => b.BedId) 
+                .OnDelete(DeleteBehavior.Cascade);
            modelBuilder.Entity<Bed>(entity => 
            {
                entity.HasOne(b => b.Ward)
@@ -218,7 +218,22 @@ namespace CareDev.Data
             modelBuilder.Entity<Ward>().HasData(
                 new Ward { WardId = 1, Name = "General Ward" },
                 new Ward { WardId = 2, Name = "Surgical Ward" },
-                new Ward { WardId = 3, Name = "Maternity Ward"} 
+                new Ward { WardId = 3, Name = "Maternity Ward"},
+                new Ward { WardId = 4, Name = "X Ray Ward" },
+                new Ward { WardId = 6, Name = "Labour Ward" }
+            );
+
+            ////seed Beds
+            modelBuilder.Entity<Bed>().HasData(
+                new Bed { BedId = 1, WardId = 6, BedNumber = "L-101", IsOccupied = false },
+                new Bed { BedId = 2, WardId = 6, BedNumber = "L-102", IsOccupied = false },
+                new Bed { BedId = 3, WardId = 6, BedNumber = "L-103", IsOccupied = false },
+                new Bed { BedId = 4, WardId = 2, BedNumber = "S-201", IsOccupied = false },
+                new Bed { BedId = 5, WardId = 2, BedNumber = "S-202", IsOccupied = false },
+                new Bed { BedId = 6, WardId = 2, BedNumber = "S-203", IsOccupied = false },
+                new Bed { BedId = 7, WardId = 3, BedNumber = "M-301", IsOccupied = false },
+                new Bed { BedId = 8, WardId = 3, BedNumber = "M-302", IsOccupied = false },
+                new Bed { BedId = 9, WardId = 3, BedNumber = "M-303", IsOccupied = false }
             );
 
             //seed Medications
@@ -230,6 +245,8 @@ namespace CareDev.Data
                 new Medication { MedicationId = 5, Name = "Aspirin", Schedule = "Schedules"},
                 new Medication { MedicationId = 6, Name = "Metformin", Schedule = "PRN" }
             );
+
+            
         }
         public DbSet<CareDev.Models.PatientAllergy> PatientAllergy { get; set; } = default!;
         public DbSet<CareDev.Models.PatientCondition> PatientCondition { get; set; } = default!;

@@ -48,6 +48,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Beds/Create
+        [Authorize(Roles="Admin")] 
         public IActionResult Create()
         {
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
@@ -57,9 +58,10 @@ namespace CareDev.Controllers
         // POST: Beds/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles="Admin")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BedId,Status,WardId")] Bed bed)
+        public async Task<IActionResult> Create([Bind("BedId,BedNumber,IsOccupied,WardId")] Bed bed)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +95,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BedId,Status,WardId")] Bed bed)
+        public async Task<IActionResult> Edit(int id, [Bind("BedId,BedNumber,IsOccupied,WardId")] Bed bed)
         {
             if (id != bed.BedId)
             {
@@ -125,6 +127,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Beds/Delete/5
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +147,7 @@ namespace CareDev.Controllers
         }
 
         // POST: Beds/Delete/5
+        [Authorize(Roles="Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

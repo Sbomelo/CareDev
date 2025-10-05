@@ -6,13 +6,6 @@ namespace CareDev.Models
         [Key]
         public int DischargeId { get; set; }
 
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DischargeDate { get; set; } = DateTime.Now;
-
-        [StringLength(500)]
-        public string? Notes { get; set; }
-
         // Foreign Key
         [Required]
         [Display (Name = "Admission")]
@@ -20,6 +13,15 @@ namespace CareDev.Models
         [Required]
         [Display (Name = "Patient Name")]
         public int PatientId { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime DischargeDate { get; set; } = DateTime.Now;
+
+        [StringLength(500)]
+        public string? Notes { get; set; }
+
+
 
         // Navigation Property
         public virtual Admission Admission { get; set; } = null!; 

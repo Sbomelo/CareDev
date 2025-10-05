@@ -45,6 +45,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Employees
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Employees;
@@ -52,6 +53,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Employees/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -71,6 +73,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Employees/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Permissions");
@@ -80,9 +83,10 @@ namespace CareDev.Controllers
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,RoleId,Username,Password,Name,PhoneNumber,Specialization,Active")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Password,ConfirmPassword,Active")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +97,8 @@ namespace CareDev.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Employees/Edit/
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -112,9 +117,10 @@ namespace CareDev.Controllers
         // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,RoleId,Username,Password,Name,PhoneNumber,Specialization,Active")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Password,ConfirmPassword,Active")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
@@ -145,6 +151,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Employees/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,6 +170,7 @@ namespace CareDev.Controllers
         }
 
         // POST: Employees/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251004190724_SeedWards")]
+    partial class SeedWards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,71 +259,6 @@ namespace CareDev.Data.Migrations
                     b.HasIndex("WardId");
 
                     b.ToTable("Beds");
-
-                    b.HasData(
-                        new
-                        {
-                            BedId = 1,
-                            BedNumber = "L-101",
-                            IsOccupied = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 2,
-                            BedNumber = "L-102",
-                            IsOccupied = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 3,
-                            BedNumber = "L-103",
-                            IsOccupied = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 4,
-                            BedNumber = "S-201",
-                            IsOccupied = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 5,
-                            BedNumber = "S-202",
-                            IsOccupied = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 6,
-                            BedNumber = "S-203",
-                            IsOccupied = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 7,
-                            BedNumber = "M-301",
-                            IsOccupied = false,
-                            WardId = 3
-                        },
-                        new
-                        {
-                            BedId = 8,
-                            BedNumber = "M-302",
-                            IsOccupied = false,
-                            WardId = 3
-                        },
-                        new
-                        {
-                            BedId = 9,
-                            BedNumber = "M-303",
-                            IsOccupied = false,
-                            WardId = 3
-                        });
                 });
 
             modelBuilder.Entity("CareDev.Models.ChronicCondition", b =>
