@@ -86,7 +86,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Password,ConfirmPassword,Active")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Email,Password,ConfirmPassword,Active")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Password,ConfirmPassword,Active")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Email,Password,ConfirmPassword,Active")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
