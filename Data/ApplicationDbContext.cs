@@ -175,6 +175,12 @@ namespace CareDev.Data
                 .WithOne(b => b.Ward)
                 .HasForeignKey(b => b.BedId) 
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            modelBuilder.Entity<Bed>(entity =>
+            {
+                entity.HasIndex(b => new { b.BedNumber, b.WardId }).IsUnique();
+            });
+
            modelBuilder.Entity<Bed>(entity => 
            {
                entity.HasOne(b => b.Ward)
@@ -182,6 +188,7 @@ namespace CareDev.Data
                    .HasForeignKey(b => b.WardId);
                     
             });
+           
 
             //seed look up data
             SeedLookupData(modelBuilder);
