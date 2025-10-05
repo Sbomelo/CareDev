@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
-    [Authorize(Roles = "WardAdmin,Doctor")]
+    [Authorize(Roles = "WardAdmin")]
     public class DischargesController : Controller
     {
         private readonly ApplicationDbContext _context;

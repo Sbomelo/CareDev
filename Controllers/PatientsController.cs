@@ -27,13 +27,14 @@ namespace CareDev.Controllers
             return View(); 
         }
         // GET: Patients
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Patients.ToListAsync());
         }
 
         // GET: Patients/Details/5
-       
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -85,7 +86,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Edit/5
-        [Authorize]
+        [Authorize (Roles = "WardAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,6 +108,7 @@ namespace CareDev.Controllers
         // POST: Patients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId")] Patient patient)
@@ -143,6 +145,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Delete/5
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

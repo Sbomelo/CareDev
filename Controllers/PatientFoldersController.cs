@@ -10,6 +10,7 @@ using CareDev.Models;
 
 namespace CareDev.Controllers
 {
+    [Authorize(Roles = "Admin,WardAdmin")]
     public class PatientFoldersController : Controller
     {
         private readonly ApplicationDbContext _context;

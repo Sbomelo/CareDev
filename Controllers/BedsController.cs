@@ -51,8 +51,26 @@ namespace CareDev.Controllers
         [Authorize(Roles="Admin")] 
         public IActionResult Create()
         {
-            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
-            return View();
+            try
+            {
+              var wards = _context.Wards.ToList();
+              if (!wards.Any())
+              {
+                TempData["ErrorMessage"] = "No wards available. Please create a ward first.";
+                return RedirectToAction("Index");
+              }
+
+              ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
+              return View();
+            }
+
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"Error in GET Create: {ex.Message}");
+                TempData["ErrorMessage"] = "Error loading wards. Please try again.";
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: Beds/Create
@@ -69,25 +87,78 @@ namespace CareDev.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
             return View(bed);
-        }
+        //    Console.WriteLine($"ModelState IsValid: {ModelState.IsValid}");
+        //    Console.WriteLine($"WardId received: {bed.WardId}");
 
-        // GET: Beds/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //    // Additional validation - check if Ward exists
+        //    if (bed.WardId > 0)
+        //    {
+        //        var wardExists = await _context.Wards.AnyAsync(w => w.WardId == bed.WardId);
+        //        if (!wardExists)
+        //        {
+        //            ModelState.AddModelError("WardId", "The selected ward does not exist.");
+        //        }
+        //    }
 
-            var bed = await _context.Beds.FindAsync(id);
-            if (bed == null)
-            {
-                return NotFound();
-            }
-            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
-            return View(bed);
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            // Ensure the bed is available when created (unless specifically set as occupied)
+        //            bed.IsOccupied = false; // New beds should typically be available
+
+        //            _context.Add(bed);
+        //            await _context.SaveChangesAsync();
+
+        //            TempData["SuccessMessage"] = $"Bed {bed.BedNumber} created successfully!";
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (DbUpdateException ex)
+        //        {
+        //            Console.WriteLine($"Database error: {ex.Message}");
+        //            ModelState.AddModelError("", "An error occurred while saving to the database. This bed might already exist.");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"Error creating bed: {ex.Message}");
+        //            ModelState.AddModelError("", "An error occurred while creating the bed. Please try again.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Log all validation errors
+        //        foreach (var error in ModelState.Where(ms => ms.Value.Errors.Count > 0))
+        //        {
+        //            foreach (var subError in error.Value.Errors)
+        //            {
+        //                Console.WriteLine($"Validation error in {error.Key}: {subError.ErrorMessage}");
+        //            }
+        //        }
+        //    }
+
+        //    // Repopulate the wards dropdown
+        //    var wards = await _context.Wards.ToListAsync();
+        //    ViewData["WardId"] = new SelectList(wards, "WardId", "Name", bed.WardId);
+        //    return View(bed);
+        //}
+
+        //// GET: Beds/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var bed = await _context.Beds.FindAsync(id);
+        //    if (bed == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+        //    return View(bed);
         }
 
         // POST: Beds/Edit/5
