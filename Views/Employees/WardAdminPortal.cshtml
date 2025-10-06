@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
         body {
-            background: url('/images/Admin.jpg') no-repeat center center fixed;
-            background-size: cover;
+           /*  background: url('/images/Admin.jpg') no-repeat center center fixed;
+            background-size: cover; */
+            background-color: #B3E5FC;
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -27,20 +28,47 @@
         .main-div {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, auto);
+            grid-template-rows: repeat(2, auto);
             gap: 20px;
-            margin-left: 49%;
+            margin-left: 50%;
+        }
+
+        .item1{
+            grid-column: 1/2;
+            grid-row:1/2;
+        }
+
+        .item2{
+            grid-column: 2/3;
+            grid-row:1/2;
+        }
+        .item3{
+            grid-column: 1/2;
+            grid-row:2/3;
+        }
+         .item4{
+            grid-column: 2/3;
+            grid-row:2/3;
+        }
+
+        .item5{
+            grid-column:1 / 3;
+            grid-row: 3/ 3;
+            justify-self: center;
+            align-self: center;
         }
 
         .item-div {
             border: none;
             border-color: none;
-            background-color: rgba(21,96,130,0.37);
+            border-radius: 25px;
+           /*  background-color: rgba(21,96,130,0.37); */
+            background-color:#29B6F6;
             color: white;
             font-size: 2em;
             text-align: center;
             padding: 15px;
-            filter: brightness(130%);
+            /* filter: brightness(130%); */
         }
 
             .item-div:hover {
@@ -66,7 +94,7 @@
 </head>
 
 <body> 
-    <div class="main-div">
+    <div class="main-div item1">
         <div class="item-div">
             <a class="a-tags" asp-controller="Admissions" asp-action="Index">
                 <div style="display:flex; justify-content:center; align-items:center;">
@@ -81,7 +109,7 @@
             </a>
         </div>
 
-        <div class="item-div">
+        <div class="item-div item2">
             <a class="a-tags" href="#" >
                 <div style="display:flex; justify-content:center; align-items:center;">
                     <div>
@@ -95,7 +123,7 @@
             </a>
         </div>
 
-        <div class="item-div">
+        <div class="item-div item3">
             <a class="a-tags" asp-controller="PatientMovements" asp-action="Index">
                 <div style="display:flex; justify-content:center; align-items:center;">
                     <div>
@@ -103,29 +131,28 @@
                     </div>
 
                     <div>
-                        <h4>PATIENT MOVEMENT</h4>
+                        <h4>MOVE PATIENT</h4>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="item-div">
-            <a class="a-tags" asp-cotroller="Discharges" asp-action="Index">
+        <div class="item-div item4">
+            <a class="a-tags" asp-controller="Discharges" asp-action="Index">
                 <div style="display:flex; justify-content:center; align-items:center;">
                     <div>
                         <h1><i class="bi bi-person-walking"></i></h1>
                     </div>
 
                     <div>
-                        <h4>PATIENT DISCHARGE</h4> 
+                        <h4>DISCHARGE PATIENT</h4> 
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="item-div">
-           <a class="a-tags" asp-cotroller="Patients" asp-action="Index"></a>
-            <a class="a-tags" href="#">
+        <div class="item-div item5">
+            <a class="a-tags" asp-controller="Patients" asp-action="Index">
                 <div style="display:flex; justify-content:center; align-items:center;">
                     <div>
                         <h1><i class="bi bi-list-ol"></i></h1>
@@ -141,5 +168,5 @@
 
 </body>
 </html>
-
+ 
 

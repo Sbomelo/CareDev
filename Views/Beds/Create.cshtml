@@ -11,52 +11,22 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <!-- Display all validation errors -->
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger">
-                    <h5>Please fix the following errors:</h5>
-                    <ul>
-                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                        {
-                            <li>@error.ErrorMessage</li>
-                        }
-                    </ul>
-                </div>
-            }
-
-           <div class="form-group">
+            <div class="form-group">
                 <label asp-for="BedNumber" class="control-label"></label>
                 <input asp-for="BedNumber" class="form-control" />
                 <span asp-validation-for="BedNumber" class="text-danger"></span>
-            </div> 
+            </div>
+            <div class="form-group">
+                <label asp-for="WardId" class="control-label"></label>
+                <select asp-for="WardId" class ="form-control" asp-items="ViewBag.WardId"></select>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsOccupied" /> @Html.DisplayNameFor(model => model.IsOccupied)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="WardId" class="control-label"></label>
-                <select asp-for="WardId" class ="form-control" asp-items="ViewBag.WardId">
-                    <option>--- SELECT WARD ---</option>
-                </select>
-
-                <!-- Debug info to see what wards are available -->
-                @if (ViewBag.WardId != null)
-                {
-                    <small class="form-text text-muted">
-                        @((ViewBag.WardId as SelectList)?.Count() ?? 0) wards available
-                    </small>
-                }
-                else
-                {
-                    <small class="form-text text-danger">No wards available in ViewBag</small>
-                }
-            </div>
-
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -70,16 +40,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        // Client-side validation enhancement
-        $(document).ready(function () {
-            $('form').on('submit', function () {
-                if (!$(this).valid()) {
-                    $('.alert-danger').show();
-                }
-            });
-        }); 
-    </script>
 }
-

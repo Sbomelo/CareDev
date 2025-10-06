@@ -15,11 +15,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.BedNumber)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.IsOccupied)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.Ward)
             </th>
@@ -29,9 +27,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BedNumber)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BedNumber)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsOccupied)
             </td>
@@ -47,4 +45,3 @@
 }
     </tbody>
 </table>
-<a class="text-dark" asp-controller="Employees" asp-action="AdminPortal">Bact To Admin Menu</a>

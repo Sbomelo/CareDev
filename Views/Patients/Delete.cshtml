@@ -29,39 +29,42 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Age)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Gender)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Gender)
         </dd>
-
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicationId)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicationId)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications.Name)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AllergyId)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Allergy)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AllergyId)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Allergy.Name)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ChronicConditionId)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChronicCondition)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ChronicConditionId)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChronicCondition.Name)
         </dd>
-
-
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
     </dl>
     
     <form asp-action="Delete">

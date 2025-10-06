@@ -55,9 +55,9 @@ namespace CareDev.Controllers
         public IActionResult Create()
         {
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber");
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Email");
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Email");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Gender");
+            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name");
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
             return View();
         }
@@ -76,9 +76,9 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Email", admission.DoctorId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Email", admission.EmployeeId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Gender", admission.PatientId);
+            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
             return View(admission);
         }
@@ -97,9 +97,9 @@ namespace CareDev.Controllers
                 return NotFound();
             }
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Email", admission.DoctorId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Email", admission.EmployeeId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Gender", admission.PatientId);
+            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
             return View(admission);
         }
@@ -137,9 +137,9 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Email", admission.DoctorId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Email", admission.EmployeeId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Gender", admission.PatientId);
+            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
             return View(admission);
         }

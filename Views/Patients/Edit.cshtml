@@ -29,34 +29,34 @@
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gender" class="control-label">Gender: </label><Select asp-for="Gender" class="form-control">
-                    <option value="">--SELECT GENDER--</option>
-                    <option value="MALE">MALE</option>
-                    <option value="FEMALE">FEMALE</option>
-                    <option value="OTHER">OTHER</option>
-                </Select>
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Patient Gender</label>
+                <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="MedicationId" class="control-label"></label>
                 <select asp-for="MedicationId" class="form-control" asp-items="ViewBag.MedicationId"></select>
+                <span asp-validation-for="MedicationId" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="AllergyId" class="control-label"></label>
                 <select asp-for="AllergyId" class="form-control" asp-items="ViewBag.AllergyId"></select>
+                <span asp-validation-for="AllergyId" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="ChronicConditionId" class="control-label"></label>
                 <select asp-for="ChronicConditionId" class="form-control" asp-items="ViewBag.ChronicConditionId"></select>
+                <span asp-validation-for="ChronicConditionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -24,7 +24,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")] 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PatientMovements.Include(p => p.Patient);
+            var applicationDbContext = _context.PatientMovements.Include(p => p.Patient).Include(w => w.Ward);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace CareDev.Controllers
 
             var patientMovement = await _context.PatientMovements
                 .Include(p => p.Patient)
+                .Include(w => w.Ward)
                 .FirstOrDefaultAsync(m => m.MovementId == id);
             if (patientMovement == null)
             {
@@ -53,7 +54,7 @@ namespace CareDev.Controllers
         public IActionResult Create()
         {
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name");
-            ViewData["RoomId"] = new SelectList(_context.RoomTypes, "WardId", "WardName");
+            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name");
             return View();
         }
 
@@ -63,7 +64,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovementId,MovementDate,Location,PatientId,RoomId")] PatientMovement patientMovement)
+        public async Task<IActionResult> Create([Bind("MovementId,MovementDate,From,PatientId,WardId")] PatientMovement patientMovement)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
+            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", patientMovement.WardId);
             return View(patientMovement);
         }
 
@@ -90,6 +92,7 @@ namespace CareDev.Controllers
                 return NotFound();
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Wards, "WardId", "Name", patientMovement.WardId);
             return View(patientMovement);
         }
 
@@ -99,7 +102,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovementId,MovementDate,Location,PatientId,WardId")] PatientMovement patientMovement)
+        public async Task<IActionResult> Edit(int id, [Bind("MovementId,MovementDate,From,PatientId,WardId")] PatientMovement patientMovement)
         {
             if (id != patientMovement.MovementId)
             {
@@ -127,6 +130,8 @@ namespace CareDev.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
+            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", patientMovement.WardId);
+
             return View(patientMovement);
         }
 
@@ -141,6 +146,7 @@ namespace CareDev.Controllers
 
             var patientMovement = await _context.PatientMovements
                 .Include(p => p.Patient)
+                .Include(w => w.Ward)
                 .FirstOrDefaultAsync(m => m.MovementId == id);
             if (patientMovement == null)
             {
