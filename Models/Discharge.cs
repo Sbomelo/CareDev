@@ -16,6 +16,7 @@ namespace CareDev.Models
 
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Discharge Date")]
         public DateTime DischargeDate { get; set; } = DateTime.Now;
 
         [StringLength(500)]
@@ -24,7 +25,7 @@ namespace CareDev.Models
 
 
         // Navigation Property
-        public virtual Admission Admission { get; set; } = null!; 
-        public virtual Patient Patient { get; set; } = null!;
+        public virtual Admission? Admission { get; set; } = null!; 
+        public virtual Patient? Patient { get; set; } = null!;
     }
 }

@@ -14,6 +14,7 @@ namespace CareDev.Models
         // Navigation Properties
         public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();
         public virtual ICollection<Bed> Beds { get; set; } = new HashSet<Bed>();
+        public virtual ICollection<PatientMovement> Movement { get; set; } = new HashSet<PatientMovement>();
 
     }
 }

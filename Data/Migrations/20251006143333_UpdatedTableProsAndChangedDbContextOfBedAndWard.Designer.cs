@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251006143333_UpdatedTableProsAndChangedDbContextOfBedAndWard")]
+    partial class UpdatedTableProsAndChangedDbContextOfBedAndWard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1311,7 +1314,7 @@ namespace CareDev.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CareDev.Models.Ward", "Ward")
-                        .WithMany("Movement")
+                        .WithMany()
                         .HasForeignKey("WardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1477,8 +1480,6 @@ namespace CareDev.Data.Migrations
                     b.Navigation("Admissions");
 
                     b.Navigation("Beds");
-
-                    b.Navigation("Movement");
                 });
 #pragma warning restore 612, 618
         }

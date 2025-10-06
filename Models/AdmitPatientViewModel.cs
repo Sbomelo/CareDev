@@ -30,13 +30,13 @@ namespace CareDev.Models
         [Display(Name = "Chronic Condition")]
         public int?ChronicConditionId { get; set; }
 
-        [Display (Name = "Ward")]
+        [Display (Name = "Ward Name")]
         public int? WardId { get; set; }
 
-        [Display(Name = "Bed")]
+        [Display(Name = "Bed Number")]
         public int? BedId { get; set; }
 
-        [Display(Name = "Employee")]
+        [Display(Name = "Employee Name")]
         public int? EmployeeId { get; set; }
 
         [Required]

@@ -169,11 +169,16 @@ namespace CareDev.Data
                 .WithMany(p => p.Movement)
                 .HasForeignKey(pm => pm.PatientId);
 
+            modelBuilder.Entity<PatientMovement>()
+               .HasOne(pm => pm.Ward)
+               .WithMany(p => p.Movement)
+               .HasForeignKey(pm => pm.WardId);
+
             //Ward to Bed relationships 
-           modelBuilder.Entity<Ward>()
+            modelBuilder.Entity<Ward>()
                 .HasMany(w => w.Beds)
                 .WithOne(b => b.Ward)
-                .HasForeignKey(b => b.BedId) 
+                .HasForeignKey(b => b.WardId) 
                 .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<Bed>(entity =>

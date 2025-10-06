@@ -11,36 +11,40 @@ namespace CareDev.Models
 
         // The patient being admitted (required)
         [Required]
-        [Display (Name="Patient")]
+        [Display (Name="Patient Name")]
         public int PatientId { get; set; }
-        public Patient Patient { get; set; } = null!;
+        public Patient? Patient { get; set; } = null!;
 
         // Ward where patient is admitted (required)
         [Required]
-        [Display (Name="Ward")]
+        [Display (Name="Ward Name")]
         public int WardId { get; set; }
-        public Ward Ward { get; set; } = null!;
+        public Ward? Ward { get; set; } =null!;
 
         // Bed can be assigned later, so nullable
-        [Display (Name="Bed")]
+        [Display (Name="Bed Number")]
         public int? BedId { get; set; }
         public Bed? Bed { get; set; }
 
         // Doctor assigned to the admission (optional)
+        [Display(Name = "Doctor Name")]
         public int? DoctorId { get; set; }
         public Doctor? Doctor { get; set; }
 
-        [Display(Name="Employee")]
+        [Display(Name="Employee Name")]
         public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
 
         // Admission timestamps
         [Required]
+        [Display (Name ="Admission Date")]
         public DateTime AdmissionDate { get; set; } = DateTime.UtcNow;
 
+        [Display(Name = "Discharge Date")]
         public DateTime? DischargeDate { get; set; }
 
         // Reason / notes for admission
+        [Required]
         [StringLength(500)]
         public string? AdmissionReason { get; set; }
 
