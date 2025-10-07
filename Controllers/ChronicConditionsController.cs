@@ -62,8 +62,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(chronicCondition);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Chronic condition created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating chronic condition. Please try again.";
             return View(chronicCondition);
         }
 
@@ -101,11 +103,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(chronicCondition);
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ChronicConditionExists(chronicCondition.ChronicConditionId))
                     {
+                       
                         return NotFound();
                     }
                     else
@@ -113,8 +117,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                 TempData["success"] = "Chronic condition updated successfully.";
                 return RedirectToAction(nameof(Index));
-            }
+            } 
+            TempData["error"] = "Error updating chronic condition. Please try again.";
             return View(chronicCondition);
         }
 
@@ -148,6 +154,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Chronic condition deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

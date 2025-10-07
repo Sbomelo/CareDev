@@ -70,10 +70,12 @@ namespace CareDev.Controllers
             {
                 _context.Add(patientMovement);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Patient movement record created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", patientMovement.WardId);
+            TempData["error"] = "Failed to create patient movement record. Please check the details and try again.";
             return View(patientMovement);
         }
 
@@ -120,6 +122,7 @@ namespace CareDev.Controllers
                 {
                     if (!PatientMovementExists(patientMovement.MovementId))
                     {
+                        
                         return NotFound();
                     }
                     else
@@ -127,10 +130,12 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Patient movement record updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientMovement.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", patientMovement.WardId);
+            TempData["error"] = "Failed to update patient movement record. Please check the details and try again.";
 
             return View(patientMovement);
         }
@@ -169,6 +174,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Patient movement record deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

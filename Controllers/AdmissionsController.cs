@@ -73,6 +73,7 @@ namespace CareDev.Controllers
             {
                 _context.Add(admission);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Admission created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
@@ -80,6 +81,8 @@ namespace CareDev.Controllers
             ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
+
+            TempData["error"] = "Error creating admission. Please check the details and try again.";
             return View(admission);
         }
 
@@ -122,6 +125,7 @@ namespace CareDev.Controllers
                 {
                     _context.Update(admission);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -134,13 +138,17 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Admission updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
             ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
             ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
+
+            TempData["error"] = "Error updating admission. Please check the details and try again.";
             return View(admission);
         }
 
@@ -179,6 +187,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Admission deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

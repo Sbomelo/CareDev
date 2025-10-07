@@ -69,12 +69,14 @@ namespace CareDev.Controllers
             {
                 _context.Add(patient);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Patient record created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AllergyId"] = new SelectList(_context.Allergies, "AllergyId", "Name", patient.AllergyId);
             ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", patient.ApplicationUserId);
             ViewData["ChronicConditionId"] = new SelectList(_context.ChronicConditions, "ChronicConditionId", "Name", patient.ChronicConditionId);
             ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name", patient.MedicationId);
+            TempData["error"] = "Error creating patient record. Please check the details and try again.";
             return View(patient);
         }
 
@@ -116,6 +118,7 @@ namespace CareDev.Controllers
                 {
                     _context.Update(patient);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,12 +131,14 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Patient record updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AllergyId"] = new SelectList(_context.Allergies, "AllergyId", "Name", patient.AllergyId);
             ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", patient.ApplicationUserId);
             ViewData["ChronicConditionId"] = new SelectList(_context.ChronicConditions, "ChronicConditionId", "Name", patient.ChronicConditionId);
             ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name", patient.MedicationId);
+            TempData["error"] = "Error updating patient record. Please check the details and try again.";
             return View(patient);
         }
 
@@ -171,6 +176,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Patient record deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

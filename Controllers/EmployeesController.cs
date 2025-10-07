@@ -93,8 +93,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Employee record created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating employee record. Please check the details and try again.";
             return View(employee);
         }
 
@@ -134,20 +136,24 @@ namespace CareDev.Controllers
                 {
                     _context.Update(employee);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EmployeeExists(employee.EmployeeId))
                     {
+                        
                         return NotFound();
                     }
                     else
                     {
                         throw;
                     }
-                }
+                }                 
+                TempData["success"] = "Employee record updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating employee record. Please try again.";
             return View(employee);
         }
 
@@ -183,6 +189,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Employee record deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

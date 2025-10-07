@@ -67,10 +67,12 @@ namespace CareDev.Controllers
             {
                 _context.Add(discharge);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Discharge record created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AdmissionId"] = new SelectList(_context.Admissions, "AdmissionId", "AdmissionReason", discharge.AdmissionId);
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", discharge.PatientId);
+            TempData["error"] = "Failed to create discharge record. Please check the details and try again.";
             return View(discharge);
         }
 
@@ -110,11 +112,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(discharge);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!DischargeExists(discharge.DischargeId))
                     {
+                        
                         return NotFound();
                     }
                     else
@@ -122,10 +126,12 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Discharge record updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AdmissionId"] = new SelectList(_context.Admissions, "AdmissionId", "AdmissionReason", discharge.AdmissionId);
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", discharge.PatientId);
+            TempData["error"] = "Failed to update discharge record. The record no longer exists.";
             return View(discharge);
         }
 
@@ -161,6 +167,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Discharge record deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

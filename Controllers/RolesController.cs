@@ -62,8 +62,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(role);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Role created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating role. Please try again.";
             return View(role);
         }
 
@@ -101,6 +103,7 @@ namespace CareDev.Controllers
                 {
                     _context.Update(role);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -113,8 +116,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Role updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating role. Please try again.";
             return View(role);
         }
 
@@ -148,6 +153,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Role deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

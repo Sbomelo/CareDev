@@ -62,8 +62,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(allergy);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Allergy created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating allergy. Please try again.";
             return View(allergy);
         }
 
@@ -101,6 +103,7 @@ namespace CareDev.Controllers
                 {
                     _context.Update(allergy);
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -113,8 +116,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Allergy updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating allergy. Please try again.";
             return View(allergy);
         }
 
@@ -148,6 +153,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Allergy deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

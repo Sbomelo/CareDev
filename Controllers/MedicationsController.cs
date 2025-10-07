@@ -62,8 +62,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(medication);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Medication created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating medication. Please check the details and try again.";
             return View(medication);
         }
 
@@ -101,11 +103,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(medication);
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!MedicationExists(medication.MedicationId))
                     {
+                        
                         return NotFound();
                     }
                     else
@@ -113,8 +117,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Medication updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating medication. Please try again.";
             return View(medication);
         }
 
@@ -148,6 +154,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Medication deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

@@ -63,9 +63,11 @@ namespace CareDev.Controllers
             {
                 _context.Add(bed);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Bed created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+            TempData["error"] = "Error creating bed. Please try again.";
             return View(bed);
         }
 
@@ -104,11 +106,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(bed);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!BedExists(bed.BedId))
                     {
+                       
                         return NotFound();
                     }
                     else
@@ -116,9 +120,11 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Bed updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+            TempData["error"] = "Error updating bed. Please try again.";
             return View(bed);
         }
 
@@ -153,6 +159,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Bed deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

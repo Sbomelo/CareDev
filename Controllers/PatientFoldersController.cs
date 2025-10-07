@@ -65,9 +65,11 @@ namespace CareDev.Controllers
             {
                 _context.Add(patientFolder);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Patient folder created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientFolder.PatientId);
+            TempData["error"] = "Error creating patient folder. Please try again.";
             return View(patientFolder);
         }
 
@@ -106,11 +108,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(patientFolder);
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!PatientFolderExists(patientFolder.PatientId))
                     {
+                       
                         return NotFound();
                     }
                     else
@@ -118,9 +122,11 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                 TempData["success"] = "Patient folder updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", patientFolder.PatientId);
+            TempData["error"] = "Error updating patient folder. Please try again.";
             return View(patientFolder);
         }
 
@@ -155,6 +161,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Patient folder deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
