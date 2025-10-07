@@ -3,34 +3,51 @@
 @{
     ViewData["Title"] = "Index";
 }
+<body style="background-color: #B0BEC5">
+    <div class="row pt-4">
+        <div class="text-center">
 
-<h1>Index</h1>
+            <h1>Chronic Conditions List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ChronicConditionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ChronicConditionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ChronicConditionId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<a class="text-dark" asp-controller="Employees" asp-action="AdminPortal">Back To Admin Menu</a>
+        </div>
+
+        <div class="text-end">
+            <p>
+                <a asp-action="Create" class="btn btn-primary rounded-pill w-25"><i class="bi bi-plus-circle"></i>Create New Condition</a>
+            </p>
+        </div>
+    </div>
+    <table class="table table-active table-hover table-bordered">
+        <thead>
+            <tr class="table-light">
+                <th scope="row">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="row">
+                    <h3>Manage</h3>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-light">
+                    <td class="table-active">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="table-active">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@item.ChronicConditionId" class="btn btn-primary rounded-pill mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.ChronicConditionId" class="btn btn-info rounded-pill mx-2"><i class="bi bi-info-circle"></i>Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.ChronicConditionId" class="btn btn-danger rounded-pill mx-2"><i class="bi bi-trash-fill"></i>Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center mt-2 d-flex align-content-center">
+        <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-dark w-25 mx-2">Bact To Admin Menu</a>
+        <a asp-controller="Home" asp-action="HospitalConfiguration" class="btn btn-primary w-25 mx-2">BACK</a>
+    </div>
+</body>

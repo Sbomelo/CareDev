@@ -19,13 +19,15 @@
     </div>
     
     
-    <table class="table table-active table-hover">
+    <table class="table table-active table-hover table-bordered">
         <thead>
             <tr class="table-light">
                 <th scope="row">
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
-                <th></th>
+                <th>
+                    <h3>Manage</h3>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -46,8 +48,9 @@
             }
         </tbody>
     </table>
-    <div class="text-center">
-        <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-dark w-50 mx-2">Bact To Admin Menu</a>
+    <div class="text-center mt-2 d-flex align-content-center">
+        <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-dark w-25 mx-2">Bact To Admin Menu</a>
+        <a asp-controller="Home" asp-action="HospitalConfiguration" class="btn btn-primary w-25 mx-2">BACK</a>
     </div>
 </body>
 

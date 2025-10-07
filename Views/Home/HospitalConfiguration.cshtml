@@ -15,7 +15,7 @@
       <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: rgb(38,38,38);
+                background-color: #BDBDBD;
                 color:white;
             }
 
@@ -49,7 +49,7 @@
 <body>
  
   <div class="container mt-3">
-        <h1>Hospital Configuration</h1>
+        <h1 class="text-primary">Hospital Configuration</h1>
         <br>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -67,12 +67,12 @@
         <!-- Tab panes -->
     <div class="tab-content">
             <div id="Infrastructure" class="container tab-pane active">
-                    <h3>Facility Infrastructure</h3>
+                    <h3 class="text-primary">Facility Infrastructure</h3>
 
                     <div class="d-flex flex-row justify-content-center float-center">
                         <div class="optionsDiv">
                             <a asp-controller="Wards" asp-action="Index">
-                                <div class="rounded-pill bg-black option" style="padding:10px; width: 25em;">
+                                <div class="rounded-pill bg-primary option" style="padding:10px; width: 25em;">
                                     <h3 class="text-white">MANAGE WARDS</h3>
                                 </div>
                             </a>
@@ -80,7 +80,7 @@
 
                         <div class="optionsDiv">
                             <a asp-controller="Beds" asp-action="Index">
-                            <div class="rounded-pill bg-black option" style="padding:10px; width: 25em;">
+                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 25em;">
                                     <h3 class="text-white">MANAGE BEDS</h3>
                                 </div>
                             </a>
@@ -92,12 +92,12 @@
 
             <div id="Values" class="container tab-pane fade">
                 <br>
-                <h3>Set Default Values</h3>
+                <h3 class="text-primary">Set Default Values</h3>
 
                     <div class="d-flex flex-row justify-content-center float-center">
                         <div class="optionsDiv">
                             <a asp-controller="Allergies" asp-action="Index">
-                            <div class="rounded-pill bg-black option" style="padding:10px; width: 20em;">
+                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 20em;">
                                     <h3 class="text-white">Manage Allergies</h3>
                                 </div>
                             </a>
@@ -105,7 +105,7 @@
 
                         <div class="optionsDiv">
                             <a asp-controller="Medications" asp-action="Index">
-                            <div class="rounded-pill bg-black option" style="padding:10px; width: 20em;">
+                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 20em;">
                                     <h3 class="text-white">Manage Medication</h3>
                                 </div>
                             </a>
@@ -113,7 +113,7 @@
 
                         <div class="optionsDiv">
                             <a asp-controller="ChronicConditions" asp-action="Index">
-                                <div class="rounded-pill bg-black option" style="padding:10px; width:fit-content;">
+                                <div class="rounded-pill bg-primary option" style="padding:10px; width:fit-content;">
                                     <h3 class="text-white">Manage Chronic Conditions</h3>
                                 </div> 
                             </a>

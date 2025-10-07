@@ -3,36 +3,34 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<body style="background-color: #B0BEC5; color:white;">
+    <h1>Edit Role</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="RoleId" />
+                <div class="form-group">
+                    <label asp-for="RoleName" class="control-label"></label>
+                    <input asp-for="RoleName" class="form-control" />
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Permissions" class="control-label"></label>
+                    <input asp-for="Permissions" class="form-control" />
+                    <span asp-validation-for="Permissions" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group text-center mt-2 d-flex align-content-center">
 
-<h1>Edit</h1>
+                    <input type="submit" value="Update" class="btn btn-primary rounded-pill w-75 me-1" /> <a asp-action="Index" class="btn btn-dark rounded-pill w-75 ms-1">Back to List</a>
 
-<h4>Role</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RoleId" />
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
-                <span asp-validation-for="RoleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Permissions" class="control-label"></label>
-                <input asp-for="Permissions" class="form-control" />
-                <span asp-validation-for="Permissions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                </div>
+                <hr />
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</body>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
