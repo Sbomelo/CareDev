@@ -39,7 +39,7 @@
         }
 
             .option:hover {
-                border: 3px solid white;
+                border: 3px solid black;
             }
 
       </style>
@@ -53,8 +53,8 @@
      <div class="d-flex flex-column justify-content-end float-end">
         <div class="optionsDiv">
             <a asp-area="Identity" asp-page="/Account/RegisterAdmin">
-                <div class="rounded-pill bg-secondary option" style="padding:10px;">
-                    <h3 class="text-white">REGISTER ADMIN</h3>
+                <div class="rounded-pill bg-light option" style="padding:10px;">
+                    <h3 class="text-dark">REGISTER ADMIN</h3>
                 </div>
             </a>
         </div> 
@@ -62,24 +62,24 @@
      
         <div class="optionsDiv">
             <a asp-controller="Employees" asp-action="Index">
-                <div class="rounded-pill bg-secondary option" style="padding:10px;">
-                    <h3 class="text-white">Manage Employees</h3>
+                <div class="rounded-pill bg-light option" style="padding:10px;">
+                    <h3 class="text-dark">Manage Employees</h3>
                 </div>
             </a>
         </div>
 
         <div class="optionsDiv">
             <a asp-controller="Roles" asp-action="Index">
-                <div class="rounded-pill bg-secondary option" style="padding:10px;">
-                    <h3 class="text-white">Manage Roles</h3>
+                <div class="rounded-pill bg-light option" style="padding:10px;">
+                    <h3 class="text-dark">Manage Roles</h3>
                 </div>
             </a> 
         </div>
 
         <div class="optionsDiv">
             <a asp-controller="Employees" asp-action="Delete">
-                <div class="rounded-pill bg-secondary option" style="padding:10px;"> 
-                   <h3 class="text-white">DE-ACTIVATE ACCOUNTS</h3>
+                <div class="rounded-pill bg-light option" style="padding:10px;"> 
+                   <h3 class="text-dark">DE-ACTIVATE ACCOUNTS</h3>
                 </div>
             </a>
         </div>

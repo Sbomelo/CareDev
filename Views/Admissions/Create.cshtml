@@ -3,65 +3,84 @@
 @{
     ViewData["Title"] = "Create";
 }
+<body style="background-color:#E0F7FA">
 
-<h1>Create</h1>
-
-<h4>Admission</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class ="form-control" asp-items="ViewBag.PatientId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="WardId" class="control-label"></label>
-                <select asp-for="WardId" class ="form-control" asp-items="ViewBag.WardId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BedId" class="control-label"></label>
-                <select asp-for="BedId" class ="form-control" asp-items="ViewBag.BedId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DoctorId" class="control-label"></label>
-                <select asp-for="DoctorId" class ="form-control" asp-items="ViewBag.DoctorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdmissionDate" class="control-label"></label>
-                <input asp-for="AdmissionDate" class="form-control" />
-                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DischargeDate" class="control-label"></label>
-                <input asp-for="DischargeDate" class="form-control" />
-                <span asp-validation-for="DischargeDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdmissionReason" class="control-label"></label>
-                <input asp-for="AdmissionReason" class="form-control" />
-                <span asp-validation-for="AdmissionReason" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="d-flex justify-content-center text-center">
+        <h1>Admit Passient</h1>
     </div>
-</div>
+    
+    <div class="d-flex justify-content-center align-content-center gap-2">
+        <div class="col-md-4 ">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3 mt-3">
+                    <label asp-for="PatientId" class="control-label"></label>
+                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId">
+                        <option value="">Select Patient</option>
+                    </select>
+                </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                <div class="form-group d-flex align-content-center gap-5">
+                    <div class="form-group w-75 mb-3">
+                        <label asp-for="WardId" class="control-label"></label>
+                        <select asp-for="WardId" class="form-control" asp-items="ViewBag.WardId">
+                            <option value=""> Select Ward</option>
+                        </select>
+                    </div>
+                    <div class="form-group w-75 mb-3">
+                        <label asp-for="BedId" class="control-label"></label>
+                        <select asp-for="BedId" class="form-control" asp-items="ViewBag.BedId">
+                            <option value="">Select Bed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group d-flex align-content-center gap-5 mb-3">
+                    <div class="form-group w-75 ">
+                        <label asp-for="DoctorId" class="control-label"></label>
+                        <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId">
+                            <option value=""> Select Doctor</option>
+                        </select>
+                    </div>
+                    <div class="form-group w-75">
+                        <label asp-for="EmployeeId" class="control-label"></label>
+                        <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId">
+                            <option value=""> Select Employee</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AdmissionDate" class="control-label"></label>
+                    <input asp-for="AdmissionDate" class="form-control" />
+                    <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="DischargeDate" class="control-label"></label>
+                    <input asp-for="DischargeDate" class="form-control" />
+                    <span asp-validation-for="DischargeDate" class="text-danger"></span>
+                </div>
+
+               <div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="Admission Reason" asp-for="AdmissionReason"></textarea>
+                    <label asp-for="AdmissionReason">Admission Reason</label>
+                    <span asp-validation-for="AdmissionReason" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Notes" class="form-control" id="notes" name="text" placeholder="Admission Reason"></textarea>
+                    <label asp-for="Notes" for="notes">Notes For Doctor</label>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group d-flex justify-content-center gap-3">
+                    <input type="submit" value="Create" class="btn btn-primary w-50 rounded-pill" /><a asp-action="Index" class="w-50 btn btn-dark rounded-pill">Back to List</a>
+                </div>
+                <hr />
+            </form>
+        </div>
+    </div>
+</body>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

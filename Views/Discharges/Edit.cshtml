@@ -3,46 +3,45 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Discharge</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DischargeId" />
-            <div class="form-group">
-                <label asp-for="DischargeDate" class="control-label"></label>
-                <input asp-for="DischargeDate" class="form-control" />
-                <span asp-validation-for="DischargeDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdmissionId" class="control-label"></label>
-                <select asp-for="AdmissionId" class="form-control" asp-items="ViewBag.AdmissionId"></select>
-                <span asp-validation-for="AdmissionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                <span asp-validation-for="PatientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<body style="background-color:#E1F5FE;">
+    <div class="d-flex justify-content-center text-center">
+        <h1>Edit Discharge</h1>
     </div>
-</div>
+    <div class="d-flex justify-content-center align-content-center gap-2">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="DischargeId" />
+                <div class="form-group mb-3 mt-3">
+                    <label asp-for="DischargeDate" class="control-label"></label>
+                    <input asp-for="DischargeDate" class="form-control" />
+                    <span asp-validation-for="DischargeDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Notes" class="control-label"></label>
+                    <input asp-for="Notes" class="form-control" />
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="AdmissionId" class="control-label"></label>
+                    <select asp-for="AdmissionId" class="form-control" asp-items="ViewBag.AdmissionId"></select>
+                    <span asp-validation-for="AdmissionId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="PatientId" class="control-label"></label>
+                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
+                    <span asp-validation-for="PatientId" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group d-flex justify-content-center gap-3">
+                    <input type="submit" value="Edit" class="btn btn-primary w-50 rounded-pill" /><a asp-action="Index" class="w-50 btn btn-info rounded-pill">Back to List</a>
+                </div>
+                <hr />
+            </form>
+        </div>
+    </div>
+</body>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -41,7 +41,7 @@
                padding: 10px;
             }
             .option:hover {
-                 border: 3px solid white;
+                 border: 3px solid black;
             }
 
       </style>
@@ -49,7 +49,7 @@
 <body>
  
   <div class="container mt-3">
-        <h1 class="text-primary">Hospital Configuration</h1>
+        <h1 class="text-white">Hospital Configuration</h1>
         <br>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -67,21 +67,21 @@
         <!-- Tab panes -->
     <div class="tab-content">
             <div id="Infrastructure" class="container tab-pane active">
-                    <h3 class="text-primary">Facility Infrastructure</h3>
+                    <h3 class="text-white">Facility Infrastructure</h3>
 
                     <div class="d-flex flex-row justify-content-center float-center">
                         <div class="optionsDiv">
                             <a asp-controller="Wards" asp-action="Index">
-                                <div class="rounded-pill bg-primary option" style="padding:10px; width: 25em;">
-                                    <h3 class="text-white">MANAGE WARDS</h3>
+                                <div class="rounded-pill bg-light option" style="padding:10px; width: 25em;">
+                                    <h3 class="text-dark">MANAGE WARDS</h3>
                                 </div>
                             </a>
                         </div>
 
                         <div class="optionsDiv">
                             <a asp-controller="Beds" asp-action="Index">
-                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 25em;">
-                                    <h3 class="text-white">MANAGE BEDS</h3>
+                            <div class="rounded-pill bg-light option" style="padding:10px; width: 25em;">
+                                    <h3 class="text-dark">MANAGE BEDS</h3>
                                 </div>
                             </a>
                         </div>
@@ -92,29 +92,29 @@
 
             <div id="Values" class="container tab-pane fade">
                 <br>
-                <h3 class="text-primary">Set Default Values</h3>
+                <h3 class="text-white">Set Default Values</h3>
 
                     <div class="d-flex flex-row justify-content-center float-center">
                         <div class="optionsDiv">
                             <a asp-controller="Allergies" asp-action="Index">
-                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 20em;">
-                                    <h3 class="text-white">Manage Allergies</h3>
+                            <div class="rounded-pill bg-light option" style="padding:10px; width: 20em;">
+                                    <h3 class="text-dark">Manage Allergies</h3>
                                 </div>
                             </a>
                         </div>
 
                         <div class="optionsDiv">
                             <a asp-controller="Medications" asp-action="Index">
-                            <div class="rounded-pill bg-primary option" style="padding:10px; width: 20em;">
-                                    <h3 class="text-white">Manage Medication</h3>
+                            <div class="rounded-pill bg-light option" style="padding:10px; width: 20em;">
+                                    <h3 class="text-dark">Manage Medication</h3>
                                 </div>
                             </a>
                         </div>
 
                         <div class="optionsDiv">
                             <a asp-controller="ChronicConditions" asp-action="Index">
-                                <div class="rounded-pill bg-primary option" style="padding:10px; width:fit-content;">
-                                    <h3 class="text-white">Manage Chronic Conditions</h3>
+                                <div class="rounded-pill bg-light option" style="padding:10px; width:fit-content;">
+                                    <h3 class="text-dark">Manage Chronic Conditions</h3>
                                 </div> 
                             </a>
                         </div>
