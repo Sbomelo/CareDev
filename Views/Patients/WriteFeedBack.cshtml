@@ -1,0 +1,48 @@
+﻿<head>
+    <style>
+        body {
+            background-color: #B3E5FC;
+            /* background: radial-gradient(
+                    #96DCF8 22%,
+                    #006669 23%,
+                    #A4D7FF 38%
+                    ); */
+            /* filter: brightness(60%); */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0px;
+            margin: 0px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <ul class="nav justify-content-end">
+        <li class="nav-item btn btn-primary rounded-4 me-3 mb-3 text-center">
+            <a class="nav-link text-white" asp-controller="Patients" asp-action="PatientDashboard">Back</a>
+        </li>
+        <li class="nav-item btn-primary rounded-4 mb-3 text-center">
+            <a class="nav-link text-white" asp-controller="Patients" asp-action="PatientDashboard">Menu</a>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="text-center">
+            <h1 class="mb-3 text-dark">WRITE FEEDBACK</h1>
+            <h3 class="mb-3 text-dark">Please Write Your Feedback Here</h3>
+        </div>
+    </div>
+    <div>
+        <form method="post">
+            <textarea class="bg-secondary form-control opacity-50 mb-3" rows="10" placeholder="Type your message here..." required></textarea>
+
+            <div class="text-center">
+
+                <input type="submit" class="btn bg-white opacity-75 w-75 rounded-pill mb-3 text-dark" value="Send" />
+
+            </div>
+
+        </form>
+    </div>
+</body>
+

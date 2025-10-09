@@ -19,6 +19,48 @@ namespace CareDev.Controllers
             _context = context;
         }
 
+        //Patent Portal
+        //[Authorize(Roles = "Patient")]
+        public IActionResult PatientDashboard()
+        {
+            return View();
+        }
+        //[Authorize(Roles = "Patient")]
+        public IActionResult MedicalInformation()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Patient")]
+        public IActionResult ScheduledEvents()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Patient")]
+        public IActionResult TrackJourney()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Patient")]
+        public IActionResult Communicate()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Patient")]
+        public IActionResult WriteFeedBack()
+        {
+            return View();
+        }
+
+        //[Authorize(Roles = "Patient")]
+        public IActionResult PatientPortal()
+        {
+            return View();
+        }
+
         // GET: Patients
         public async Task<IActionResult> Index()
         {
