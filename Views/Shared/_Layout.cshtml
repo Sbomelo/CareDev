@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                transform: scale(1.1, 1.1);
+                font-weight: bold;
+            }
+    </style>
 </head>
 <body>
     <header>
@@ -44,13 +55,13 @@
                         @if (User.IsInRole("Patient"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Patients" asp-action="Portal">Admin Menu</a>
+                                <a class="nav-link text-dark" asp-controller="Patients" asp-action="PatientDashboard">Patient Menu</a>
                             </li>
                         }
                         @if (User.IsInRole("Nurse"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Employees" asp-action="NursePortal">Admin Menu</a>
+                                <a class="nav-link text-dark" asp-controller="Employees" asp-action="NursePortal">Nurse Menu</a>
                             </li>
                         }
 
