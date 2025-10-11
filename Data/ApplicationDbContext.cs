@@ -17,7 +17,7 @@ namespace CareDev.Data
         //Core entities
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Employee> Employees { get; set; }
-       // public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
        public DbSet<MedicationAdministration> MedicationAdministrations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Ward> Wards { get; set; }
@@ -237,15 +237,15 @@ namespace CareDev.Data
 
             ////seed Beds
             modelBuilder.Entity<Bed>().HasData(
-                new Bed { BedId = 1, WardId = 6, BedNumber = "L-101", IsOccupied = false },
-                new Bed { BedId = 2, WardId = 6, BedNumber = "L-102", IsOccupied = false },
-                new Bed { BedId = 3, WardId = 6, BedNumber = "L-103", IsOccupied = false },
-                new Bed { BedId = 4, WardId = 2, BedNumber = "S-201", IsOccupied = false },
-                new Bed { BedId = 5, WardId = 2, BedNumber = "S-202", IsOccupied = false },
-                new Bed { BedId = 6, WardId = 2, BedNumber = "S-203", IsOccupied = false },
-                new Bed { BedId = 7, WardId = 3, BedNumber = "M-301", IsOccupied = false },
-                new Bed { BedId = 8, WardId = 3, BedNumber = "M-302", IsOccupied = false },
-                new Bed { BedId = 9, WardId = 3, BedNumber = "M-303", IsOccupied = false }
+                new Bed { BedId = 1, WardId = 6, BedNumber = "L-101", IsAvailable = false },
+                new Bed { BedId = 2, WardId = 6, BedNumber = "L-102", IsAvailable = false },
+                new Bed { BedId = 3, WardId = 6, BedNumber = "L-103", IsAvailable = false },
+                new Bed { BedId = 4, WardId = 2, BedNumber = "S-201", IsAvailable = false },
+                new Bed { BedId = 5, WardId = 2, BedNumber = "S-202", IsAvailable = false },
+                new Bed { BedId = 6, WardId = 2, BedNumber = "S-203", IsAvailable = false },
+                new Bed { BedId = 7, WardId = 3, BedNumber = "M-301", IsAvailable = false },
+                new Bed { BedId = 8, WardId = 3, BedNumber = "M-302", IsAvailable = false },
+                new Bed { BedId = 9, WardId = 3, BedNumber = "M-303", IsAvailable = false }
             );
 
             //seed Medications
