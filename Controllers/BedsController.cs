@@ -57,7 +57,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BedId,BedNumber,WardId,IsOccupied")] Bed bed)
+        public async Task<IActionResult> Create([Bind("BedId,BedNumber,WardId,IsAvailable")] Bed bed)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BedId,BedNumber,WardId,IsOccupied")] Bed bed)
+        public async Task<IActionResult> Edit(int id, [Bind("BedId,BedNumber,WardId,IsAvailable")] Bed bed)
         {
             if (id != bed.BedId)
             {
