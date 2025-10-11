@@ -44,7 +44,6 @@ namespace CareDev.Models
         public DateTime? DischargeDate { get; set; }
 
         // Reason / notes for admission
-        [Required]
         [StringLength(500)]
         public string? AdmissionReason { get; set; }
 
