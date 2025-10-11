@@ -99,11 +99,11 @@ namespace CareDev.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             //EMPLOYEE relationships
-            //modelBuilder.Entity<Employee>()
-            //    .HasOne(e => e.Role)
-            //    .WithMany(r => r.Employees)
-            //    .HasForeignKey(e => e.RoleId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Role)
+                .WithMany(r => r.Employees)
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Employee>()
                 .HasMany (e => e.Admissions)
