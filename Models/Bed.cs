@@ -17,7 +17,7 @@ namespace CareDev.Models
         public int WardId { get; set; }
 
         [Required]
-        public bool IsOccupied { get; set; } = false;
+        public bool IsAvailable { get; set; } = true;
 
         // Navigation Properies
         [ForeignKey("WardId")]
@@ -25,6 +25,6 @@ namespace CareDev.Models
         public virtual Admission? Admissions { get; set; } 
 
         [NotMapped]
-        public string BedStatus => IsOccupied ? "Occupied" : "Available"; // Computed property to display bed status
+        public string BedStatus => IsAvailable ? "Occupied" : "Available"; // Computed property to display bed status
     }
 }

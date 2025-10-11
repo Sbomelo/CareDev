@@ -53,6 +53,6 @@ namespace CareDev.Models
 
         // Optional convenience flag
         // true = currently admitted, false = discharged (keeps quick checks easy)
-        public bool IsActive => DischargeDate == null;
+        public bool IsActive { get; set; } = true;
     }
 }

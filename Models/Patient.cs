@@ -42,6 +42,9 @@ namespace CareDev.Models
         public int? ChronicConditionId { get; set; }
         public ChronicCondition? ChronicCondition { get; set; }
 
+        //Indicates if the patient is currently admitted
+        public bool IsAdmitted { get; set; } = false;
+
         //Link to identity user
         public string? ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
