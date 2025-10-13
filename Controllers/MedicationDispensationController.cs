@@ -1,11 +1,10 @@
 ﻿using CareDev.Data;
 using CareDev.Models;
-using CareDev.Models.ViewModel;
+using CareDev.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CareDev.Models.ViewModel;
 
 namespace CareDev.Controllers
 {

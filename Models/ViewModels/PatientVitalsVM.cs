@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace CareDev.Models.ViewModel
+namespace CareDev.Models.ViewModels
 {
     public class PatientVitalsVM
     {

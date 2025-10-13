@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
-using CareDev.Models.ViewModel;
+using CareDev.Models.ViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,19 +50,22 @@ namespace CareDev.Controllers
             ViewData["PatientName"] = patient.Name ?? patient.UserName;
             return View(model);
         }
-
-        // Show patient vitals history
         public async Task<IActionResult> Details(string patientUserId)
         {
+            if (string.IsNullOrEmpty(patientUserId)) return NotFound();
+
+            var patient = await _userManager.FindByIdAsync(patientUserId);
+            if (patient == null) return NotFound();
+
             var vitals = await _context.PatientVitals
-                .Include(v => v.Nurse)
-                .Include(v => v.Patient)
+                .Include(v => v.Nurse)      // load nurse details
+                .Include(v => v.Patient)    // load patient details
                 .Where(v => v.PatientUserId == patientUserId)
                 .OrderByDescending(v => v.RecordedDate)
                 .ToListAsync();
 
-            var patient = await _userManager.FindByIdAsync(patientUserId);
-            if (patient == null) return NotFound();
+            if (!vitals.Any())
+                ViewData["Message"] = "No vitals recorded yet.";
 
             ViewData["PatientName"] = patient.Name ?? patient.UserName;
             return View(vitals);

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CareDev.Models.ViewModel
+namespace CareDev.Models.ViewModels
 {
     public class MedicationDispensationVM
     {

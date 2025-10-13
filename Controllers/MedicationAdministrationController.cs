@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
-using CareDev.Models.ViewModel;
+using CareDev.Models.ViewModels;
 
 namespace CareDev.Controllers
 {
