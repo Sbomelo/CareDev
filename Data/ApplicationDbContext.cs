@@ -139,11 +139,11 @@ namespace CareDev.Data
                  .WithMany(w => w.Admissions)
                  .HasForeignKey(a => a.WardId);
 
-            modelBuilder.Entity<Admission>()
-                .HasOne(a => a.Bed)
-                .WithOne() 
-                .HasForeignKey<Admission>(a => a.BedId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Admission>()
+            //    .HasOne(a => a.Bed)
+            //    .WithOne() 
+            //    .HasForeignKey<Admission>(a => a.BedId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Admission>()
                 .HasOne(a => a.Employee)
@@ -165,14 +165,57 @@ namespace CareDev.Data
 
             //PatinetMovement relationships
             modelBuilder.Entity<PatientMovement>()
-                .HasOne(pm => pm.Patient)
-                .WithMany(p => p.Movement)
-                .HasForeignKey(pm => pm.PatientId);
+            .HasOne(pm => pm.Admission)
+            .WithMany() // or .WithMany(a => a.PatientMovements) if you add that collection
+            .HasForeignKey(pm => pm.AdmissionId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PatientMovement>()
-               .HasOne(pm => pm.Ward)
-               .WithMany(p => p.Movement)
-               .HasForeignKey(pm => pm.WardId);
+                .HasOne(pm => pm.Patient)
+                .WithMany()
+                .HasForeignKey(pm => pm.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatientMovement>()
+                .HasOne(pm => pm.FromWard)
+                .WithMany()
+                .HasForeignKey(pm => pm.FromWardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatientMovement>()
+                .HasOne(pm => pm.ToWard)
+                .WithMany()
+                .HasForeignKey(pm => pm.ToWardId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatientMovement>()
+                .HasOne(pm => pm.FromBed)
+                .WithMany()
+                .HasForeignKey(pm => pm.FromBedId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatientMovement>()
+                .HasOne(pm => pm.ToBed)
+                .WithMany()
+                .HasForeignKey(pm => pm.ToBedId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatientMovement>()
+                .HasOne(pm => pm.MovedByUser)
+                .WithMany()
+                .HasForeignKey(pm => pm.MovedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<PatientMovement>()
+            //   .HasOne(pm => pm.Ward)
+            //   .WithMany(p => p.Movement)
+            //   .HasForeignKey(pm => pm.WardId); 
+
+            //Bed to Admission relationship
+            modelBuilder.Entity<Bed>()
+                .HasMany(b => b.Admissions)
+                .WithOne(a => a.Bed)
+                .HasForeignKey(a => a.BedId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Ward to Bed relationships 
             modelBuilder.Entity<Ward>()
