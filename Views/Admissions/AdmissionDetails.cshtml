@@ -1,0 +1,48 @@
+﻿@model CareDev.Models.Admission
+
+@{
+    ViewData["Title"] = "Admission Details";
+}
+<body style="background-color:#E1F5FE;">
+
+    <h2>Admission details</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="ActiveAdmissions" class="btn bg-primary rounded-pill text-white">Back to list</a>
+    </div>
+
+    <div class="card rounded-5 border-0">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Admission ID:</dt>
+                <dd class="col-sm-9">@Model.AdmissionId</dd>
+
+                <dt class="col-sm-3">Patient FullName:</dt>
+                <dd class="col-sm-9">@Model.Patient?.Name @Model.Patient?.SurName</dd>
+
+                <dt class="col-sm-3">Admission Date :</dt>
+                <dd class="col-sm-9">@Model.AdmissionDate.ToLocalTime().ToString("f")</dd>
+
+                <dt class="col-sm-3">Bed Number:</dt>
+                <dd class="col-sm-9">@Model.Bed?.BedNumber</dd>
+
+                <dt class="col-sm-3">Admited Ward :</dt>
+                <dd class="col-sm-9">@Model.Ward?.Name</dd>
+
+                <dt class="col-sm-3">Assigned Doctor :</dt>
+                <dd class="col-sm-9">@Model.Doctor?.Name @Model.Doctor?.SurName</dd>
+
+                <dt class="col-sm-3">Attending Employee :</dt>
+                <dd class="col-sm-9">@Model.Employee?.Name @Model.Employee?.SurName</dd>
+
+                <dt class="col-sm-3">Admission Reason :</dt>
+                <dd class="col-sm-9">@Model.AdmissionReason</dd>
+
+                <dt class="col-sm-3">Admission Notes :</dt>
+                <dd class="col-sm-9">@Model.Notes</dd>
+            </dl>
+        </div>
+    </div>
+</body>
+
+

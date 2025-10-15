@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CareDev.Models.Admission>
+
+<body style="background-color:#E1F5FE;">
+    @{
+        ViewData["Title"] = "Active Admissions";
+        string from = (string)ViewData["From"] ?? "";
+        string to = (string)ViewData["To"] ?? "";
+        string q = (string)ViewData["Q"] ?? "";
+    }
+    <div class="text-center">
+        <h1>Active Admissions</h1>
+    </div>
+<hr />
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-auto">
+            <label class="fw-bold">Filter By:</label>
+        </div>
+        <div class="col-auto">
+            <label>Admission Date:</label>
+            <input type="date" name="from" class="form-control" value="@from" />
+        </div>
+
+        <div class="col-auto">
+            <label>Patient Name:</label>
+            <input type="text" name="q" class="form-control" placeholder="Patient name or Bed" value="@q" />
+        </div>
+        <div class="col-auto">
+            <h6>Filter or Cancel</h6>
+            <button type="submit" class="btn bg-primary rounded-pill me-1">Filter</button>
+            <a asp-action="ActiveAdmissions" class="btn bg-secondary rounded-pill">Clear</a>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr class="table-dark">
+                <th>Admission ID</th>
+                <th>Patient</th>
+                <th>Bed</th>
+                <th>Ward</th>
+                <th>Admitted</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr class="table-primary">
+                    <td>@a.AdmissionId</td>
+                    <td>@(a.Patient != null ? (a.Patient.Name + " " + a.Patient.SurName) : "")</td>
+                    <td>@(a.Bed?.BedNumber ?? " ")</td>
+                    <td>@(a.Ward?.Name ?? " ")</td>
+                    <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
+                    <td>@a.Notes</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@a.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i>Edit</a> 
+                            <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i>Details</a>
+                            <a asp-controller="PatientMovements" asp-action="Create" asp-route-admissionId="@a.AdmissionId" class="btn btn-primary rounded-pill">  Move Patient </a>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center mt-2 d-flex justify-content-center align-content-center">
+        <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-dark w-75 mx-2 rounded-pill">Bact To Menu</a>
+    </div>
+</body>
