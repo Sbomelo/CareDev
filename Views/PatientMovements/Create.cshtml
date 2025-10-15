@@ -1,48 +1,101 @@
-﻿@model CareDev.Models.PatientMovement
-
+﻿@model CareDev.Models.ViewModels.MovementCreateViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Move Patient";
+    var wards = (SelectList)ViewBag.Wards;
+    var beds = (List<Bed>)ViewBag.Beds;
 }
-<body style="background-color:#E1F5FE;">
 
-    <div class="d-flex justify-content-center text-center">
-        <h1>Move Passient</h1>
+<h2>Move Patient</h2>
+
+<div class="mb-3 w-25 btn bg-secondary rounded-pill text-center">
+    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+</div>
+
+<div class="card mb-3 p-3">
+    <dl class="row">
+        <dt class="col-sm-3">Patient Name:</dt>
+        <dd class="col-sm-9">@Model.PatientName</dd>
+
+        <dt class="col-sm-3">Current Ward: </dt>
+        <dd class="col-sm-9">@Model.FromWardName</dd>
+
+        <dt class="col-sm-3">Current Bed: </dt>
+        <dd class="col-sm-9">@Model.FromBedNumber</dd>
+    </dl>
+
+</div>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="AdmissionId" />
+    <input type="hidden" asp-for="PatientId" />
+
+    <div class="mb-3">
+        <label asp-for="ToWardId" class="form-label"></label>
+        <select asp-for="ToWardId" class="form-control" asp-items="wards" id="wardSelect"></select>
     </div>
 
-    <div class="d-flex justify-content-center align-content-center gap-2">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group mb-3">
-                    <label asp-for="From" class="control-label"></label>
-                    <input asp-for="From" class="form-control" />
-                    <span asp-validation-for="From" class="text-danger"></span>
-                </div>
+    <div class="mb-3">
+        <label asp-for="ToBedId" class="form-label"></label>
+        <select asp-for="ToBedId" class="form-control" id="bedSelect">
+            <option value="">-- select bed --</option>
+            @foreach(var b in beds)
+            {
+                if (!b.IsAvailable)
+                {
+                    <option value="@b.BedId" data-ward="@b.WardId" disabled>
+                        @(b.Ward?.Name ?? "—") / @b.BedNumber (occupied)
+                    </option>
+                }
+                else
+                {
+                    <option value="@b.BedId" data-ward="@b.WardId">
+                        @(b.Ward?.Name ?? "—") / @b.BedNumber
+                    </option>
+                }
+            }
+        </select>
+        <small class="form-text text-muted">Only available beds are selectable (occupied beds are disabled).</small>
+    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="PatientId" class="control-label"></label>
-                    <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                </div>
+    <div class="mb-3">
+        <label asp-for="MovedAt" class="form-label"></label>
+        <input asp-for="MovedAt" class="form-control" type="datetime-local" value="@(Model.MovedAt?.ToLocalTime().ToString("yyyy-MM-ddTHH:mm"))"/>
+    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="WardId" class="control-label"></label>
-                    <select asp-for="WardId" class="form-control" asp-items="ViewBag.WardId"></select>
-                </div>
+    <div class="mb-3">
+        <label asp-for="Reason" class="form-label"></label>
+        <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary w-75 rounded-pill">Move Patient</button>
+    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="MovementDate" class="control-label"></label>
-                    <input asp-for="MovementDate" class="form-control" />
-                    <span asp-validation-for="MovementDate" class="text-danger"></span>
-                </div>
-                <hr />
-                <div class="form-group d-flex justify-content-center gap-3">
-                    <input type="submit" value="Create" class="btn btn-primary w-50 rounded-pill" /><a asp-action="Index" class="w-50 btn btn-info rounded-pill">Back to List</a>
-                </div>
-                <hr />
-            </form>
-        </div>
-</body>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        //filter: show beds of selected ward
+        const wardSelect = document.getElementById('wardSelect');
+        const bedSelect = document.getElementById('bedSelect');
+
+        function filterBeds() {
+            const wardId = wardSelect.value;
+            for (const opt of bedSelect.options) {
+                const optWard = opt.getAttribute('data-ward');
+
+                if (!wardId || optWard === wardId) {
+                    opt.style.display = '';
+                } else {
+                    opt.style.display = 'none';
+                }
+            }
+
+            for (const opt of bedSelect.options) {
+                if (opt.style.display === '') { bedSelect.value = opt.value; break; }
+            }
+        }
+
+        wardSelect.addEventListener('change', filterBeds);
+        window.addEventListener('load', filterBeds);
+    </script>
 }
