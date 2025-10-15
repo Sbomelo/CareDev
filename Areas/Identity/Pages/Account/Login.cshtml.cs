@@ -118,6 +118,7 @@ namespace CareDev.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    TempData["success"] = "You have logged in successfully.";
                     _logger.LogInformation("User logged in.");
 
                     //Get Current User
@@ -162,6 +163,7 @@ namespace CareDev.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            TempData["error"] = "Login failed. Please check your credentials and try again.";
             return Page();
         }
     }
