@@ -1,11 +1,57 @@
-﻿@model CareDev.Models.Discharge
+﻿@model CareDev.Models.Admission
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Discharge Details";
 }
-<body style="background-color:#E1F5FE;">
+<body style="background-color:#E1F5FE;"class="text-white">
 
-    <h1>Discharge Details</h1>
+    <h2>Discharge details</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Index" class="btn bg-primary rounded-pill text-white">Back to list</a>
+    </div>
+
+    <div class="card rounded-5 border-0">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Admission ID:</dt>
+                <dd class="col-sm-9">@Model.AdmissionId</dd>
+
+                <dt class="col-sm-3">Patient :</dt>
+                <dd class="col-sm-9">@Model.Patient?.Name @Model.Patient?.SurName</dd>
+
+                <dt class="col-sm-3">Admission Date :</dt>
+                <dd class="col-sm-9">@Model.AdmissionDate.ToLocalTime().ToString("f")</dd>
+
+                <dt class="col-sm-3">Discharge Date :</dt>
+                <dd class="col-sm-9">@Model.DischargeDate?.ToLocalTime().ToString("f")</dd>
+
+                <dt class="col-sm-3">Bed :</dt>
+                <dd class="col-sm-9">@Model.Bed?.BedNumber</dd>
+
+                <dt class="col-sm-3">Ward :</dt>
+                <dd class="col-sm-9">@Model.Ward?.Name</dd>
+
+                <dt class="col-sm-3">Doctor :</dt>
+                <dd class="col-sm-9">@Model.Doctor?.Name @Model.Doctor?.SurName</dd>
+
+                <dt class="col-sm-3">Attending Employee :</dt>
+                <dd class="col-sm-9">@Model.Employee?.Name @Model.Employee?.SurName</dd>
+
+                <dt class="col-sm-3">Admission Reason :</dt>
+                <dd class="col-sm-9">@Model.AdmissionReason</dd>
+
+                <dt class="col-sm-3">Discharge Notes :</dt>
+                <dd class="col-sm-9">@Model.DischargeNotes</dd>
+
+@*                 <dt class="col-sm-3">Discharged By</dt>
+                <dd class="col-sm-9">@Model.DischargedByUserId?.UserName ?? "—"</dd> *@
+            </dl>
+        </div>
+    </div>
+
+
+    @* <h1>Discharge Details</h1>
 
     <div class="text-dark">
         <dl class="row">
@@ -39,6 +85,6 @@
     <div>
         <a asp-action="Edit" asp-route-id="@Model?.DischargeId" class="btn btn-primary w-25 me-1 rounded-pill">Edit</a>
         <a asp-action="Index" class="btn btn-dark w-25 me-1 rounded-pill">Back to List</a>
-    </div>
+    </div> *@
 </body>
 

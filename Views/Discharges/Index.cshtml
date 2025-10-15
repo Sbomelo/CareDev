@@ -1,70 +1,73 @@
-﻿@model IEnumerable<CareDev.Models.Discharge>
+﻿@model IEnumerable<CareDev.Models.Admission>
 
-@{
-    ViewData["Title"] = "Index";
-}
 <body style="background-color:#E1F5FE;">
-    <div class="row pt-4">
-        <div class="text-center">
-
-            <h1>DISCHARGE LIST</h1>
-
-        </div>
-
-        <div class="text-end">
-            <p>
-                <a asp-action="Create" class="btn btn-primary rounded-pill w-25"><i class="bi bi-plus-circle"></i>Discharge Patient</a>
-            </p>
-        </div>
+    @{
+        ViewData["Title"] = "Discharged Patients";
+        string from = (string)ViewData["From"] ?? "";
+        string to = (string)ViewData["To"] ?? "";
+        string q = (string)ViewData["Q"] ?? "";
+    }
+    <div class="text-center">
+        <h1>Discharged Patients</h1>
     </div>
+<hr />
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-auto">
+            <label class="fw-bold">Filter By:</label>
+        </div>
+        <div class="col-auto">
+            <label>Admission Date:</label>
+            <input type="date" name="from" class="form-control" value="@from" />
+        </div>
+        <div class="col-auto">
+            <label>Discahrge Date:</label>
+            <input type="date" name="to" class="form-control" value="@to" />
+        </div>
+        <div class="col-auto">
+            <label>Patient Name:</label>
+            <input type="text" name="q" class="form-control" placeholder="Patient name or bed" value="@q" />
+        </div>
+        <div class="col-auto">
+            <h6>Filter or Cancel</h6>
+            <button type="submit" class="btn bg-primary rounded-pill me-1">Filter</button>
+            <a asp-action="Index" class="btn bg-secondary rounded-pill">Clear</a>
+        </div>
+    </form>
 
-    <table class="table table-active table-bordered table-hover">
+    <table class="table table-bordered table-striped table-sm">
         <thead>
             <tr class="table-dark">
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.DischargeDate)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Notes)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Admission)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Patient)
-                </th>
-                <th scope="row" class="text-center">
-                    <h5 class="text-white"> Manage Admissions</h5>
-                </th>
+                <th>Admission ID</th>
+                <th>Patient</th>
+                <th>Bed</th>
+                <th>Ward</th>
+                <th>Admitted</th>
+                <th>Discharged</th>
+                <th>Notes</th>
+@*                 <th>Discharged By</th> *@
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var a in Model)
             {
                 <tr class="table-primary">
+                    <td>@a.AdmissionId</td>
+                    <td>@(a.Patient != null ? (a.Patient.Name + " " + a.Patient.SurName) : "")</td>
+                    <td>@(a.Bed?.BedNumber ?? " ")</td>
+                    <td>@(a.Ward?.Name ?? " ")</td>
+                    <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
+                    <td>@(a.DischargeDate.HasValue? a.DischargeDate.Value.ToLocalTime().ToString("g") : "")</td>
+                    <td>@(string.IsNullOrEmpty(a.DischargeNotes) ? "" : (a.DischargeNotes.Length > 80 ? a.DischargeNotes.Substring(0, 80) + "" : a.DischargeNotes))</td>
+@*                     <td>@(a.DischargedByUserId?.Name ?? a.DischargedByUserId.UserName ?? ) </td> *@
                     <td>
-                        @Html.DisplayFor(modelItem => item.DischargeDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Admission.AdmissionReason)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Patient.Name)
-                    </td>
-                    <td class="table-active">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-action="Edit" asp-route-id="@item.DischargeId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i>Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.DischargeId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i>Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.DischargeId" class="btn btn-danger rounded-pill mx-2" title="Delete Admission"><i class="bi bi-trash-fill"></i>Delete</a>
-                        </div>
+                        <a asp-action="Details" asp-route-id="@a.AdmissionId" class="btn btn-primary w-100 rounded-pill">Details</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
     <div class="text-center mt-2 d-flex justify-content-center align-content-center">
         <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-dark w-75 mx-2 rounded-pill">Bact To Menu</a>
     </div>
