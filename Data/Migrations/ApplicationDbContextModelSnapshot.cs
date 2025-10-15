@@ -40,11 +40,15 @@ namespace CareDev.Data.Migrations
                     b.Property<int?>("BedId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BedId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DischargeNotes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("DischargedByUserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DoctorId")
                         .HasColumnType("int");
@@ -56,7 +60,8 @@ namespace CareDev.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -69,13 +74,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasKey("AdmissionId");
 
-                    b.HasIndex("BedId")
-                        .IsUnique()
-                        .HasFilter("[BedId] IS NOT NULL");
-
-                    b.HasIndex("BedId1")
-                        .IsUnique()
-                        .HasFilter("[BedId1] IS NOT NULL");
+                    b.HasIndex("BedId");
 
                     b.HasIndex("DoctorId");
 
@@ -775,23 +774,57 @@ namespace CareDev.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementId"));
 
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("AdmissionId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("MovementDate")
+                    b.Property<int?>("FromBedId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FromWardId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("MovedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("MovedByUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WardId")
+                    b.Property<int?>("PatientId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ToBedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToWardId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WardId")
                         .HasColumnType("int");
 
                     b.HasKey("MovementId");
 
+                    b.HasIndex("AdmissionId");
+
+                    b.HasIndex("FromBedId");
+
+                    b.HasIndex("FromWardId");
+
+                    b.HasIndex("MovedByUserId");
+
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("PatientId1");
+
+                    b.HasIndex("ToBedId");
+
+                    b.HasIndex("ToWardId");
 
                     b.HasIndex("WardId");
 
@@ -1096,13 +1129,9 @@ namespace CareDev.Data.Migrations
             modelBuilder.Entity("CareDev.Models.Admission", b =>
                 {
                     b.HasOne("CareDev.Models.Bed", "Bed")
-                        .WithOne()
-                        .HasForeignKey("CareDev.Models.Admission", "BedId")
+                        .WithMany("Admissions")
+                        .HasForeignKey("BedId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CareDev.Models.Bed", null)
-                        .WithOne("Admissions")
-                        .HasForeignKey("CareDev.Models.Admission", "BedId1");
 
                     b.HasOne("CareDev.Models.Doctor", "Doctor")
                         .WithMany("Admissions")
@@ -1327,21 +1356,66 @@ namespace CareDev.Data.Migrations
 
             modelBuilder.Entity("CareDev.Models.PatientMovement", b =>
                 {
-                    b.HasOne("CareDev.Models.Patient", "Patient")
-                        .WithMany("Movement")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CareDev.Models.Admission", "Admission")
+                        .WithMany()
+                        .HasForeignKey("AdmissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CareDev.Models.Ward", "Ward")
-                        .WithMany("Movement")
-                        .HasForeignKey("WardId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CareDev.Models.Bed", "FromBed")
+                        .WithMany()
+                        .HasForeignKey("FromBedId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CareDev.Models.Ward", "FromWard")
+                        .WithMany()
+                        .HasForeignKey("FromWardId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CareDev.Models.ApplicationUser", "MovedByUser")
+                        .WithMany()
+                        .HasForeignKey("MovedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CareDev.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CareDev.Models.Patient", null)
+                        .WithMany("Movement")
+                        .HasForeignKey("PatientId1");
+
+                    b.HasOne("CareDev.Models.Bed", "ToBed")
+                        .WithMany()
+                        .HasForeignKey("ToBedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CareDev.Models.Ward", "ToWard")
+                        .WithMany()
+                        .HasForeignKey("ToWardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CareDev.Models.Ward", null)
+                        .WithMany("Movement")
+                        .HasForeignKey("WardId");
+
+                    b.Navigation("Admission");
+
+                    b.Navigation("FromBed");
+
+                    b.Navigation("FromWard");
+
+                    b.Navigation("MovedByUser");
 
                     b.Navigation("Patient");
 
-                    b.Navigation("Ward");
+                    b.Navigation("ToBed");
+
+                    b.Navigation("ToWard");
                 });
 
             modelBuilder.Entity("CareDev.Models.TreatPatient", b =>
