@@ -1,88 +1,116 @@
-﻿@model CareDev.Models.ViewModels.AdmitPatientViewModel
-
+﻿@model Admission
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Admit Patient";
+    var wards = (SelectList)ViewBag.Wards;
+    var beds = (List<Bed>)ViewBag.Beds;
 }
-<body style="background-color:#E0F7FA">
-    @if (ViewBag.DetailedError != null)
-  {
-    <div class="alert alert-danger">
-        <strong>Technical detail:</strong> @ViewBag.DetailedError
-    </div>
-  }
+  <div class="text-center">
+      <h2>Admit Patient</h2>
+  </div>
 
-    <div class="d-flex justify-content-center text-center">
-        <h1>Admit Passient</h1>
-    </div>
-    
-    <div class="d-flex justify-content-center align-content-center gap-2">
-        <div class="col-md-4 ">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group mb-3 mt-3">
-                    <label asp-for="PatientId" class="control-label"></label>
-                    <select asp-for="PatientId" class="form-control" asp-items="Model.Patients">
-                        <option value="">Select Patient</option>
-                    </select>
-                    <span asp-validation-for="PatientId" class="text-danger"></span>
-                </div>
+<hr />
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  
+        <div class="col-md-6 mb-3 mt-3">
+            <label asp-for="PatientId" class="form-label fw-bold">Patient Name :</label>
+            <select asp-for="PatientId" class="form-select" asp-items="(SelectList)ViewBag.Patients">
+                <option value="">-- Select Patient --</option>
+            </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
 
-                <div class="form-group mb-3 mt-3">
-                    <label asp-for="AdmissionDate" class="control-label"></label>
-                    <input asp-for="AdmissionDate" class="form-control" />
-                    <span asp-validation-for="AdmissionDate" class="text-danger"></span>
-                </div>
+    <div class="row g-3 mb-3 ">
+        <div class="col-md-6">
+            <label asp-for="DoctorId" class="form-label fw-bold">Doctor :</label>
+            <select asp-for="DoctorId" class="form-select" asp-items="(SelectList)ViewBag.Doctors">
+                <option value="">-- Select Doctor--</option>
+            </select>
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
+        </div>
 
-                <div class="form-group d-flex align-content-center gap-5">
-                    <div class="form-group w-75 mb-3">
-                        <label asp-for="WardId" class="control-label"></label>
-                        <select asp-for="WardId" class="form-control" asp-items="Model.Wards">
-                            <option value=""> Select Ward</option>
-                        </select>
-                        <span asp-validation-for="WardId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group w-25 mb-3">
-                        <label asp-for="BedId" class="control-label"></label>
-                        <select asp-for="BedId" class="form-control" asp-items="Model.Beds">
-                            <option value="">Select Bed</option>
-                        </select>
-                        <span asp-validation-for="BedId" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group d-flex align-content-center gap-5 mb-3">
-                    <div class="form-group w-75 ">
-                        <label asp-for="DoctorId" class="control-label"></label>
-                        <select asp-for="DoctorId" class="form-control" asp-items="Model.Doctors">
-                            <option value=""> Select Doctor</option>
-                        </select>
-                        <span asp-validation-for="DoctorId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group w-75">
-                        <label asp-for="EmployeeId" class="control-label"></label>
-                        <select asp-for="EmployeeId" class="form-control" asp-items="Model.Employees">
-                            <option value=""> Select Employee</option>
-                        </select>
-                        <span asp-validation-for="EmployeeId" class="text-danger"></span>
-                    </div>
-                </div>
-               <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="Admission Reason" asp-for="AdmissionReason"></textarea>
-                    <label asp-for="AdmissionReason">Admission Reason</label>
-                    <span asp-validation-for="AdmissionReason" class="text-danger"></span>
-                </div>
-
-                <hr />
-                <div class="form-group d-flex justify-content-center gap-3">
-                    <input type="submit" value="Admit" class="btn btn-primary w-50 rounded-pill" /><a asp-action="Index" class="w-50 btn btn-dark rounded-pill">Back to List</a>
-                </div>
-                <hr />
-            </form>
+        <div class="col-md-6">
+            <label asp-for="EmployeeId" class="form-label fw-bold">Admitting Staff : </label>
+            <select asp-for="EmployeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees">
+                <option value="">-- Select Staff (optional) --</option>
+            </select>
+            <span asp-validation-for="EmployeeId" class="text-danger"></span>
         </div>
     </div>
-</body>
 
+   <div class="row g-3 mb-3">
+     <div class="col-md-6 mb-3">
+            <label asp-for="WardId" class="form-label fw-bold">Ward :</label>
+        <select asp-for="WardId" class="form-control form-select" id="wardSelect">
+            <option value="">-- Select Ward --</option>
+            @foreach(var w in wards)
+            {
+                <option value="@w.Value">@w.Text</option>
+            }
+        </select>
+     </div>
+
+      <div class="col-md-6 mb-3">
+        <label asp-for="BedId" class="form-label fw-bold">Bed :</label>
+        <select asp-for="BedId" class="form-control form-select" id="bedSelect">
+            <option value="">-- Select Bed --</option>
+            @foreach(var b in beds)
+            {
+                if (b.IsAvailable)
+                {
+
+                    <option value="@b.BedId" data-ward="@b.WardId">
+                        @(b.Ward?.Name ?? "—") / @b.BedNumber
+                    </option>
+                }
+            }
+        </select>
+      </div>
+   </div>
+
+        <div class="form-group mb-3 mt-3">
+            <label asp-for="AdmissionDate" class="control-label fw-bold"> Admission Date:</label>
+            <input asp-for="AdmissionDate" class="form-control" />
+            <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Admission Reason" asp-for="AdmissionReason" rows="10" cols="50"></textarea>
+            <label asp-for="AdmissionReason" class="fw-bold">Admission Reason :</label>
+            <span asp-validation-for="AdmissionReason" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-center text-center">
+             <button type="submit" class="btn btn-primary rounded-pill me-2 w-50">Admit</button> 
+             <a asp-action="Index" class="btn btn-dark rounded-pill w-50">Back</a>
+        </div>
+   
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+    const wardSelect = document.getElementById('wardSelect');
+    const bedSelect = document.getElementById('bedSelect');
+
+    function filterBeds() {
+        const wardId = wardSelect.value;
+        let firstVisible = null;
+        for (const opt of bedSelect.options) {
+            const optWard = opt.getAttribute('data-ward');
+            if (!wardId || optWard === wardId) {
+                opt.style.display = '';
+                if (firstVisible === null && !opt.disabled) firstVisible = opt.value;
+            } else {
+                opt.style.display = 'none';
+            }
+        }
+        if (firstVisible !== null) bedSelect.value = firstVisible;
+    }
+
+    wardSelect.addEventListener('change', filterBeds);
+    window.addEventListener('load', filterBeds);
+</script>
 }
