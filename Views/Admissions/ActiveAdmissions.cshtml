@@ -3,8 +3,8 @@
 <body style="background-color:#E1F5FE;">
     @{
         ViewData["Title"] = "Active Admissions";
-        string from = (string)ViewData["From"] ?? "";
-        string to = (string)ViewData["To"] ?? "";
+        string from = (string)ViewData["from"] ?? "";
+        string to = (string)ViewData["to"] ?? "";
         string q = (string)ViewData["Q"] ?? "";
     }
     <div class="text-center">
@@ -19,11 +19,31 @@
             <label>Admission Date:</label>
             <input type="date" name="from" class="form-control" value="@from" />
         </div>
-
+@* 
         <div class="col-auto">
             <label>Patient Name:</label>
             <input type="text" name="q" class="form-control" placeholder="Patient name or Bed" value="@q" />
+        </div> *@
+
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Search patient / bed / ward</label>
+            <input name="q" class="form-control" type="text" value="@q" placeholder="e.g. Smith, L-101, Labour" />
         </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">Doctor</label>
+            <select name="doctorId" class="form-select" asp-items="(SelectList)ViewBag.Doctors">
+                <option value="">Any doctor</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">Admitting staff</label>
+            <select name="employeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees">
+                <option value="">Any</option>
+            </select>
+        </div>
+
         <div class="col-auto">
             <h6>Filter or Cancel</h6>
             <button type="submit" class="btn bg-primary rounded-pill me-1">Filter</button>
@@ -36,6 +56,7 @@
             <tr class="table-dark">
                 <th>Admission ID</th>
                 <th>Patient</th>
+                <th>Doctor</th>
                 <th>Bed</th>
                 <th>Ward</th>
                 <th>Admitted</th>
@@ -49,17 +70,18 @@
                 <tr class="table-primary">
                     <td>@a.AdmissionId</td>
                     <td>@(a.Patient != null ? (a.Patient.Name + " " + a.Patient.SurName) : "")</td>
+                    <td>@(a.Doctor != null ? (a.Doctor.Name + " " + a.Doctor.SurName) : "")</td>
                     <td>@(a.Bed?.BedNumber ?? " ")</td>
                     <td>@(a.Ward?.Name ?? " ")</td>
                     <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
                     <td>@a.Notes</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a asp-action="Edit" asp-route-id="@a.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i>Edit</a> 
-                            <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i>Details</a>
-                            <a asp-controller="PatientMovements" asp-action="Create" asp-route-admissionId="@a.AdmissionId" class="btn btn-primary rounded-pill">  Move Patient </a>
+                            <a asp-action="Edit" asp-route-id="@a.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i></a> 
+                            <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i></a>
+                            <a asp-controller="PatientMovements" asp-action="Create" asp-route-admissionId="@a.AdmissionId" class="btn btn-secondary rounded-pill" title="Move Patient"><i class="bi bi-arrow-right"></i></a>
+                            <a asp-action="Discharge" asp-route-id="@a.AdmissionId" class="btn btn-danger rounded-pill mx-2" title="Discharge Patient"><i class="bi bi-trash-fill"></i></a>
                         </div>
-
                     </td>
                 </tr>
             }
