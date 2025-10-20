@@ -118,9 +118,10 @@ namespace CareDev.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    TempData["success"] = "You have logged in successfully.";
+                    
                     _logger.LogInformation("User logged in.");
 
+                    TempData["success"] = "You have logged in successfully.";
                     //Get Current User
                     var user = await _userManager.FindByEmailAsync(Input.Email);
                     var roles = await _userManager.GetRolesAsync(user);
@@ -153,10 +154,12 @@ namespace CareDev.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
+                    TempData["error"] = "Login failed. Please check your credentials and try again.";
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
+                    TempData["error"] = "Login failed. Please check your credentials and try again.";
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
