@@ -25,14 +25,14 @@ namespace CareDev.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<RegisterPatientModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public EmployeeRegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<RegisterPatientModel> logger,
             IEmailSender emailSender) 
         {
             _userManager = userManager;
@@ -214,6 +214,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                 return "WardAdmin";
             else if (email.EndsWith("@doctor.com", StringComparison.OrdinalIgnoreCase))
                 return "Doctor";
+
             else if (email.EndsWith("@nurse.com", StringComparison.OrdinalIgnoreCase))
                 return "Nurse";
             else

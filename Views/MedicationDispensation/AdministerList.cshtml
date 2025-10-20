@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CareDev.Models.ApplicationUser>
+
+
+@{
+    ViewData["Title"] = "Select Patient for Administration";
+}
+
+<div class="container mt-4">
+    <h3 class="text-primary mb-3">Select a Patient to Administer Medications</h3>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No patients available.</div>
+    }
+    else
+    {
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in Model)
+                {
+                    <tr>
+                        <td>@patient.Name</td>
+                        <td>@patient.Email</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-controller="MedicationDispensation"
+                               asp-action="AdministerList"
+                               asp-route-patientUserId="@patient.Id">
+                                View Medications
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

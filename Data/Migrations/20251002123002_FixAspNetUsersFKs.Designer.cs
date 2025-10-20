@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251002123002_FixAspNetUsersFKs")]
+    partial class FixAspNetUsersFKs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,15 +43,11 @@ namespace CareDev.Data.Migrations
                     b.Property<int?>("BedId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BedId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DischargeNotes")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("DischargedByUserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DoctorId")
                         .HasColumnType("int");
@@ -56,12 +55,8 @@ namespace CareDev.Data.Migrations
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Notes")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -74,7 +69,13 @@ namespace CareDev.Data.Migrations
 
                     b.HasKey("AdmissionId");
 
-                    b.HasIndex("BedId");
+                    b.HasIndex("BedId")
+                        .IsUnique()
+                        .HasFilter("[BedId] IS NOT NULL");
+
+                    b.HasIndex("BedId1")
+                        .IsUnique()
+                        .HasFilter("[BedId1] IS NOT NULL");
 
                     b.HasIndex("DoctorId");
 
@@ -243,11 +244,7 @@ namespace CareDev.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BedId"));
 
-                    b.Property<string>("BedNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<int>("WardId")
@@ -257,75 +254,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasIndex("WardId");
 
-                    b.HasIndex("BedNumber", "WardId")
-                        .IsUnique();
-
                     b.ToTable("Beds");
-
-                    b.HasData(
-                        new
-                        {
-                            BedId = 1,
-                            BedNumber = "L-101",
-                            IsAvailable = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 2,
-                            BedNumber = "L-102",
-                            IsAvailable = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 3,
-                            BedNumber = "L-103",
-                            IsAvailable = false,
-                            WardId = 6
-                        },
-                        new
-                        {
-                            BedId = 4,
-                            BedNumber = "S-201",
-                            IsAvailable = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 5,
-                            BedNumber = "S-202",
-                            IsAvailable = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 6,
-                            BedNumber = "S-203",
-                            IsAvailable = false,
-                            WardId = 2
-                        },
-                        new
-                        {
-                            BedId = 7,
-                            BedNumber = "M-301",
-                            IsAvailable = false,
-                            WardId = 3
-                        },
-                        new
-                        {
-                            BedId = 8,
-                            BedNumber = "M-302",
-                            IsAvailable = false,
-                            WardId = 3
-                        },
-                        new
-                        {
-                            BedId = 9,
-                            BedNumber = "M-303",
-                            IsAvailable = false,
-                            WardId = 3
-                        });
                 });
 
             modelBuilder.Entity("CareDev.Models.ChronicCondition", b =>
@@ -417,14 +346,7 @@ namespace CareDev.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"));
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -432,11 +354,6 @@ namespace CareDev.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
@@ -450,7 +367,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasKey("DoctorId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctor");
                 });
 
             modelBuilder.Entity("CareDev.Models.DoctorInstruction", b =>
@@ -507,41 +424,34 @@ namespace CareDev.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SurName")
+                    b.Property<string>("Specialization")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("EmployeeId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("RoleId");
 
@@ -676,9 +586,6 @@ namespace CareDev.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("IsAdmitted")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("MedicationId")
                         .HasColumnType("int");
 
@@ -774,59 +681,25 @@ namespace CareDev.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementId"));
 
-                    b.Property<int>("AdmissionId")
-                        .HasColumnType("int");
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("FromBedId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FromWardId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("MovedAt")
+                    b.Property<DateTime>("MovementDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("MovedByUserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PatientId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("ToBedId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToWardId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WardId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.HasKey("MovementId");
 
-                    b.HasIndex("AdmissionId");
-
-                    b.HasIndex("FromBedId");
-
-                    b.HasIndex("FromWardId");
-
-                    b.HasIndex("MovedByUserId");
-
                     b.HasIndex("PatientId");
 
-                    b.HasIndex("PatientId1");
-
-                    b.HasIndex("ToBedId");
-
-                    b.HasIndex("ToWardId");
-
-                    b.HasIndex("WardId");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("PatientMovements");
                 });
@@ -1083,16 +956,6 @@ namespace CareDev.Data.Migrations
                         {
                             WardId = 3,
                             Name = "Maternity Ward"
-                        },
-                        new
-                        {
-                            WardId = 4,
-                            Name = "X Ray Ward"
-                        },
-                        new
-                        {
-                            WardId = 6,
-                            Name = "Labour Ward"
                         });
                 });
 
@@ -1320,9 +1183,13 @@ namespace CareDev.Data.Migrations
             modelBuilder.Entity("CareDev.Models.Admission", b =>
                 {
                     b.HasOne("CareDev.Models.Bed", "Bed")
-                        .WithMany("Admissions")
-                        .HasForeignKey("BedId")
+                        .WithOne()
+                        .HasForeignKey("CareDev.Models.Admission", "BedId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CareDev.Models.Bed", null)
+                        .WithOne("Admissions")
+                        .HasForeignKey("CareDev.Models.Admission", "BedId1");
 
                     b.HasOne("CareDev.Models.Doctor", "Doctor")
                         .WithMany("Admissions")
@@ -1428,19 +1295,9 @@ namespace CareDev.Data.Migrations
 
             modelBuilder.Entity("CareDev.Models.Employee", b =>
                 {
-                    b.HasOne("CareDev.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("CareDev.Models.Role", "Role")
+                    b.HasOne("CareDev.Models.Role", null)
                         .WithMany("Employees")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Role");
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("CareDev.Models.Medication", b =>
@@ -1547,66 +1404,21 @@ namespace CareDev.Data.Migrations
 
             modelBuilder.Entity("CareDev.Models.PatientMovement", b =>
                 {
-                    b.HasOne("CareDev.Models.Admission", "Admission")
-                        .WithMany()
-                        .HasForeignKey("AdmissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CareDev.Models.Bed", "FromBed")
-                        .WithMany()
-                        .HasForeignKey("FromBedId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CareDev.Models.Ward", "FromWard")
-                        .WithMany()
-                        .HasForeignKey("FromWardId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CareDev.Models.ApplicationUser", "MovedByUser")
-                        .WithMany()
-                        .HasForeignKey("MovedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("CareDev.Models.Patient", "Patient")
-                        .WithMany()
+                        .WithMany("Movement")
                         .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CareDev.Models.Patient", null)
-                        .WithMany("Movement")
-                        .HasForeignKey("PatientId1");
-
-                    b.HasOne("CareDev.Models.Bed", "ToBed")
+                    b.HasOne("CareDev.Models.RoomType", "Room")
                         .WithMany()
-                        .HasForeignKey("ToBedId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("CareDev.Models.Ward", "ToWard")
-                        .WithMany()
-                        .HasForeignKey("ToWardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CareDev.Models.Ward", null)
-                        .WithMany("Movement")
-                        .HasForeignKey("WardId");
-
-                    b.Navigation("Admission");
-
-                    b.Navigation("FromBed");
-
-                    b.Navigation("FromWard");
-
-                    b.Navigation("MovedByUser");
 
                     b.Navigation("Patient");
 
-                    b.Navigation("ToBed");
-
-                    b.Navigation("ToWard");
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("CareDev.Models.PatientVitals", b =>
@@ -1817,8 +1629,6 @@ namespace CareDev.Data.Migrations
                     b.Navigation("Admissions");
 
                     b.Navigation("Beds");
-
-                    b.Navigation("Movement");
                 });
 
             modelBuilder.Entity("PatientCare.Models.MedicationDispensation", b =>

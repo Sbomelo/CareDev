@@ -6,8 +6,7 @@ namespace CareDev.Models
 {
     public class User : IdentityUser
     {
-        [Key]
-        public long UserId { get; set; }
+        
 
         public string Name { get; set; }
 
