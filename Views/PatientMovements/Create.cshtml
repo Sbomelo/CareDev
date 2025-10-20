@@ -4,14 +4,11 @@
     var wards = (SelectList)ViewBag.Wards;
     var beds = (List<Bed>)ViewBag.Beds;
 }
-
-<h2>Move Patient</h2>
-
-<div class="mb-3 w-25 btn bg-secondary rounded-pill text-center">
-    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+<div class="text-center mb-3">
+    <h2>Move Patient</h2>
 </div>
-
-<div class="card mb-3 p-3">
+<hr />
+<div class="card bg-white shadow-lg border-0 rounded-5 mb-3 p-3">
     <dl class="row">
         <dt class="col-sm-3">Patient Name:</dt>
         <dd class="col-sm-9">@Model.PatientName</dd>
@@ -22,7 +19,6 @@
         <dt class="col-sm-3">Current Bed: </dt>
         <dd class="col-sm-9">@Model.FromBedNumber</dd>
     </dl>
-
 </div>
 
 <form asp-action="Create" method="post">
@@ -66,8 +62,9 @@
         <label asp-for="Reason" class="form-label"></label>
         <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
     </div>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary w-75 rounded-pill">Move Patient</button>
+    <div class="text-center d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary w-50 rounded-pill me-1">Move Patient</button>
+        <a asp-action="Index" class="btn btn-dark w-50 rounded-pill">Back</a>
     </div>
 
 </form>

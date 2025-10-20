@@ -2,36 +2,38 @@
 @{
     ViewData["Title"] = "Movement Details";
 }
-<div class="text-center mb-3">
-    <h2>Movement Details</h2>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">Movement ID</dt>
-            <dd class="col-sm-9">@Model.MovementId</dd>
-
-            <dt class="col-sm-3">Patient</dt>
-            <dd class="col-sm-9">@Model.Patient?.Name @Model.Patient?.SurName</dd>
-
-            <dt class="col-sm-3">From</dt>
-            <dd class="col-sm-9">@Model.FromBed?.Ward?.Name @Model.FromBed?.BedNumber</dd>
-
-            <dt class="col-sm-3">To</dt>
-            <dd class="col-sm-9">@Model.ToBed?.Ward?.Name @Model.ToBed?.BedNumber</dd>
-
-            <dt class="col-sm-3">Moved At</dt>
-            <dd class="col-sm-9">@Model.MovedAt.ToLocalTime().ToString("f")</dd>
-
-            <dt class="col-sm-3">Moved By</dt>
-            <dd class="col-sm-9">@Model.MovedByUser?.UserName</dd>
-
-            <dt class="col-sm-3">Notes</dt>
-            <dd class="col-sm-9">@Model.Reason</dd>
-        </dl>
+<body style="background-color:#B0BEC5; color:white;">
+    <div class="text-center mb-3">
+        <h2>Movement Details</h2>
     </div>
-</div>
-<div class="mb-3 mt-3 text-center ">
-    <a asp-action="Index" class="text-white btn bg-info rounded-pill w-50">Back</a>
-</div>
+    <hr />
+    <div class="card bg-white shadow-lg border-0 rounded-5">
+        <div class="card-body bg-white shadow-lg border-0 rounded-5">
+            <dl class="row">
+                <dt class="col-sm-3">Movement ID</dt>
+                <dd class="col-sm-9">@Model.MovementId</dd>
+
+                <dt class="col-sm-3">Patient</dt>
+                <dd class="col-sm-9">@Model.Patient?.Name @Model.Patient?.SurName</dd>
+
+                <dt class="col-sm-3">From</dt>
+                <dd class="col-sm-9">@Model.FromBed?.Ward?.Name - @Model.FromBed?.BedNumber</dd>
+
+                <dt class="col-sm-3">To</dt>
+                <dd class="col-sm-9">@Model.ToBed?.Ward?.Name - @Model.ToBed?.BedNumber</dd>
+
+                <dt class="col-sm-3">Moved At</dt>
+                <dd class="col-sm-9">@Model.MovedAt.ToLocalTime().ToString("f")</dd>
+
+                <dt class="col-sm-3">Moved By</dt>
+                <dd class="col-sm-9">@Model.MovedByUser?.UserName</dd>
+
+                <dt class="col-sm-3">Notes</dt>
+                <dd class="col-sm-9">@Model.Reason</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="mb-3 mt-3 text-center ">
+        <a asp-action="Index" class="text-black btn bg-secondary rounded-pill w-50 opacity-75">Back</a>
+    </div>
+</body>
