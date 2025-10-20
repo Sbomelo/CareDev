@@ -1,0 +1,50 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR.Protocol;
+
+namespace CareDev.Models.ViewModels
+{
+    public class EmployeeRegisterViewModel
+    {
+        [Required, StringLength(50)]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required, StringLength(50)]
+        [Display(Name = "Surname")]
+        public string Surname { get; set; }
+
+        [Required, EmailAddress]
+        [Display(Name = "Email Adress")]
+        public string Email { get; set; }
+
+        [Required, Range(0, 100)]
+        public int? Age { get; set; }
+
+        [Required]
+        public string Gender { get; set; }
+
+        [Required]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
+        [StringLength(10)]
+        public string PhoneNumber { get; set; }
+
+        [Required (ErrorMessage ="Please Select Role")]
+        [Display(Name = "Role")]
+        public string RoleName { get; set; }
+
+        [Required, DataType(DataType.Password)]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+        public string Password { get; set; }
+
+        [Required, DataType(DataType.Password), Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
+        [Display(Name = "Confirm Password")]
+        public string ConfirmPassword { get; set; }
+
+
+        // For dropdown lists
+        public IEnumerable<SelectListItem>? Roles { get; set; }
+    }
+}
+

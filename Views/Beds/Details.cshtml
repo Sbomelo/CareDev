@@ -3,28 +3,36 @@
 @{
     ViewData["Title"] = "Details";
 }
+<body style="background-color:#B0BEC5; color:white;">
+    <h1>Bed Details</h1>
 
-<h1>Details</h1>
+    <div>
 
-<div>
-    <h4>Bed</h4>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BedNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BedNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsAvailable)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Ward)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Ward.Name)
+            </dd>
+        </dl>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ward)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ward.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BedId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="text-center mt-2 d-flex align-content-center">
+        <a asp-action="Edit" asp-route-id="@Model?.BedId" class="btn btn-primary rounded-pill w-25 me-1">Edit</a>
+        <a asp-action="Index" class="btn btn-dark rounded-pill w-25 me-1">Back to List</a>
+    </div>
+</body>
+

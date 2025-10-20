@@ -1,0 +1,73 @@
+﻿<head>
+   <style>
+       body{
+            background-color: #B3E5FC;
+            /* background: radial-gradient(
+            #96DCF8 22%, 
+            #006669 23%,
+            #A4D7FF 38%
+            ); */
+            /* filter: brightness(60%); */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0px;
+            margin:0px;
+       }
+
+       .items{
+            background-color: rgba(95, 95, 95, 0.40);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 5px;
+       }
+       .items:hover{
+           cursor:pointer;
+           background: rgb(104, 104, 104) ;
+           border: 3px solid white;
+           transform: scale(1,1)
+       }
+
+       
+   </style>
+</head>
+
+<body>
+    <ul class="nav justify-content-end">
+        <li class="nav-item btn btn-primary rounded-4 me-3 mb-3 text-center">
+            <a class="nav-link text-white" asp-controller="Patients" asp-action="PatientDashboard" >Back</a>
+        </li>
+        <li class="nav-item btn-primary rounded-4 mb-3 text-center">
+            <a class="nav-link text-white" asp-controller="Patients" asp-action="PatientDashboard">Menu</a>
+        </li>
+    </ul>
+
+    <div class="w-100 d-flex flex-column flex-grow-1 justify-content-end align-items-end">
+        <div class="w-50 rounded-4 flex-fill text-white items">
+            <a class="a-tags" asp-controller="" asp-action="">
+                <div class="text-center">
+                    <h1 class="text-black">Admission And Discharge Status</h1>
+                </div>
+            </a>
+            
+        </div>
+
+        <div class="w-50 rounded-4 flex-grow-1 items">
+            <a class="a-tags" asp-controller="" asp-action="">
+                <div class="text-center">
+                    <h1 class="text-black">Assigned Ward</h1>
+                </div>
+            </a>
+            
+        </div>
+
+        <div class="w-50 rounded-4 flex-grow-1 items">
+            <a class="a-tags" asp-controller="" asp-action="">
+                <div class="text-center">
+                    <h1 class="text-black">Movement</h1>
+                </div>
+            </a>
+          
+        </div>
+    </div>
+</body>
+

@@ -26,8 +26,13 @@ namespace CareDev.Models
         [Display(Name = "Gender")]
         public string? Gender { get; set; }
 
+        [Display (Name="Medication")]
         public int? MedicationId { get; set; }
+
+        [Display(Name="Allergy")]
         public int? AllergyId { get; set; }
+
+        [Display(Name ="Chronic Condition")]
         public int? ChronicConditionId { get; set; }
 
         // Navigation properties

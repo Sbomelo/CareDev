@@ -19,6 +19,12 @@ namespace CareDev.Models
         [Display(Name = "Usage Notes")] 
         public string? UsageNotes { get; set; }
 
-        
+        public int? PatientId { get; set; }
+        public int? EmployeeId { get; set; }
+
+        // Navigation property 
+       // public ICollection<Patient> Patients { get; set; } = new List<Patient>();
+        //public ICollection<Employee> Employees { get; set; } = new List<Employee>();
+        public virtual ICollection<MedicationAdministration> MedicationAdministrations { get; set; } = new HashSet<MedicationAdministration>();
     }
 }

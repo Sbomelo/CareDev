@@ -255,6 +255,8 @@ namespace CareDev.Data
         //Core entities
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Employee> Employees { get; set; }
+       // public DbSet<Doctor> Doctors { get; set; }
+       public DbSet<MedicationAdministration> MedicationAdministrations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Ward> Wards { get; set; }
         public DbSet<Bed> Beds { get; set; }
@@ -345,7 +347,12 @@ namespace CareDev.Data
                 .HasForeignKey<PatientFolder>(pf => pf.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            
+            //EMPLOYEE relationships
+            //modelBuilder.Entity<Employee>()
+            //    .HasOne(e => e.Role)
+            //    .WithMany(r => r.Employees)
+            //    .HasForeignKey(e => e.RoleId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Admissions)
@@ -404,14 +411,20 @@ namespace CareDev.Data
                 .WithMany(p => p.Movement)
                 .HasForeignKey(pm => pm.PatientId);
 
-            
-            modelBuilder.Entity<Bed>(entity =>
-            {
-                entity.HasOne(b => b.Ward)
-                    .WithMany(w => w.Beds)
-                    .HasForeignKey(b => b.WardId);
-
+            //Ward to Bed relationships 
+           /* modelBuilder.Entity<Ward>()
+                .HasMany(w => w.Beds)
+                .WithOne(b => b.Ward)
+                .HasForeignKey(b => b.WardId)
+                .OnDelete(DeleteBehavior.Cascade);*/
+           modelBuilder.Entity<Bed>(entity => 
+           {
+               entity.HasOne(b => b.Ward)
+                   .WithMany(w => w.Beds)
+                   .HasForeignKey(b => b.WardId);
+                    
             });
+           
 
             //seed look up data
             SeedLookupData(modelBuilder);
@@ -441,7 +454,7 @@ namespace CareDev.Data
             modelBuilder.Entity<Ward>().HasData(
                 new Ward { WardId = 1, Name = "General Ward" },
                 new Ward { WardId = 2, Name = "Surgical Ward" },
-                new Ward { WardId = 3, Name = "Maternity Ward" }
+                new Ward { WardId = 3, Name = "Maternity Ward"} 
             );
 
             //seed Medications
@@ -453,6 +466,8 @@ namespace CareDev.Data
                 new Medication { MedicationId = 5, Name = "Aspirin", Schedule = "Schedules" },
                 new Medication { MedicationId = 6, Name = "Metformin", Schedule = "PRN" }
             );
+
+            
         }
         public DbSet<CareDev.Models.PatientAllergy> PatientAllergy { get; set; } = default!;
         public DbSet<CareDev.Models.PatientCondition> PatientCondition { get; set; } = default!;

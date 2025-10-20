@@ -1,96 +1,69 @@
 ﻿@model CareDev.Models.Patient
 
 @{
-    ViewData["Title"] = "ADMIT PATIENT";
+    ViewData["Title"] = "Create";
 }
-<!DOCTYPE html>
-<head>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
-            color: white;
-            background-color: rgb(150, 220, 248) ;
-        }
+<body style="background-color:#E0F7FA">
+    <div class="d-flex justify-content-center text-center">
+        <h1>Admit Passient</h1>
+    </div>
 
-        .form-control{
-            background-color: rgba(217, 217, 217, 0.60);
-        }
-
-        label{
-            color: white;
-        }
-
-        .form-div{
-            background-color:rgba(127, 127, 127, 0.42);
-            border-radius: 10px;
-            border: medium;
-            border-color: white;
-        }
-    </style>
-</head>
-<body>
-    <h1>ADMIT PATIENT</h1>
-
-    <h4>Patient Details</h4>
-
-    <div class="row">
-        <div class="col-md-4 form-div" >
+    <div class="d-flex justify-content-center align-content-center gap-2">
+        <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group ">
-                    <label asp-for="Name" class="control-label">Patient Name</label>
+                <div class="form-group mb-3 mt-3">
+                    <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="SurName" class="control-label">Patient SurName</label>
+                <div class="form-group mb-3">
+                    <label asp-for="SurName" class="control-label"></label>
                     <input asp-for="SurName" class="form-control" />
                     <span asp-validation-for="SurName" class="text-danger"></span>
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="Age" class="control-label">Patient Age</label>
+                <div class="form-group mb-3">
+                    <label asp-for="Age" class="control-label"></label>
                     <input asp-for="Age" class="form-control" />
                     <span asp-validation-for="Age" class="text-danger"></span>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group mb-3">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <input asp-for="Gender" class="form-control" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
                     <label asp-for="PhoneNumber" class="control-label"></label>
                     <input asp-for="PhoneNumber" class="form-control" />
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="PhoneNumber" class="control-label">Patient Gender</label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <div class="form-group mb-3">
+                    <label asp-for="MedicationId" class="control-label"></label>
+                    <select asp-for="MedicationId" class="form-control" asp-items="ViewBag.MedicationId"></select>
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <div class="form-group mb-3">
+                    <label asp-for="AllergyId" class="control-label"></label>
+                    <select asp-for="AllergyId" class="form-control" asp-items="ViewBag.AllergyId"></select>
                 </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Admit" class="btn btn-primary" />
+                <div class="form-group mb-3">
+                    <label asp-for="ChronicConditionId" class="control-label"></label>
+                    <select asp-for="ChronicConditionId" class="form-control" asp-items="ViewBag.ChronicConditionId"></select>
                 </div>
+             @* <div class="form-group">
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                </div> *@
+                <hr />
+                <div class="form-group d-flex justify-content-center gap-3">
+                    <input type="submit" value="Create" class="btn btn-primary w-50 rounded-pill" /><a asp-action="Index" class="rounded-pill w-50 btn btn-info">Back to List</a>
+                </div>
+                <hr />
             </form>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-    }
-
 </body>
 
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

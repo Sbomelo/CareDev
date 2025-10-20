@@ -3,64 +3,70 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Admission</h4>
+<body class="text-dark" style="background-color:#E0F7FA">
+    <h1>Admission Details</h1>
+    <div class="text-dark">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Patient)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Patient.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Ward)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Ward.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Bed)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Bed.BedNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Doctor)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Doctor.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Employee)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Employee.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AdmissionDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AdmissionDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DischargeDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DischargeDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AdmissionReason)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AdmissionReason)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        </dl>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdmissionDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdmissionDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DischargeDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DischargeDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdmissionReason)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdmissionReason)
-        </dd>
-       @*  <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoomId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomId)
-        </dd> *@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ward)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ward.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bed.BedId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.AdmissionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.AdmissionId" class="btn btn-primary w-25 me-1 rounded-pill">Edit</a>
+        <a asp-action="Index" class="btn btn-dark w-25 me-1 rounded-pill">Back to List</a>
+    </div>
+</body>
+

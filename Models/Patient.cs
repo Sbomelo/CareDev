@@ -24,11 +24,6 @@ namespace CareDev.Models
         [StringLength(100)]
         public string Gender { get; set; } = string.Empty;
 
-        /* [Required]
-         public int GenderOptionId { get; set; }
-         [ForeignKey("GenderOptionID")]
-         public virtual ICollection<GenderOption> Gender { get; set; } = new List<GenderOption>(); */
-
         [Required]
         [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
         [StringLength(10)]
@@ -46,6 +41,9 @@ namespace CareDev.Models
         [Display(Name = "Chronic Condition")]
         public int? ChronicConditionId { get; set; }
         public ChronicCondition? ChronicCondition { get; set; }
+
+        //Indicates if the patient is currently admitted
+        public bool IsAdmitted { get; set; } = false;
 
         //Link to identity user
         public string? ApplicationUserId { get; set; }

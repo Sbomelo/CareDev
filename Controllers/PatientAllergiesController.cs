@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
-    [Authorize(Roles = "Admin,WardAdmin")]
+    [Authorize(Roles = "Admin,WardAdmin,Nurse,Doctor")]
     public class PatientAllergiesController : Controller
     {
         private readonly ApplicationDbContext _context;

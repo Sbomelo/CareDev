@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using CareDev.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
@@ -22,6 +23,19 @@ namespace CareDev.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult UserAndRoleManagement()
+        {
+            return View(); 
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult HospitalConfiguration()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

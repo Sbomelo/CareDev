@@ -406,10 +406,23 @@ namespace CareDev.Areas.Identity.Pages.Account
 
             var result = await _userManager.CreateAsync(user, Input.Password);
 
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, Input.Role);
-                _logger.LogInformation($"New {Input.Role} registered.");
+                if (result.Succeeded)
+                {
+                    string role = DetermineRoleFromEmail(Input.Email);
+                    await _userManager.AddToRoleAsync(user, role);
+
+                    _logger.LogInformation("User created a new account with password.");
+
+                    return RedirectToAction("Portal", "Patients");
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
 

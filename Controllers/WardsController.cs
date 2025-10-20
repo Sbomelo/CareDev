@@ -62,8 +62,10 @@ namespace CareDev.Controllers
             {
                 _context.Add(ward);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Ward created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating ward. Please try again.";
             return View(ward);
         }
 
@@ -101,6 +103,7 @@ namespace CareDev.Controllers
                 {
                     _context.Update(ward);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Ward updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -113,8 +116,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating ward. Please try again.";
             return View(ward);
         }
 
@@ -148,6 +153,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Ward deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

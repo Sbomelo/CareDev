@@ -56,14 +56,16 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MedicationId,Name,Schedule,UsageNotes,PatientId,EmployeeId")] Medication medication)
+        public async Task<IActionResult> Create([Bind("MedicationId,Name,Schedule,UsageNotes")] Medication medication)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(medication);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Medication created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error creating medication. Please check the details and try again.";
             return View(medication);
         }
 
@@ -88,7 +90,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedicationId,Name,Schedule,UsageNotes,PatientId,EmployeeId")] Medication medication)
+        public async Task<IActionResult> Edit(int id, [Bind("MedicationId,Name,Schedule,UsageNotes")] Medication medication)
         {
             if (id != medication.MedicationId)
             {
@@ -101,11 +103,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(medication);
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!MedicationExists(medication.MedicationId))
                     {
+                        
                         return NotFound();
                     }
                     else
@@ -113,8 +117,10 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Medication updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error updating medication. Please try again.";
             return View(medication);
         }
 
@@ -148,6 +154,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Medication deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

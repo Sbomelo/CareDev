@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
-    [Authorize(Roles = "Admin,WardAdmin")]
     public class BedsController : Controller
-    { 
+    {
         private readonly ApplicationDbContext _context;
 
         public BedsController(ApplicationDbContext context)
@@ -59,15 +57,17 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BedId,Status,WardId")] Bed bed)
+        public async Task<IActionResult> Create([Bind("BedId,BedNumber,WardId,IsAvailable")] Bed bed)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(bed);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Bed created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+            TempData["error"] = "Error creating bed. Please try again.";
             return View(bed);
         }
 
@@ -93,7 +93,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BedId,Status,WardId")] Bed bed)
+        public async Task<IActionResult> Edit(int id, [Bind("BedId,BedNumber,WardId,IsAvailable")] Bed bed)
         {
             if (id != bed.BedId)
             {
@@ -106,11 +106,13 @@ namespace CareDev.Controllers
                 {
                     _context.Update(bed);
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!BedExists(bed.BedId))
                     {
+                       
                         return NotFound();
                     }
                     else
@@ -118,9 +120,11 @@ namespace CareDev.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Bed updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", bed.WardId);
+            TempData["error"] = "Error updating bed. Please try again.";
             return View(bed);
         }
 
@@ -155,6 +159,7 @@ namespace CareDev.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["success"] = "Bed deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
