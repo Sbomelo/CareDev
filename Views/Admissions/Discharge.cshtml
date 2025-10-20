@@ -1,0 +1,49 @@
+﻿@model CareDev.Models.ViewModels.DischargeViewModel
+@{
+    ViewData["Title"] = "Discharge Patient";
+}
+<body style="background-color:#E1F5FE;">
+    <h2>Discharge Patient</h2>
+
+    <div class="card mb-3">
+        <div class="card-body bg-white opacity-75">
+            <dl class="row">
+                <dt class="col-sm-3">Patient Name:</dt>
+                <dd class="col-sm-9">@Model.PatientName</dd>
+
+                <dt class="col-sm-3">Admission Date:</dt>
+                <dd class="col-sm-9">@Model.AdmissionDate.ToLocalTime().ToString("g")</dd>
+
+                <dt class="col-sm-3">Bed Number:</dt>
+                <dd class="col-sm-9">@Model.BedNumber</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-controller="Admissions" asp-action="Discharge" method="post">
+        <input type="hidden" asp-for="AdmissionId" />
+        <input type="hidden" asp-for="PatientId" />
+
+        <div class="form-group mb-3">
+            <label asp-for="DischargeDate" class="form-label"></label>
+            <input asp-for="DischargeDate" class="form-control " type="datetime-local"
+                   value="@(Model.DischargeDate?.ToLocalTime().ToString("yyyy-MM-ddTHH:mm"))" />
+            <span asp-validation-for="DischargeDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="DischargeNotes" class="form-label"></label>
+            <textarea asp-for="DischargeNotes" class="form-control bg-white opacity-75" rows="4"></textarea>
+            <span asp-validation-for="DischargeNotes" class="text-danger"></span>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger w-25 rounded-pill me-1">Confirm Discharge</button>
+            <a asp-action="Index" asp-route-id="@Model.AdmissionId" class="btn btn-dark ms-2 w-25 rounded-pill">Cancel</a>
+        </div>
+        
+    </form>
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

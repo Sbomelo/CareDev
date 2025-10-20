@@ -24,6 +24,9 @@
                     @Html.DisplayNameFor(model => model.Patient)
                 </th>
                 <th scope="row">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th scope="row">
                     @Html.DisplayNameFor(model => model.Ward)
                 </th>
                 <th scope="row">
@@ -60,6 +63,9 @@
                         @Html.DisplayFor(modelItem => item.Patient.Name)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Ward.Name)
                     </td>
                     <td>
@@ -87,7 +93,7 @@
                         <div class="w-75 btn-group" role="group">
                             <a asp-action="Edit" asp-route-id="@item.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i></a>
                             <a asp-action="Details" asp-route-id="@item.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i></a>
-                            <a asp-action="Delete" asp-route-id="@item.AdmissionId" class="btn btn-danger rounded-pill mx-2" title="Delete Admission"><i class="bi bi-trash-fill"></i></a>
+                            <a asp-action="Discharge" asp-route-id="@item.AdmissionId" class="btn btn-danger rounded-pill mx-2" title="Discharge Patient"><i class="bi bi-trash-fill"></i></a>
                         </div>
                     </td>
                 </tr>

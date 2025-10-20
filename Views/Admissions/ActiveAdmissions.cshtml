@@ -2,13 +2,13 @@
 
 <body style="background-color:#E1F5FE;">
     @{
-        ViewData["Title"] = "Discharged Patients";
+        ViewData["Title"] = "Active Admissions";
         string from = (string)ViewData["From"] ?? "";
         string to = (string)ViewData["To"] ?? "";
         string q = (string)ViewData["Q"] ?? "";
     }
     <div class="text-center">
-        <h1>Discharged Patients</h1>
+        <h1>Active Admissions</h1>
     </div>
 <hr />
     <form method="get" class="row g-2 mb-3">
@@ -19,18 +19,15 @@
             <label>Admission Date:</label>
             <input type="date" name="from" class="form-control" value="@from" />
         </div>
-        <div class="col-auto">
-            <label>Discahrge Date:</label>
-            <input type="date" name="to" class="form-control" value="@to" />
-        </div>
+
         <div class="col-auto">
             <label>Patient Name:</label>
-            <input type="text" name="q" class="form-control" placeholder="Patient name or bed" value="@q" />
+            <input type="text" name="q" class="form-control" placeholder="Patient name or Bed" value="@q" />
         </div>
         <div class="col-auto">
             <h6>Filter or Cancel</h6>
             <button type="submit" class="btn bg-primary rounded-pill me-1">Filter</button>
-            <a asp-action="Index" class="btn bg-secondary rounded-pill">Clear</a>
+            <a asp-action="ActiveAdmissions" class="btn bg-secondary rounded-pill">Clear</a>
         </div>
     </form>
 
@@ -42,9 +39,7 @@
                 <th>Bed</th>
                 <th>Ward</th>
                 <th>Admitted</th>
-                <th>Discharged</th>
                 <th>Notes</th>
-@*                 <th>Discharged By</th> *@
                 <th></th>
             </tr>
         </thead>
@@ -57,11 +52,14 @@
                     <td>@(a.Bed?.BedNumber ?? " ")</td>
                     <td>@(a.Ward?.Name ?? " ")</td>
                     <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
-                    <td>@(a.DischargeDate.HasValue? a.DischargeDate.Value.ToLocalTime().ToString("g") : "")</td>
-                    <td>@(string.IsNullOrEmpty(a.DischargeNotes) ? "" : (a.DischargeNotes.Length > 80 ? a.DischargeNotes.Substring(0, 80) + "" : a.DischargeNotes))</td>
-@*                     <td>@(a.DischargedByUserId?.Name ?? a.DischargedByUserId.UserName ?? ) </td> *@
+                    <td>@a.Notes</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@a.AdmissionId" class="btn btn-primary w-100 rounded-pill">Details</a>
+                        <div class="btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@a.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i>Edit</a> 
+                            <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i>Details</a>
+                            <a asp-controller="PatientMovements" asp-action="Create" asp-route-admissionId="@a.AdmissionId" class="btn btn-primary rounded-pill">  Move Patient </a>
+                        </div>
+
                     </td>
                 </tr>
             }

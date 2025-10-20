@@ -1,43 +1,37 @@
 ﻿@model CareDev.Models.PatientMovement
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Movement Details";
 }
-<body style="background-color:#E1F5FE;">
-    <h1>PatientMovement Details</h1>
+<div class="text-center mb-3">
+    <h2>Movement Details</h2>
+</div>
 
-    <div class="text-dark">
+<div class="card">
+    <div class="card-body">
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MovementDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MovementDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.From)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.From)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Patient)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Patient.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Ward)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Ward.Name)
-            </dd>
+            <dt class="col-sm-3">Movement ID</dt>
+            <dd class="col-sm-9">@Model.MovementId</dd>
+
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">@Model.Patient?.Name @Model.Patient?.SurName</dd>
+
+            <dt class="col-sm-3">From</dt>
+            <dd class="col-sm-9">@Model.FromBed?.Ward?.Name @Model.FromBed?.BedNumber</dd>
+
+            <dt class="col-sm-3">To</dt>
+            <dd class="col-sm-9">@Model.ToBed?.Ward?.Name @Model.ToBed?.BedNumber</dd>
+
+            <dt class="col-sm-3">Moved At</dt>
+            <dd class="col-sm-9">@Model.MovedAt.ToLocalTime().ToString("f")</dd>
+
+            <dt class="col-sm-3">Moved By</dt>
+            <dd class="col-sm-9">@Model.MovedByUser?.UserName</dd>
+
+            <dt class="col-sm-3">Notes</dt>
+            <dd class="col-sm-9">@Model.Reason</dd>
         </dl>
     </div>
-    <hr />
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model?.MovementId" class="btn btn-primary w-25 me-1 rounded-pill">Edit</a>
-        <a asp-action="Index" class="btn btn-dark w-25 me-1 rounded-pill">Back to List</a>
-    </div>
-</body>
-
+</div>
+<div class="mb-3 mt-3 text-center ">
+    <a asp-action="Index" class="text-white btn bg-info rounded-pill w-50">Back</a>
+</div>

@@ -9,19 +9,16 @@ namespace CareDev.Models
         [Key]
         public int AdmissionId { get; set; }
 
-        // The patient being admitted (required)
         [Required]
         [Display (Name="Patient Name")]
         public int PatientId { get; set; }
         public Patient? Patient { get; set; } = null!;
 
-        // Ward where patient is admitted (required)
         [Required]
         [Display (Name="Ward Name")]
         public int WardId { get; set; }
         public Ward? Ward { get; set; } =null!;
 
-        // Bed can be assigned later, so nullable
         [Display (Name="Bed Number")]
         public int? BedId { get; set; }
         public Bed? Bed { get; set; }
@@ -47,11 +44,16 @@ namespace CareDev.Models
         [StringLength(500)]
         public string? AdmissionReason { get; set; }
 
-        // Optional free-form notes (doctor/nurse notes)
+        // Optional notes for (doctor/nurse)
+        [StringLength(500)]
         public string? Notes { get; set; }
 
+        [StringLength(500)]
+        public string? DischargeNotes { get; set; }
+
+        public string? DischargedByUserId { get; set; } //for auditing purpose
         // Optional convenience flag
-        // true = currently admitted, false = discharged (keeps quick checks easy)
+        // true = currently admitted, false = discharged
         public bool IsActive { get; set; } = true;
     }
 }

@@ -22,6 +22,9 @@
         <thead>
             <tr class="table-dark">
                 <th scope="row">
+                    @Html.DisplayNameFor(model => model.IsAdmitted)
+                </th>
+                <th scope="row">
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th scope="row">
@@ -45,9 +48,7 @@
                 <th scope="row">
                     @Html.DisplayNameFor(model => model.ChronicCondition)
                 </th>
-@*                 <th scope="row">
-                    @Html.DisplayNameFor(model => model.ApplicationUser)
-                </th> *@
+
                 <th scope="row" class="text-center ">
                     <h5 class="text-white"> Manage Admissions</h5>
                 </th>
@@ -57,6 +58,9 @@
             @foreach (var item in Model)
             {
                 <tr class="table-primary">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsAdmitted)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
@@ -81,9 +85,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ChronicCondition.Name)
                     </td>
-@*                     <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.Patient)
-                    </td> *@
+
                     <td class="table-active">
                         <div class="w-75 btn-group" role="group">
                             <a asp-action="Edit" asp-route-id="@item.PatientId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i></a>

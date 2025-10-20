@@ -22,9 +22,10 @@ namespace CareDev.Models
         // Navigation Properies
         [ForeignKey("WardId")]
         public virtual Ward? Ward { get; set; } 
-        public virtual Admission? Admissions { get; set; } 
+
+        public virtual ICollection<Admission> Admissions { get; set; } = new HashSet<Admission>();
 
         [NotMapped]
-        public string BedStatus => IsAvailable ? "Occupied" : "Available"; // Computed property to display bed status
+        public string BedStatus => IsAvailable ? "Available" : "Occupied"; // Computed property to display bed status
     }
 }

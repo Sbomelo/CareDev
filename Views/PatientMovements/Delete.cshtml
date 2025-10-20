@@ -11,16 +11,16 @@
 
         <dl class="row">
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MovementDate)
+                @Html.DisplayNameFor(model => model.MovedAt)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MovementDate)
+                @Html.DisplayFor(model => model.MovedAt)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.From)
+                @Html.DisplayNameFor(model => model.FromWardId)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.From)
+                @Html.DisplayFor(model => model.FromWardId)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Patient)
@@ -28,12 +28,7 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Patient.Name)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Ward)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Ward.Name)
-            </dd>
+
         </dl>
 
         <form asp-action="Delete">
