@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace CareDev.Controllers
@@ -28,17 +29,82 @@ namespace CareDev.Controllers
             _logger = logger;
         }
 
-        // GET: Admissions
-        public async Task<IActionResult> Index()
+        //GET : Admissions
+        public async Task<IActionResult> Index(DateTime? dateFrom,DateTime? dateTo,string? q,int? wardId, int? doctorId, int? employeeId)
         {
-            var applicationDbContext = _context.Admissions
+            var query = _context.Admissions
+                .AsNoTracking()
+                .Include(a => a.Patient)
                 .Include(a => a.Bed)
+                .Include(a => a.Ward)
                 .Include(a => a.Doctor)
                 .Include(a => a.Employee)
-                .Include(a => a.Patient)
-                .OrderByDescending(a => a.AdmissionDate)
-                .Include(a => a.Ward);
-            return View(await applicationDbContext.ToListAsync());
+                .AsQueryable();
+
+            // Filter: date range (AdmissionDate)
+            if (dateFrom.HasValue)
+            {
+                var start = dateFrom.Value.Date;
+                query = query.Where(a => a.AdmissionDate >= start);
+            }
+
+            if (dateTo.HasValue)
+            {
+                var end = dateTo.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(a => a.AdmissionDate <= end);
+            }
+
+            // Text search: patient full name OR bed number OR ward name
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var qTrim = q.Trim().ToLower();
+                query = query.Where(a =>
+                    (a.Patient != null && ((a.Patient.SurName + " " + a.Patient.Name).ToLower().Contains(qTrim)
+                                           || (a.Patient.Name + " " + a.Patient.SurName).ToLower().Contains(qTrim)))
+                    || (a.Bed != null && a.Bed.BedNumber.ToLower().Contains(qTrim))
+                    || (a.Ward != null && a.Ward.Name.ToLower().Contains(qTrim))
+                );
+            }
+
+            // Filter by Ward
+            if (wardId.HasValue)
+            {
+                query = query.Where(a => a.WardId == wardId.Value);
+            }
+
+            // Filter by Doctor
+            if (doctorId.HasValue)
+            {
+                query = query.Where(a => a.DoctorId == doctorId.Value);
+            }
+
+            // Filter by Employee
+            if (employeeId.HasValue)
+            {
+                query = query.Where(a => a.EmployeeId == employeeId.Value);
+            }
+
+            // Order by most recent admissions first
+            var list = await query.OrderByDescending(a => a.AdmissionDate).ToListAsync();
+
+            //selects for the filter form
+            var wards = await _context.Wards.OrderBy(w => w.Name)
+                .Select(w => new { w.WardId, w.Name }).ToListAsync();
+            var doctors = await _context.Doctors.OrderBy(d => d.SurName).ThenBy(d => d.Name)
+                .Select(d => new { d.DoctorId, FullName = d.SurName + " " + d.Name }).ToListAsync();
+            var employees = await _context.Employees.OrderBy(e => e.SurName).ThenBy(e => e.Name)
+                .Select(e => new { e.EmployeeId, FullName = e.SurName + " " + e.Name }).ToListAsync();
+
+            ViewBag.Wards = new SelectList(wards, "WardId", "Name", wardId);
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName", doctorId);
+            ViewBag.Employees = new SelectList(employees, "EmployeeId", "FullName", employeeId);
+
+            //Preserve filter values in ViewData
+           ViewData["dateFrom"] = dateFrom?.ToString("yyyy-MM-dd") ?? "";
+            ViewData["dateTo"] = dateTo?.ToString("yyyy-MM-dd") ?? "";
+            ViewData["q"] = q ?? "";
+
+            return View(list);
         }
 
         // GET: Admissions/Details/5
@@ -105,9 +171,6 @@ namespace CareDev.Controllers
             ViewBag.Beds = beds;
 
             return View();
-            //var vm = new Models.ViewModels.AdmitPatientViewModel();
-            //await PopulateLookupLists(vm);
-            //return View(vm);
         }
 
         // POST: Admissions/Create
@@ -227,184 +290,132 @@ namespace CareDev.Controllers
             ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
         }
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        await PopulateLookupLists(vm);
-        //        return View(vm);
-        //    }
-
-        //    using var tx = await _context.Database.BeginTransactionAsync();
-        //    try
-        //    {
-        //        // If bed selected, attempt atomic claim
-        //        if (vm.BedId.HasValue)
-        //        {
-        //            var bedId = vm.BedId.Value;
-        //            var rowsAffected = await _context.Database.ExecuteSqlInterpolatedAsync(
-        //                $"UPDATE Beds SET IsAvailable = 0 WHERE BedId = {bedId} AND IsAvailable = 1");
-
-        //            if (rowsAffected != 1)
-        //            {
-        //                ModelState.AddModelError(nameof(vm.BedId), "Selected bed is no longer available. Please choose another bed.");
-        //                await PopulateLookupLists(vm);
-        //                return View(vm);
-        //            }
-        //        }
-
-        //        // Create the admission record.
-        //        var admission = new Admission
-        //        {
-        //            PatientId = vm.PatientId,
-        //            WardId = vm.WardId,
-        //            BedId = vm.BedId, 
-        //            DoctorId = vm.DoctorId,
-        //            AdmissionDate = DateTime.UtcNow,
-        //            IsActive = true
-        //        };
-
-        //        _context.Admissions.Add(admission);
-
-        //        // Set patient flag IsAdmitted = true (if patient exists)
-        //        var patient = await _context.Patients.FindAsync(vm.PatientId);
-        //        if (patient != null)
-        //        {
-        //            patient.IsAdmitted = true;
-        //            _context.Patients.Update(patient);
-        //        }
-
-        //        await _context.SaveChangesAsync();
-        //        await tx.CommitAsync();
-
-        //        TempData["Success"] = "Patient admitted successfully.";
-        //        return RedirectToAction("Index", "Admissions");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await tx.RollbackAsync();
-        //        _logger.LogError(ex, "Error admitting patient");
-        //        ModelState.AddModelError("", "An error occurred while admitting the patient. Please try again.");
-        //        await PopulateLookupLists(vm);
-        //        return View(vm);
-        //    }
-        //}
-
-        //private async Task PopulateLookupLists(Models.ViewModels.AdmitPatientViewModel vm)
-        //{
-        //    // Patients who are not currently admitted
-        //    var admittedPatientIds = await _context.Admissions
-        //        .Where(a => a.IsActive)
-        //        .Select(a => a.PatientId)
-        //        .ToListAsync();
-
-        //    vm.Patients = await _context.Patients
-        //        .AsNoTracking()
-        //        .Where(p => !admittedPatientIds.Contains(p.PatientId))
-        //        .OrderBy(p => p.Name)
-        //        .Select(p => new SelectListItem
-        //        {
-        //            Value = p.PatientId.ToString(),
-        //            Text = $"{p.Name} {p.SurName}"
-        //        })
-        //        .ToListAsync();
-
-        //    // Employees (admitting staff)
-        //    vm.Employees = await _context.Employees
-        //        .AsNoTracking()
-        //        .OrderBy(e => e.Name)
-        //        .Select(e => new SelectListItem { Value = e.EmployeeId.ToString(), Text = e.Name + " " + e.SurName })
-        //        .ToListAsync();
-
-        //    // Wards
-        //    vm.Wards = await _context.Wards
-        //        .AsNoTracking()
-        //        .OrderBy(w => w.Name)
-        //        .Select(w => new SelectListItem { Value = w.WardId.ToString(), Text = w.Name })
-        //        .ToListAsync();
-
-        //    // Beds: only available beds
-        //    vm.Beds = await _context.Beds
-        //        .AsNoTracking()
-        //        .Where(b => b.IsAvailable) // true = available
-        //        .OrderBy(b => b.BedId)
-        //        .Select(b => new SelectListItem { Value = b.BedId.ToString(), Text = b.BedNumber ?? $"Bed {b.BedId}" })
-        //        .ToListAsync();
-
-        //    // Doctors table -> Doctors select list
-        //    vm.Doctors= await _context.Doctors
-        //        .AsNoTracking()
-        //        .OrderBy(d => d.Name)
-        //        .Select(d => new SelectListItem { Value = d.DoctorId.ToString(), Text = d.Name })
-        //        .ToListAsync();
-        //}
-
-        // GET: Admissions/Edit/5
+        //Get Admnissions
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var admission = await _context.Admissions.FindAsync(id);
-            if (admission == null)
-            {
-                return NotFound();
-            }
-            ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
-            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
+            var admission = await _context.Admissions
+                .Include(a => a.Bed)
+                .FirstOrDefaultAsync(a => a.AdmissionId == id);
+
+            if (admission == null) return NotFound();
+
+            ViewBag.Patients = new SelectList(await _context.Patients.OrderBy(p => p.Name).ThenBy(p => p.SurName).ToListAsync(), "PatientId", "Name", admission.PatientId);
+            ViewBag.Wards = new SelectList(await _context.Wards.OrderBy(w => w.Name).ToListAsync(), "WardId", "Name", admission.WardId);
+            ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
+            var doctors = await _context.Doctors
+               .OrderBy(d => d.SurName).ThenBy(d => d.Name)
+               .Select(d => new {
+                   d.DoctorId,
+                   FullName = d.SurName + " " + d.Name
+               })
+               .ToListAsync();
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+
+            var employees = await _context.Employees
+                .OrderBy(e => e.SurName).ThenBy(e => e.Name)
+                .Select(e => new {
+                    e.EmployeeId,
+                    FullName = e.SurName + " " + e.Name
+                })
+                .ToListAsync();
+            ViewBag.Employees = new SelectList(employees, "EmployeeId", "FullName");
+
             return View(admission);
         }
 
-        // POST: Admissions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Admissions/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AdmissionId,PatientId,WardId,BedId,DoctorId,EmployeeId,AdmissionDate,DischargeDate,AdmissionReason,Notes")] Admission admission)
+        public async Task<IActionResult> Edit(int id, [Bind("AdmissionId,PatientId,WardId,BedId,DoctorId,EmployeeId,AdmissionDate,AdmissionReason,Notes,IsActive,DischargeDate,DischargeNotes")] Admission model)
         {
-            if (id != admission.AdmissionId)
+            if (id != model.AdmissionId) return BadRequest();
+
+            ViewBag.Patients = new SelectList(await _context.Patients.OrderBy(p => p.Name).ThenBy(p => p.SurName).ToListAsync(), "PatientId", "Name", model.PatientId);
+            ViewBag.Wards = new SelectList(await _context.Wards.OrderBy(w => w.Name).ToListAsync(), "WardId", "Name", model.WardId);
+            ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
+
+            if (!ModelState.IsValid) return View(model);
+
+            // Begin transaction to safely update bed availability if bed changed
+            await using var txn = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return NotFound();
-            }
+                var admission = await _context.Admissions
+                    .Include(a => a.Bed)
+                    .FirstOrDefaultAsync(a => a.AdmissionId == id);
 
-            if (ModelState.IsValid)
+                if (admission == null) return NotFound();
+
+                // if bed changed, update old and new bed availability
+                if (admission.BedId != model.BedId)
+                {
+                    // free old bed
+                    if (admission.BedId.HasValue)
+                    {
+                        var oldBed = await _context.Beds.FindAsync(admission.BedId.Value);
+                        if (oldBed != null)
+                            oldBed.IsAvailable = true;
+                    }
+
+                    // occupy new bed if provided
+                    if (model.BedId.HasValue)
+                    {
+                        var newBed = await _context.Beds.FindAsync(model.BedId.Value);
+                        if (newBed == null)
+                        {
+                            ModelState.AddModelError("BedId", "Selected bed not found.");
+                            ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
+                            return View(model);
+                        }
+                        if (!newBed.IsAvailable)
+                        {
+                            ModelState.AddModelError("BedId", "Selected bed is not available.");
+                            ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
+                            return View(model);
+                        }
+                        newBed.IsAvailable = false;
+                    }
+                }
+
+                // update admission properties
+                admission.PatientId = model.PatientId;
+                admission.WardId = model.WardId;
+                admission.BedId = model.BedId;
+                admission.DoctorId = model.DoctorId;
+                admission.EmployeeId = model.EmployeeId;
+                admission.AdmissionDate = model.AdmissionDate;
+                admission.AdmissionReason = model.AdmissionReason;
+                admission.Notes = model.Notes;
+                admission.IsActive = model.IsActive;
+                admission.DischargeDate = model.DischargeDate;
+                admission.DischargeNotes = model.DischargeNotes;
+
+                await _context.SaveChangesAsync();
+                await txn.CommitAsync();
+
+                TempData["Success"] = "Admission updated.";
+                return RedirectToAction(nameof(Details), new { id = admission.AdmissionId });
+            }
+            catch (DbUpdateConcurrencyException ex)
             {
-                try
-                {
-                    _context.Update(admission);
-                    await _context.SaveChangesAsync();
-                    
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AdmissionExists(admission.AdmissionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                TempData["success"] = "Admission updated successfully.";
-                return RedirectToAction(nameof(Index));
+                await txn.RollbackAsync();
+                _logger.LogWarning(ex, "Concurrency conflict editing admission {AdmissionId}", id);
+                ModelState.AddModelError("", "Concurrency error — another user changed the data. Try again.");
+                return View(model);
             }
-
-            ViewData["BedId"] = new SelectList(_context.Beds, "BedId", "BedNumber", admission.BedId);
-            ViewData["DoctorId"] = new SelectList(_context.Set<Doctor>(), "DoctorId", "Name", admission.DoctorId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "Name", admission.EmployeeId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", admission.PatientId);
-            ViewData["WardId"] = new SelectList(_context.Wards, "WardId", "Name", admission.WardId);
-
-            TempData["error"] = "Error updating admission. Please check the details and try again.";
-            return View(admission);
+            catch (Exception ex)
+            {
+                await txn.RollbackAsync();
+                _logger.LogError(ex, "Error editing admission {AdmissionId}", id);
+                ModelState.AddModelError("", "An error occurred while saving changes.");
+                return View(model);
+            }
         }
 
         //View a list of active or admitted patients
-        public async Task<IActionResult> ActiveAdmissions(DateTime? from, string? q)
+        public async Task<IActionResult> ActiveAdmissions(DateTime? from,DateTime?to, string? q, int? wardId, int? doctorId, int? employeeId)
         {
             var query = _context.Admissions
                 .Include(a => a.Patient)
@@ -420,28 +431,80 @@ namespace CareDev.Controllers
                 query = query.Where(a => a.AdmissionDate >= d);
             }
 
+            //if (!string.IsNullOrWhiteSpace(q))
+            //{
+            //    q = q.Trim();
+            //    query = query.Where(a =>
+            //        (a.Patient != null && (a.Patient.Name + " " + a.Patient.SurName).Contains(q)) ||
+            //        (a.Bed != null && a.Bed.BedNumber.Contains(q)) ||
+            //        (a.Ward != null && a.Ward.Name.Contains(q)) // if Ward has Name property
+            //    );
+            //}
+
+            //var list = await query
+            //   .OrderByDescending(a => a.AdmissionDate)
+            //   .ToListAsync();
+
+            //ViewData["From"] = from?.ToString("yyyy-MM-dd") ?? "";
+            //ViewData["Q"] = q ?? "";
+
+            //return View(list);
+
+            // Text search: patient full name OR bed number OR ward name
             if (!string.IsNullOrWhiteSpace(q))
             {
-                q = q.Trim();
+                var qTrim = q.Trim().ToLower();
                 query = query.Where(a =>
-                    (a.Patient != null && (a.Patient.Name + " " + a.Patient.SurName).Contains(q)) ||
-                    (a.Bed != null && a.Bed.BedNumber.Contains(q)) ||
-                    (a.Ward != null && a.Ward.Name.Contains(q)) // if Ward has Name property
+                    (a.Patient != null && ((a.Patient.SurName + " " + a.Patient.Name).ToLower().Contains(qTrim)
+                                           || (a.Patient.Name + " " + a.Patient.SurName).ToLower().Contains(qTrim)))
+                    || (a.Bed != null && a.Bed.BedNumber.ToLower().Contains(qTrim))
+                    || (a.Ward != null && a.Ward.Name.ToLower().Contains(qTrim))
                 );
             }
 
-            var list = await query
-               .OrderByDescending(a => a.AdmissionDate)
-               .ToListAsync();
+            // Filter by Ward
+            if (wardId.HasValue)
+            {
+                query = query.Where(a => a.WardId == wardId.Value);
+            }
 
-            ViewData["From"] = from?.ToString("yyyy-MM-dd") ?? "";
-            ViewData["Q"] = q ?? "";
+            // Filter by Doctor
+            if (doctorId.HasValue)
+            {
+                query = query.Where(a => a.DoctorId == doctorId.Value);
+            }
+
+            // Filter by Employee
+            if (employeeId.HasValue)
+            {
+                query = query.Where(a => a.EmployeeId == employeeId.Value);
+            }
+
+            // Order by most recent admissions first
+            var list = await query.OrderByDescending(a => a.AdmissionDate).ToListAsync();
+
+            //selects for the filter form
+            var wards = await _context.Wards.OrderBy(w => w.Name)
+                .Select(w => new { w.WardId, w.Name }).ToListAsync();
+            var doctors = await _context.Doctors.OrderBy(d => d.SurName).ThenBy(d => d.Name)
+                .Select(d => new { d.DoctorId, FullName = d.SurName + " " + d.Name }).ToListAsync();
+            var employees = await _context.Employees.OrderBy(e => e.SurName).ThenBy(e => e.Name)
+                .Select(e => new { e.EmployeeId, FullName = e.SurName + " " + e.Name }).ToListAsync();
+
+            ViewBag.Wards = new SelectList(wards, "WardId", "Name", wardId);
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName", doctorId);
+            ViewBag.Employees = new SelectList(employees, "EmployeeId", "FullName", employeeId);
+
+            //Preserve filter values in ViewData
+            ViewData["dateFrom"] = from?.ToString("yyyy-MM-dd") ?? "";
+            ViewData["dateTo"] = to?.ToString("yyyy-MM-dd") ?? "";
+            ViewData["q"] = q ?? "";
 
             return View(list);
         }
 
 
-        // GET: Discharges/Details/5
+        // GET: Discharges/Details
         public async Task<IActionResult> AdmissionDetails(int? id)
         {
             if (id == null) return NotFound();
@@ -463,9 +526,11 @@ namespace CareDev.Controllers
                 return RedirectToAction("Index");
             }
 
+
+
             return View(admission);
         }
-        // GET: Admissions/Discharge/5
+        // GET: Admissions/Discharge
         [Authorize(Roles = "WardAdmin,Nurse,Doctor,Admin")]
         public async Task<IActionResult> Discharge(int? id)
         {
@@ -498,7 +563,7 @@ namespace CareDev.Controllers
             return View(vm);
         }
 
-        // POST: Admissions/Discharge/5
+        // POST: Admissions/Discharge
         [Authorize(Roles = "WardAdmin,Nurse,Doctor,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -573,45 +638,6 @@ namespace CareDev.Controllers
                 return View(model);
             }
         }
-
-        //// GET: Admissions/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var admission = await _context.Admissions
-        //        .Include(a => a.Bed)
-        //        .Include(a => a.Doctor)
-        //        .Include(a => a.Employee)
-        //        .Include(a => a.Patient)
-        //        .Include(a => a.Ward)
-        //        .FirstOrDefaultAsync(m => m.AdmissionId == id);
-        //    if (admission == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(admission);
-        //}
-
-        //// POST: Admissions/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var admission = await _context.Admissions.FindAsync(id);
-        //    if (admission != null)
-        //    {
-        //        _context.Admissions.Remove(admission);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    TempData["success"] = "Admission deleted successfully.";
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool AdmissionExists(int id)
         {
