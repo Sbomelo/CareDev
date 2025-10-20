@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    string dateFrom = (string)ViewData["dateFrom"] ?? "";
+    string dateTo = (string)ViewData["dateTo"] ?? "";
+    string q = (string)ViewData["q"] ?? "";
 }
 <body style="background-color:#E1F5FE;">
     <div class="row pt-4">
@@ -11,95 +14,147 @@
 
         </div>
 
+    </div>
+    <div >
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-auto">
+                <label class="fw-bold">Filter By:</label>
+            </div>
+            <div class="col-auto">
+                <label class="form-label fw-bold">Date Admited In</label>
+                <input name="dateFrom" class="form-control" type="date" value="@dateFrom" />
+            </div>
+@*             <div class="col-auto">
+                <label class="form-label">To</label>
+                <input name="dateTo" class="form-control" type="date" value="@dateTo" />
+            </div> *@
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Search patient / bed / ward</label>
+                <input name="q" class="form-control" type="text" value="@q" placeholder="e.g. Smith, L-101, Labour" />
+            </div>
+@* 
+            <div class="col-md-2">
+                <label class="form-label">Ward</label>
+                <select name="wardId" class="form-select" asp-items="(SelectList)ViewBag.Wards">
+                    <option value="">All wards</option>
+                </select>
+            </div> *@
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Doctor</label>
+                <select name="doctorId" class="form-select" asp-items="(SelectList)ViewBag.Doctors">
+                    <option value="">Any doctor</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Admitting staff</label>
+                <select name="employeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees">
+                    <option value="">Any</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <labl class="form-label fw-bold"></labl>
+                <button type="submit" class="btn btn-primary rounded-pill">Filter</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2 rounded-pill">Clear</a>
+            </div>
+        </form>
+       <hr />
+
         <div class="text-end">
             <p>
                 <a asp-action="Create" class="btn btn-primary rounded-pill w-25"><i class="bi bi-plus-circle"></i>Admit New Patient</a>
             </p>
         </div>
     </div>
-    <table class="table table-active table-bordered table-hover">
-        <thead>
-            <tr class="table-dark">
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Patient)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.IsActive)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Ward)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Bed)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Doctor)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Employee)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.AdmissionDate)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.DischargeDate)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.AdmissionReason)
-                </th>
-                <th scope="row">
-                    @Html.DisplayNameFor(model => model.Notes)
-                </th>
-                <th scope="row" class="text-center ">
-                    <h5 class="text-white"> Manage Admissions</h5>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="table-primary">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Patient.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ward.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Bed.BedNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Doctor.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Employee.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AdmissionDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DischargeDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AdmissionReason)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td class="table-active">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-action="Edit" asp-route-id="@item.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i></a>
-                            <a asp-action="Details" asp-route-id="@item.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i></a>
-                            <a asp-action="Discharge" asp-route-id="@item.AdmissionId" class="btn btn-danger rounded-pill mx-2" title="Discharge Patient"><i class="bi bi-trash-fill"></i></a>
-                        </div>
-                    </td>
+
+    <div>
+        <table class="table table-active table-bordered table-hover">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Patient)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Ward)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Bed)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Doctor)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Employee)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.AdmissionDate)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.DischargeDate)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.AdmissionReason)
+                    </th>
+                    <th scope="row">
+                        @Html.DisplayNameFor(model => model.Notes)
+                    </th>
+                    <th scope="row" class="text-center ">
+                        <h5 class="text-white"> Manage Admissions</h5>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="table-primary">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Patient.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ward.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Bed.BedNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Doctor.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employee.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AdmissionDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DischargeDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AdmissionReason)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td class="table-active">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-action="Edit" asp-route-id="@item.AdmissionId" class="btn btn-primary rounded-pill mx-2" title="Edit Admission"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.AdmissionId" class="btn btn-info rounded-pill mx-2" title="Admission Details"><i class="bi bi-info-circle"></i></a>
+                                <a asp-action="Discharge" asp-route-id="@item.AdmissionId" class="btn btn-danger rounded-pill mx-2" title="Discharge Patient"><i class="bi bi-trash-fill"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+    
 
     <div class="text-center mt-2 d-flex justify-content-center align-content-center">
         <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-dark w-75 mx-2 rounded-pill">Bact To Menu</a>
