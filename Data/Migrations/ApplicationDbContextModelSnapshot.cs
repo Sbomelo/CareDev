@@ -22,42 +22,6 @@ namespace CareDev.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CareDev.Models.AdministerMeds", b =>
-                {
-                    b.Property<int>("AdministeredId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdministeredId"));
-
-                    b.Property<string>("AdministeredById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AdverseReactions")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("DispenseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Observations")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("TimeGiven")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AdministeredId");
-
-                    b.HasIndex("AdministeredById");
-
-                    b.HasIndex("DispenseId")
-                        .IsUnique();
-
-                    b.ToTable("AdministeredMeds");
-                });
-
             modelBuilder.Entity("CareDev.Models.Admission", b =>
                 {
                     b.Property<int>("AdmissionId")
@@ -74,9 +38,6 @@ namespace CareDev.Data.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<int?>("BedId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BedId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DischargeDate")
@@ -113,11 +74,7 @@ namespace CareDev.Data.Migrations
 
                     b.HasKey("AdmissionId");
 
-                    b.HasIndex("BedId")
-                        .IsUnique()
-                        .HasFilter("[BedId] IS NOT NULL");
-
-                    b.HasIndex("BedId1");
+                    b.HasIndex("BedId");
 
                     b.HasIndex("DoctorId");
 
@@ -288,7 +245,7 @@ namespace CareDev.Data.Migrations
 
                     b.Property<string>("BedNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
@@ -300,7 +257,75 @@ namespace CareDev.Data.Migrations
 
                     b.HasIndex("WardId");
 
+                    b.HasIndex("BedNumber", "WardId")
+                        .IsUnique();
+
                     b.ToTable("Beds");
+
+                    b.HasData(
+                        new
+                        {
+                            BedId = 1,
+                            BedNumber = "L-101",
+                            IsAvailable = false,
+                            WardId = 6
+                        },
+                        new
+                        {
+                            BedId = 2,
+                            BedNumber = "L-102",
+                            IsAvailable = false,
+                            WardId = 6
+                        },
+                        new
+                        {
+                            BedId = 3,
+                            BedNumber = "L-103",
+                            IsAvailable = false,
+                            WardId = 6
+                        },
+                        new
+                        {
+                            BedId = 4,
+                            BedNumber = "S-201",
+                            IsAvailable = false,
+                            WardId = 2
+                        },
+                        new
+                        {
+                            BedId = 5,
+                            BedNumber = "S-202",
+                            IsAvailable = false,
+                            WardId = 2
+                        },
+                        new
+                        {
+                            BedId = 6,
+                            BedNumber = "S-203",
+                            IsAvailable = false,
+                            WardId = 2
+                        },
+                        new
+                        {
+                            BedId = 7,
+                            BedNumber = "M-301",
+                            IsAvailable = false,
+                            WardId = 3
+                        },
+                        new
+                        {
+                            BedId = 8,
+                            BedNumber = "M-302",
+                            IsAvailable = false,
+                            WardId = 3
+                        },
+                        new
+                        {
+                            BedId = 9,
+                            BedNumber = "M-303",
+                            IsAvailable = false,
+                            WardId = 3
+                        });
                 });
 
             modelBuilder.Entity("CareDev.Models.ChronicCondition", b =>
@@ -626,54 +651,6 @@ namespace CareDev.Data.Migrations
                     b.ToTable("MedicationAdministrations");
                 });
 
-            modelBuilder.Entity("CareDev.Models.MedicationDispensation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DispenserUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Dosage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Frequency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MedicationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PatientUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Route")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ScheduleLevel")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TimeDispensed")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DispenserUserId");
-
-                    b.HasIndex("PatientUserId");
-
-                    b.ToTable("MedicationDispensations");
-                });
-
             modelBuilder.Entity("CareDev.Models.Patient", b =>
                 {
                     b.Property<int>("PatientId")
@@ -854,53 +831,6 @@ namespace CareDev.Data.Migrations
                     b.ToTable("PatientMovements");
                 });
 
-            modelBuilder.Entity("CareDev.Models.PatientVitals", b =>
-                {
-                    b.Property<int>("VitalID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VitalID"));
-
-                    b.Property<string>("BloodPressure")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("GlucoseLevel")
-                        .HasColumnType("float");
-
-                    b.Property<int>("HeartRate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NurseUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("OxygenSaturation")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PatientUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("RecordedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RespiratoryRate")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Temperature")
-                        .HasColumnType("float");
-
-                    b.HasKey("VitalID");
-
-                    b.HasIndex("NurseUserId");
-
-                    b.HasIndex("PatientUserId");
-
-                    b.ToTable("PatientVitals");
-                });
-
             modelBuilder.Entity("CareDev.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -981,66 +911,6 @@ namespace CareDev.Data.Migrations
                     b.ToTable("TreatPatients");
                 });
 
-            modelBuilder.Entity("CareDev.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("pictureUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("CareDev.Models.Vital", b =>
                 {
                     b.Property<int>("VitalId")
@@ -1106,6 +976,16 @@ namespace CareDev.Data.Migrations
                         {
                             WardId = 3,
                             Name = "Maternity Ward"
+                        },
+                        new
+                        {
+                            WardId = 4,
+                            Name = "X Ray Ward"
+                        },
+                        new
+                        {
+                            WardId = 6,
+                            Name = "Labour Ward"
                         });
                 });
 
@@ -1246,35 +1126,12 @@ namespace CareDev.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CareDev.Models.AdministerMeds", b =>
-                {
-                    b.HasOne("CareDev.Models.ApplicationUser", "AdministeredBy")
-                        .WithMany()
-                        .HasForeignKey("AdministeredById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CareDev.Models.MedicationDispensation", "MedicationDispensation")
-                        .WithOne("AdministerMeds")
-                        .HasForeignKey("CareDev.Models.AdministerMeds", "DispenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AdministeredBy");
-
-                    b.Navigation("MedicationDispensation");
-                });
-
             modelBuilder.Entity("CareDev.Models.Admission", b =>
                 {
                     b.HasOne("CareDev.Models.Bed", "Bed")
-                        .WithOne()
-                        .HasForeignKey("CareDev.Models.Admission", "BedId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CareDev.Models.Bed", null)
                         .WithMany("Admissions")
-                        .HasForeignKey("BedId1");
+                        .HasForeignKey("BedId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CareDev.Models.Doctor", "Doctor")
                         .WithMany("Admissions")
@@ -1387,7 +1244,7 @@ namespace CareDev.Data.Migrations
                     b.HasOne("CareDev.Models.Role", "Role")
                         .WithMany("Employees")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
@@ -1417,25 +1274,6 @@ namespace CareDev.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Medication");
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("CareDev.Models.MedicationDispensation", b =>
-                {
-                    b.HasOne("CareDev.Models.ApplicationUser", "Dispenser")
-                        .WithMany()
-                        .HasForeignKey("DispenserUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CareDev.Models.ApplicationUser", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Dispenser");
 
                     b.Navigation("Patient");
                 });
@@ -1536,7 +1374,8 @@ namespace CareDev.Data.Migrations
 
                     b.HasOne("CareDev.Models.ApplicationUser", "MovedByUser")
                         .WithMany()
-                        .HasForeignKey("MovedByUserId");
+                        .HasForeignKey("MovedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CareDev.Models.Patient", "Patient")
                         .WithMany()
@@ -1577,25 +1416,6 @@ namespace CareDev.Data.Migrations
                     b.Navigation("ToBed");
 
                     b.Navigation("ToWard");
-                });
-
-            modelBuilder.Entity("CareDev.Models.PatientVitals", b =>
-                {
-                    b.HasOne("CareDev.Models.User", "Nurse")
-                        .WithMany()
-                        .HasForeignKey("NurseUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CareDev.Models.User", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Nurse");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("CareDev.Models.TreatPatient", b =>
@@ -1716,11 +1536,6 @@ namespace CareDev.Data.Migrations
             modelBuilder.Entity("CareDev.Models.Medication", b =>
                 {
                     b.Navigation("MedicationAdministrations");
-                });
-
-            modelBuilder.Entity("CareDev.Models.MedicationDispensation", b =>
-                {
-                    b.Navigation("AdministerMeds");
                 });
 
             modelBuilder.Entity("CareDev.Models.Patient", b =>

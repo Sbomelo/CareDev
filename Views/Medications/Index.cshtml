@@ -4,54 +4,63 @@
     ViewData["Title"] = "Index";
 }
 <body style="background-color:#B0BEC5; color:white;">
+    <div class="row pt-4">
         <div class="text-center">
 
             <h1>Medication LIST</h1>
-        </div>
-        <div class="d-flex justify-content-end">
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
+
         </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Schedule)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UsageNotes)
-            </th>
-                Manage
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-           @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Schedule)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UsageNotes)
-            </td>
-            <td>
-                  <div class="w-75 btn-group" role="group">
-                      <a asp-action="Edit" asp-route-id="@item.MedicationId" class="btn btn-primary rounded-pill mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
-                      <a asp-action="Details" asp-route-id="@item.MedicationId" class="btn btn-info rounded-pill mx-2"><i class="bi bi-info-circle"></i>Details</a>
-                      <a asp-action="Delete" asp-route-id="@item.MedicationId" class="btn btn-danger rounded-pill mx-2"><i class="bi bi-trash-fill"></i>Delete</a>
-                  </div>
-            </td>
-                
-        </tr>
-}
-    </tbody>
-  </table>
+        <div class="text-end">
+            <p>
+                <a asp-action="Create" class="btn btn-primary rounded-pill w-25"><i class="bi bi-plus-circle"></i>Create New Medication</a>
+            </p>
+        </div>
+    </div>
+
+    <table class="table table-active table-hover table-bordered">
+        <thead>
+            <tr class="table-dark">
+                <th scope="row">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="row">
+                    @Html.DisplayNameFor(model => model.Schedule)
+                </th>
+                <th scope="row">
+                    @Html.DisplayNameFor(model => model.UsageNotes)
+                </th>
+                <th scope="row">
+                    <h3>Manage</h3>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-light">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Schedule)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UsageNotes)
+                    </td>
+                    <td class="table-active">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-action="Edit" asp-route-id="@item.MedicationId" class="btn btn-primary rounded-pill mx-2"><i class="bi bi-pencil-square"></i>Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.MedicationId" class="btn btn-info rounded-pill mx-2"><i class="bi bi-info-circle"></i>Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.MedicationId" class="btn btn-danger rounded-pill mx-2"><i class="bi bi-trash-fill"></i>Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center mt-2 d-flex justify-content-center align-content-center">
+        <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-dark w-50 mx-2 rounded-pill">Bact To Admin Menu</a>
+        <a asp-controller="Home" asp-action="HospitalConfiguration" class="btn btn-primary w-50 mx-2 rounded-pill">BACK</a>
+    </div>
 </body>

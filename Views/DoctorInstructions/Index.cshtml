@@ -1,106 +1,71 @@
-﻿@{
-    ViewData["Title"] = "Doctor Instructions";
+﻿@model IEnumerable<CareDev.Models.DoctorInstruction>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="container mt-5">
-    <h2 class="text-primary mb-4">Doctor Instructions for Patients</h2>
+<h1>Index</h1>
 
-    @* Patient cards *@
-    <div class="card mb-3">
-        <div class="card-header bg-info text-white">
-            Patient: John Doe
-        </div>
-        <div class="card-body">
-            <p><strong>Instruction:</strong> Take 500mg Paracetamol twice daily after meals.</p>
-            <p><strong>Notes:</strong> Monitor for fever and report if persists more than 3 days.</p>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#medsModal1">
-                View Medications
-            </button>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header bg-info text-white">
-            Patient: Jane Smith
-        </div>
-        <div class="card-body">
-            <p><strong>Instruction:</strong> Apply topical ointment on affected area 3 times daily.</p>
-            <p><strong>Notes:</strong> Keep area clean and dry.</p>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#medsModal2">
-                View Medications
-            </button>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header bg-info text-white">
-            Patient: Michael Brown
-        </div>
-        <div class="card-body">
-            <p><strong>Instruction:</strong> Take blood pressure medication once daily in the morning.</p>
-            <p><strong>Notes:</strong> Record blood pressure readings daily.</p>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#medsModal3">
-                View Medications
-            </button>
-        </div>
-    </div>
-</div>
-
-@* Modals *@
-<div class="modal fade" id="medsModal1" tabindex="-1" aria-labelledby="medsModal1Label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="medsModal1Label">Medications for John Doe</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Medication:</strong> Paracetamol 500mg</p>
-                <p><strong>Frequency:</strong> Twice daily after meals</p>
-                <p><strong>Notes:</strong> Monitor for fever, report if persists > 3 days</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="medsModal2" tabindex="-1" aria-labelledby="medsModal2Label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="medsModal2Label">Medications for Jane Smith</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Medication:</strong> Topical Ointment</p>
-                <p><strong>Frequency:</strong> 3 times daily</p>
-                <p><strong>Notes:</strong> Keep area clean and dry</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="medsModal3" tabindex="-1" aria-labelledby="medsModal3Label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="medsModal3Label">Medications for Michael Brown</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Medication:</strong> Blood Pressure Medication</p>
-                <p><strong>Frequency:</strong> Once daily in the morning</p>
-                <p><strong>Notes:</strong> Record blood pressure readings daily</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InstructionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Instructions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Medication)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FollowUpDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdditionalNotes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstructionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medication)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FollowUpDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdditionalNotes)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InstructionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InstructionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InstructionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
