@@ -1,4 +1,4 @@
-﻿@page
+﻿@* @page
 @model CareDev.Areas.Identity.Pages.Account.RegisterAdminModel
 
 <!DOCTYPE html>
@@ -151,7 +151,7 @@
                     <h4>*</h4>
                 </div>
             </div> *@
-            <div class="d-flex justify-content-center-align-items-center">
+           @*<div class="d-flex justify-content-center-align-items-center">
                 <div class="container rounded-pill divs">
                     <label asp-for="Input.Gender" style="width:22%">Gender: </label><Select asp-for="Input.Gender" class="Select" style="width:76%">
                         <option value="">--SELECT GENDER--</option>
@@ -220,6 +220,4 @@
     <partial name="_ValidationScriptsPartial" />
 }
 </html>
-
-
-
+ *@

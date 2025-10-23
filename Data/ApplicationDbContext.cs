@@ -255,7 +255,7 @@ namespace CareDev.Data
         //Core entities
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Employee> Employees { get; set; }
-       // public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
        public DbSet<MedicationAdministration> MedicationAdministrations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Ward> Wards { get; set; }
