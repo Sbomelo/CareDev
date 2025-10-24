@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        .main-div {
+        /* .main-div {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, auto);
@@ -50,7 +50,21 @@
         .item6{
             grid-column: 2/ 3;
             grid-row: 3/ 3;
+        } */
+
+        .grid-wrapper {
+            max-width: 660px;
+            margin-left: auto;
+            margin-right: 2.5rem;
         }
+
+        @@media (max-width: 767.98px) {
+            .grid-wrapper {
+                max-width: 100%;
+                margin: 0;
+                padding: 0 1rem;
+            }
+         }
 
         .item-div {
             border: none;
@@ -61,6 +75,7 @@
             font-size: 2em;
             text-align: center;
             padding: 15px;
+
         }
 
             .item-div:hover {
@@ -86,92 +101,100 @@
 </head>
 
 <body>
-    <div class="main-div">
-        <div class="item-div item1">
-            <a class="a-tags" asp-controller="Patients" asp-action="MedicalInformation">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class="bi bi-folder"></i></h1>
+    <div class ="container-fluid min-vh-100" >
+        <div class="container" >
+            <div class="grid-wrapper" >
+                <div class="row gx-4 gy-4">
+
+                    <div class="item1  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="MedicalInformation">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class="bi bi-folder"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>VIEW MEDICAL INFORMATION</h4>
+                                </div>
+                            </div>
+                        </a>
                     </div>
 
-                    <div>
-                        <h4>VIEW MEDICAL INFORMATION</h4>
+                    <div class="item2  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="ScheduledEvents">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class="bi bi-bell"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>VIEW SCHEDULED EVENTS </h4>
+                                </div>
+                            </div>
+                        </a>
                     </div>
+
+                    <div class="item3  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="TrackJourney">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class="bi bi-clock"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>TRACK HOSPITAL JOURNEY</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="item4  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="Communicate">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class="bi bi-person-square"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>COMMUNICATE WITH MEDICAL STUFF</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="item5  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="PatientPortal">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class=" bi bi-journals"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>PATIENT PORTAL</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="item6  col-12 col-md-6">
+                        <a class="a-tags" asp-controller="Patients" asp-action="WriteFeedBack">
+                            <div style="display:flex; justify-content:center; align-items:center;" class="item-div">
+                                <div>
+                                    <h1><i class="bi bi-hand-thumbs-up"></i></h1>
+                                </div>
+
+                                <div>
+                                    <h4>WRITE FEEDBACK</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
                 </div>
-            </a>
+            </div>
         </div>
-
-        <div class="item-div item2">
-            <a class="a-tags" asp-controller="Patients" asp-action="ScheduledEvents">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class="bi bi-bell"></i></h1>
-                    </div>
-
-                    <div>
-                        <h4>VIEW SCHEDULED EVENTS </h4>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="item-div item3">
-            <a class="a-tags" asp-controller="Patients" asp-action="TrackJourney">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class="bi bi-clock"></i></h1>
-                    </div>
-
-                    <div>
-                        <h4>TRACK HOSPITAL JOURNEY</h4>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="item-div item4">
-            <a class="a-tags" asp-controller="Patients" asp-action="Communicate">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class="bi bi-person-square"></i></h1>
-                    </div>
-
-                    <div>
-                        <h4>COMMUNICATE WITH MEDICAL STUFF</h4>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="item-div item5">
-            <a class="a-tags" asp-controller="Patients" asp-action="PatientPortal">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class=" bi bi-journals"></i></h1>
-                    </div>
-
-                    <div>
-                        <h4>PATIENT PORTAL</h4>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="item-div item6">
-            <a class="a-tags" asp-controller="Patients" asp-action="WriteFeedBack">
-                <div style="display:flex; justify-content:center; align-items:center;">
-                    <div>
-                        <h1><i class="bi bi-hand-thumbs-up"></i></h1>
-                    </div>
-
-                    <div>
-                        <h4>WRITE FEEDBACK</h4>
-                    </div>
-                </div>
-            </a>
-        </div>
-
     </div>
+    
 
 </body>
 </html>
