@@ -17,15 +17,15 @@
         {
             var a = Model.CurrentAdmission;
             <p>
-                <strong>Admission Number:</strong> @a.AdmissionId<br />
-                <strong>Admitted At:</strong> @a.AdmissionDate.ToLocalTime().ToString("f")<br />
-                <strong>Ward - Bed:</strong>
+                <strong>Admission Number :</strong> @a.AdmissionId<br />
+                <strong>Admitted At :</strong> @a.AdmissionDate.ToLocalTime().ToString("f")<br />
+                <strong>Ward - Bed : </strong>
                 @(a.Ward?.Name ?? "—") - @(a.Bed?.BedNumber ?? "—")<br />
-                <strong>Doctor Name:</strong>
+                <strong>Doctor Name :</strong>
                 @(a.Doctor != null ? (a.Doctor.SurName + " " + a.Doctor.Name) : "—")<br />
-                <strong>Admitted By:</strong>
+                <strong>Admitted By :</strong>
                 @(a.Employee != null ? (a.Employee.SurName + " " + a.Employee.Name) : "—")<br />
-                <strong>Reason:</strong> @a.AdmissionReason ?? "—"
+                <strong>Reason:</strong> @a.AdmissionReason
             </p>
 
             <h6>Movement history</h6>
@@ -61,7 +61,7 @@
             }
 
             <p>
-                <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-outline-primary">View full admission details</a>
+                <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-primary rounded-pill">View full admission details</a>
             </p>
         }
         else

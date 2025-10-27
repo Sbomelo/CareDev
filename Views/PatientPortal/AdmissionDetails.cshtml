@@ -36,7 +36,7 @@ else
                 <dd class="col-sm-9">: @a.Employee?.SurName @a.Employee?.Name </dd>
 
                 <dt class="col-sm-3">Discharge Date </dt>
-                <dd class="col-sm-9">: @(a.DischargeDate.HasValue ? a.DischargeDate.Value.ToLocalTime().ToString("f") : "—")</dd>
+                <dd class="col-sm-9">: @(a.DischargeDate.HasValue ? a.DischargeDate.Value.ToLocalTime().ToString("f") : "")</dd>
 
                 <dt class="col-sm-3">Discharge Notes </dt>
                 <dd class="col-sm-9">: @a.DischargeNotes</dd>
