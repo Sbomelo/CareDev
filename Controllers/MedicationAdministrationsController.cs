@@ -1,170 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Data;
 using CareDev.Models;
+using CareDev.Models.ViewModels;
 
 namespace CareDev.Controllers
 {
-    public class MedicationAdministrationsController : Controller
+    //[Authorize(Roles = "Nurse,NursingSister")]
+    public class MedicationAdministrationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager; // Updated here
 
-        public MedicationAdministrationsController(ApplicationDbContext context)
+        public MedicationAdministrationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: MedicationAdministrations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Create(int dispenseId)
         {
-            var applicationDbContext = _context.MedicationAdministrations.Include(m => m.Medication).Include(m => m.Patient);
-            return View(await applicationDbContext.ToListAsync());
-        }
+            var dispensation = await _context.MedicationDispensations
+                .Include(m => m.Patient) // Make sure MedicationDispensation.Patient is of type ApplicationUser
+                .FirstOrDefaultAsync(d => d.Id == dispenseId);
 
-        // GET: MedicationAdministrations/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
+            if (dispensation == null)
                 return NotFound();
-            }
 
-            var medicationAdministration = await _context.MedicationAdministrations
-                .Include(m => m.Medication)
-                .Include(m => m.Patient)
-                .FirstOrDefaultAsync(m => m.PatientId == id);
-            if (medicationAdministration == null)
+            var model = new AdministerMedicationVM
             {
-                return NotFound();
-            }
+                DispenseId = dispenseId,
+                MedicationName = dispensation.MedicationName,
+                TimeGiven = DateTime.Now
+            };
 
-            return View(medicationAdministration);
+            ViewData["PatientName"] = dispensation.Patient.Name;
+
+            return View(model);
         }
 
-        // GET: MedicationAdministrations/Create
-        public IActionResult Create()
-        {
-            ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name");
-            return View();
-        }
-
-        // POST: MedicationAdministrations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Admin_ID,PatientId,MedicationId,EmployeeId,Dosage,Time,Notes")] MedicationAdministration medicationAdministration)
+        public async Task<IActionResult> Create(AdministerMedicationVM model)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(medicationAdministration);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name", medicationAdministration.MedicationId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", medicationAdministration.PatientId);
-            return View(medicationAdministration);
-        }
+            if (!ModelState.IsValid)
+                return View(model);
 
-        // GET: MedicationAdministrations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+            var user = await _userManager.GetUserAsync(User);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var dispensation = await _context.MedicationDispensations
+                .Include(d => d.Patient)
+                .FirstOrDefaultAsync(d => d.Id == model.DispenseId);
+
+            if (dispensation == null)
                 return NotFound();
-            }
 
-            var medicationAdministration = await _context.MedicationAdministrations.FindAsync(id);
-            if (medicationAdministration == null)
+            if (dispensation.ScheduleLevel >= 5 && roles.Contains("Nurse"))
             {
-                return NotFound();
+                ModelState.AddModelError("", "You are not authorized to administer Schedule 5 or higher medications.");
+                model.MedicationName = dispensation.MedicationName;
+                ViewData["PatientName"] = dispensation.Patient.Name;
+                return View(model);
             }
-            ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name", medicationAdministration.MedicationId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", medicationAdministration.PatientId);
-            return View(medicationAdministration);
-        }
 
-        // POST: MedicationAdministrations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Admin_ID,PatientId,MedicationId,EmployeeId,Dosage,Time,Notes")] MedicationAdministration medicationAdministration)
-        {
-            if (id != medicationAdministration.PatientId)
+            var entity = new AdministerMeds
             {
-                return NotFound();
-            }
+                DispenseId = model.DispenseId,
+                TimeGiven = model.TimeGiven,
+                Observations = model.Observations,
+                AdverseReactions = model.AdverseReactions,
+                AdministeredById = user.Id // ApplicationUser Id
+            };
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(medicationAdministration);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MedicationAdministrationExists(medicationAdministration.PatientId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MedicationId"] = new SelectList(_context.Medications, "MedicationId", "Name", medicationAdministration.MedicationId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "Name", medicationAdministration.PatientId);
-            return View(medicationAdministration);
-        }
-
-        // GET: MedicationAdministrations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var medicationAdministration = await _context.MedicationAdministrations
-                .Include(m => m.Medication)
-                .Include(m => m.Patient)
-                .FirstOrDefaultAsync(m => m.PatientId == id);
-            if (medicationAdministration == null)
-            {
-                return NotFound();
-            }
-
-            return View(medicationAdministration);
-        }
-
-        // POST: MedicationAdministrations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var medicationAdministration = await _context.MedicationAdministrations.FindAsync(id);
-            if (medicationAdministration != null)
-            {
-                _context.MedicationAdministrations.Remove(medicationAdministration);
-            }
-
+            _context.AdministeredMeds.Add(entity);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool MedicationAdministrationExists(int id)
-        {
-            return _context.MedicationAdministrations.Any(e => e.PatientId == id);
+            return RedirectToAction("Details", "MedicationDispensation", new { patientUserId = dispensation.PatientUserId });
         }
     }
 }

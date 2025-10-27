@@ -1,0 +1,83 @@
+﻿@model CareDev.Models.ViewModels.AdministerMedicationVM
+
+@{
+    ViewData["Title"] = "Administer Medication";
+}
+
+<style>
+    .form-section {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+    }
+
+    .form-header {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #0d6efd;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="form-section">
+        <div class="form-header">Administer Medication</div>
+
+        <form asp-action="Create" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationSummary()
+                </div>
+            }
+
+            <input type="hidden" asp-for="DispenseId" />
+
+            <div class="mb-3">
+                <label asp-for="MedicationName" class="form-label"></label>
+                <input asp-for="MedicationName" class="form-control" readonly />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TimeGiven" class="form-label"></label>
+                <input asp-for="TimeGiven" class="form-control" type="datetime-local" />
+                <span asp-validation-for="TimeGiven" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Observations" class="form-label"></label>
+                <textarea asp-for="Observations" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Observations" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AdverseReactions" class="form-label"></label>
+                <textarea asp-for="AdverseReactions" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="AdverseReactions" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success px-4">Submit</button>
+                <a asp-controller="MedicationDispensation"
+                   asp-action="Details"
+                   asp-route-patientUserId="@ViewData["PatientId"]"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

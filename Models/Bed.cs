@@ -9,6 +9,7 @@ namespace CareDev.Models
         public int BedId { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public required string BedNumber{ get; set; } 
 
         //Foreign Key

@@ -23,16 +23,18 @@ namespace CareDev.Data
         public DbSet<Ward> Wards { get; set; }
         public DbSet<Bed> Beds { get; set; }
         public DbSet<Admission> Admissions { get; set; }
+        public DbSet<AdministerMeds> AdministeredMeds { get; set; }
+        public DbSet<MedicationDispensation> MedicationDispensations { get; set; }
+
         public DbSet<Discharge> Discharges { get; set; }
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientFolder> PatientFolders { get; set; }
-        //public DbSet<User> Users { get; set; }
         public DbSet<Vital> Vitals { get; set; }  
         public DbSet<TreatPatient> TreatPatients { get; set; }
-        public DbSet<DoctorInstruction> DoctorInstructions { get; set; } 
+        public DbSet<DoctorInstruction> DoctorInstructions { get; set; }
+        public DbSet<PatientVitals> PatientVitals { get; set; }
 
         //look-up tables
-       // public DbSet<GenderOption> GenderOptions { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<ChronicCondition> ChronicConditions { get; set; }
@@ -81,6 +83,37 @@ namespace CareDev.Data
                .WithMany(p => p.PatientConditions)
                .HasForeignKey(pa => pa.ChronicConditionId);
 
+            //modelBuilder.Entity<PatientVitals>()
+            //    .HasOne(pv => pv.Patient)
+            //    .WithMany()
+            //    .HasForeignKey(pv => pv.Patient)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MedicationDispensation>()
+                .HasOne(md => md.Patient)
+                .WithMany() // or WithMany(p => p.MedicationDispensations)
+                .HasForeignKey(md => md.PatientUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MedicationDispensation>()
+                .HasOne(md => md.Dispenser)
+                .WithMany()
+                .HasForeignKey(md => md.DispenserUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AdministerMeds>()
+                .HasOne(am => am.AdministeredBy)
+                .WithMany()
+                .HasForeignKey(am => am.AdministeredById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<PatientVitals>()
+            //    .HasOne(pv => pv.Nurse)
+            //    .WithMany()
+            //    .HasForeignKey(pv => pv.NurseUserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+
             /*modelBuilder.Entity<Patient>()
              .HasMany(p => p.Allergies)
              .WithOne(a => a.Patient)
@@ -90,7 +123,31 @@ namespace CareDev.Data
                .HasMany(p => p.ChronicConditions)
                .WithOne(pc => pc.Patient) 
                .HasForeignKey(pc => pc.PatientId);*/
+            //modelBuilder.Entity<PatientVitals>()
+            //    .HasOne(pv => pv.Nurse)
+            //    .WithMany()
+            //    .HasForeignKey(pv => pv.NurseUserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<PatientAllergy>()
+                .HasOne(pa => pa.Patient)
+                .WithMany(p => p.PatientAllergies)
+                .HasForeignKey(pa => pa.PatientId);
+
+            modelBuilder.Entity<PatientAllergy>()
+               .HasOne(pa => pa.Allergy)
+               .WithMany(p => p.PatientAllergies)
+               .HasForeignKey(pa => pa.AllergyId);
+
+            modelBuilder.Entity<PatientCondition>()
+                .HasOne(pa => pa.Patient)
+                .WithMany(p => p.PatientConditions)
+                .HasForeignKey(pa => pa.PatientId);
+
+            modelBuilder.Entity<PatientCondition>()
+               .HasOne(pa => pa.ChronicCondition)
+               .WithMany(p => p.PatientConditions)
+               .HasForeignKey(pa => pa.ChronicConditionId);
 
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.PatientFolder)
