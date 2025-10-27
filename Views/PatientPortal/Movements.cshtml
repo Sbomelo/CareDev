@@ -1,0 +1,104 @@
+﻿@model CareDev.Models.ViewModels.PatientMovementHistoryViewModel
+@{
+    ViewData["Title"] = "My Movement History";
+    string dateFrom = Model.DateFrom?.ToString("yyyy-MM-dd") ?? "";
+    string dateTo = Model.DateTo?.ToString("yyyy-MM-dd") ?? "";
+    string q = Model.Query ?? "";
+}
+<div class="text-center mb-3">
+    <h2>My Movement History</h2>
+</div>
+<hr />
+
+<p>
+    <strong>Patient Name:</strong>@Model.PatientFullName
+</p>
+
+<div class="card mb-3 bg-white border-0 rounded-4 ">
+    <div class="card-body bg-white shadow-lg border-0 rounded-4 ">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-medium">Filter by admission</label>
+                <select name="admissionId" class="form-select">
+                    <option value="">All admissions</option>
+                    @foreach(var a in Model.Admissions)
+                    {
+                        <option value="@a.AdmissionId" @* @(Model.AdmissionId == a.AdmissionId ? "selected" : "") *@>
+                            @a.AdmissionId - @a.AdmissionDate.ToLocalTime().ToString("g")
+                            @(a.Ward != null ? "-" + (a.Ward?.Name ?? "") : "")
+                            @(a.Bed != null ? "-" + a.Bed?.BedNumber : "")
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-medium">From</label>
+                <input name="dateFrom" class="form-control" type="date" value="@dateFrom" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-medium">To</label>
+                <input name="dateTo" class="form-control" type="date" value="@dateTo" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-medium">Search</label>
+                <input name="q" class="form-control" type="text" value="@q" placeholder="bed number, ward, notes, moved by, admission#"/>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary rounded-pill">Filter</button>
+                <a asp-action="Movements" class="btn btn-secondary ms-2 rounded-pill">Clear</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Movements.Any())
+{
+    <div class="alert alert-info">No movements found for the selected criteria.</div>
+}
+else
+{
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr class="table-bordered">
+                <th>Movement N#</th>
+                <th>Admission N#</th>
+                <th>Moved At</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Moved By</th>
+                <th>Reason</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var m in Model.Movements)
+        {
+            <tr class="table-bordered">
+                <td>@m.MovementId</td>
+                <td>
+                    @if (m.Admission != null) {
+                        <a asp-action="AdmissionDetails" asp-route-id="@m.AdmissionId">@m.AdmissionId</a>
+                    } else {
+                        @m.AdmissionId
+                    }
+                </td>
+                <td>@m.MovedAt.ToLocalTime().ToString("g")</td>
+                <td>@(m.FromBed != null ? (m.FromBed.Ward?.Name + " " + m.FromBed.BedNumber) : "—")</td>
+                <td>@(m.ToBed != null ? (m.ToBed.Ward?.Name + " " + m.ToBed.BedNumber) : "—")</td>
+                <td>@(m.MovedByUser?.UserName ?? "—")</td>
+                <td>@(m.Reason ?? "—")</td>
+                <td>
+                    <a asp-action="MovementDetails" asp-route-id="@m.MovementId" class="btn btn-primary rounded-pill">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+<div class="text-center mt-3">
+    <a asp-controller="Patients" asp-action="TrackJourney" class="btn btn-secondary w-75 rounded-pill">Back</a>
+</div>

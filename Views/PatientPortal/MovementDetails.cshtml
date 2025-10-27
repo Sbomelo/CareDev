@@ -1,0 +1,41 @@
+﻿@model PatientMovement
+@{
+    ViewData["Title"] = "Movement Details";
+}
+<div class="text-center">
+
+    <h2>Movement Details</h2>
+
+</div>
+<hr />
+
+<div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body shadow-lg border-0 rounded-4">
+        <dl class="row">
+            <dt class="col-sm-3">Movement Number</dt>
+            <dd class="col-sm-9">: @Model.MovementId</dd>
+
+            <dt class="col-sm-3">Admission Number</dt>
+            <dd class="col-sm-9">: @Model.AdmissionId</dd>
+
+            <dt class="col-sm-3">Moved At</dt>
+            <dd class="col-sm-9">: @Model.MovedAt.ToLocalTime().ToString("f")</dd>
+
+            <dt class="col-sm-3">From</dt>
+            <dd class="col-sm-9">: @Model?.FromBed?.Ward?.Name - @Model?.FromBed?.BedNumber </dd>
+
+            <dt class="col-sm-3">To</dt>
+            <dd class="col-sm-9">: @Model?.ToBed?.Ward?.Name - @Model?.ToBed?.BedNumber </dd>
+
+            <dt class="col-sm-3">Moved By</dt>
+            <dd class="col-sm-9">: @Model?.MovedByUser?.UserName </dd>
+
+            <dt class="col-sm-3">Reason</dt>
+            <dd class="col-sm-9">: @Model?.Reason </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="Movements" class="btn btn-secondary rounded-pill w-75">Back</a>
+</div>

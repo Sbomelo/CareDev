@@ -1,0 +1,108 @@
+﻿@model CareDev.Models.ViewModels.PatientAdmissionViewModel
+@{
+    ViewData["Title"] = "My Admission";
+}
+<div class="text-center">
+
+    <h2>My Admission</h2>
+
+</div>
+<hr />
+
+<div class="card mb-3 border-0 rounded-4 shadow-lg">
+    <div class="card-body border-0 rounded-4 shadow-lg">
+        <h5>@Model.PatientFullName</h5>
+
+        @if (Model.CurrentAdmission != null)
+        {
+            var a = Model.CurrentAdmission;
+            <p>
+                <strong>Admission Number:</strong> @a.AdmissionId<br />
+                <strong>Admitted At:</strong> @a.AdmissionDate.ToLocalTime().ToString("f")<br />
+                <strong>Ward - Bed:</strong>
+                @(a.Ward?.Name ?? "—") - @(a.Bed?.BedNumber ?? "—")<br />
+                <strong>Doctor Name:</strong>
+                @(a.Doctor != null ? (a.Doctor.SurName + " " + a.Doctor.Name) : "—")<br />
+                <strong>Admitted By:</strong>
+                @(a.Employee != null ? (a.Employee.SurName + " " + a.Employee.Name) : "—")<br />
+                <strong>Reason:</strong> @a.AdmissionReason ?? "—"
+            </p>
+
+            <h6>Movement history</h6>
+            @if (Model.Movements.Any())
+            {
+                <table class="table table-bordered table-active">
+                    <thead>
+                        <tr class="tabe table-dark">
+                            <th>Moved At</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>By</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Movements)
+                        {
+                            <tr class="table table-secondary">
+                                <td>@m.MovedAt.ToLocalTime().ToString("g")</td>
+                                <td>@(m.FromBed != null ? (m.FromBed.Ward?.Name + "- " + m.FromBed.BedNumber) : "")</td>
+                                <td>@(m.ToBed != null ? (m.ToBed.Ward?.Name + " - " + m.ToBed.BedNumber) : "")</td>
+                                <td>@(m.MovedByUser?.UserName ?? "")</td>
+                                <td>@(m.Reason ?? "")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted">No movement recorded for this admission.</p>
+            }
+
+            <p>
+                <a asp-action="AdmissionDetails" asp-route-id="@a.AdmissionId" class="btn btn-outline-primary">View full admission details</a>
+            </p>
+        }
+        else
+        {
+            <p>You currently have no active admission.</p>
+
+            <h5>Recent admissions</h5>
+            @if (Model.RecentAdmissions.Any())
+            {
+                <table class="table table-sm  table-bordered">
+                    <thead>
+                        <tr class="table-bordered">
+                            <th>Admission Number:</th>
+                            <th>Admitted At</th>
+                            <th>Discharged At</th>
+                            <th>Ward-Bed</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.RecentAdmissions)
+                        {
+                            <tr class="table-bordered">
+                                <td>@r.AdmissionId</td>
+                                <td>@r.AdmissionDate.ToLocalTime().ToString("g")</td>
+                                <td>@(r.DischargeDate.HasValue? r.DischargeDate.Value.ToLocalTime().ToString("g") : "—")</td>
+                                <td>@(r.Ward?.Name ?? "—") - @(r.Bed?.BedNumber ?? "—")</td>
+                                <td><a asp-action="AdmissionDetails" asp-route-id="@r.AdmissionId" class="btn btn-primary rounded-4">Details</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted">No previous admissions found.</p>
+            }
+        }
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-controller="Patients" asp-action="TrackJourney" class="btn btn-secondary w-75 rounded-pill">Back</a>
+</div>

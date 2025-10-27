@@ -1,0 +1,73 @@
+﻿@model CareDev.Models.ViewModels.PatientAdmissionViewModel
+@{
+    var a = Model.CurrentAdmission;
+    ViewData["Title"] = "Admission Details";
+}
+<div class="text-center">
+    <h2>Admission Details</h2>
+</div>
+
+<hr />
+@if (a == null)
+{
+    <p>Admission not found.</p>
+}
+else
+{
+    <div class="card mb-3 border-0 rounded-4 shadow-lg">
+        <div class="card-body border-0 rounded-4 shadow-lg">
+            <dl class="row">
+                <dt class="col-sm-3">Admission Number</dt>
+                <dd class="col-sm-9">: @a.AdmissionId</dd>
+
+                <dt class="col-sm-3">Patient Name</dt>
+                <dd class="col-sm-9">: @Model.PatientFullName</dd>
+
+                <dt class="col-sm-3">Admitted At</dt>
+                <dd class="col-sm-9">: @a.AdmissionDate.ToLocalTime().ToString("f")</dd>
+
+                <dt class="col-sm-3">Ward & Bed</dt>
+                <dd class="col-sm-9">: @a.Ward?.Name - @a.Bed?.BedNumber</dd>
+
+                <dt class="col-sm-3">Doctor Name</dt>
+                <dd class="col-sm-9">: @a.Doctor?.SurName @a.Doctor?.Name</dd>
+
+                <dt class="col-sm-3">Admitting By</dt>
+                <dd class="col-sm-9">: @a.Employee?.SurName @a.Employee?.Name </dd>
+
+                <dt class="col-sm-3">Discharge Date </dt>
+                <dd class="col-sm-9">: @(a.DischargeDate.HasValue ? a.DischargeDate.Value.ToLocalTime().ToString("f") : "—")</dd>
+
+                <dt class="col-sm-3">Discharge Notes </dt>
+                <dd class="col-sm-9">: @a.DischargeNotes</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-secondary rounded-pill w-75">Back</a>
+    </div>
+@*     <h5>Movement history</h5> *@
+   @*  @if (Model.Movements.Any())
+    {
+        <table class="table table-sm">
+            <thead><tr><th>Moved At</th><th>From</th><th>To</th><th>By</th><th>Notes</th></tr></thead>
+            <tbody>
+            @foreach(var m in Model.Movements)
+            {
+                <tr>
+                    <td>@m.MovedAt.ToLocalTime().ToString("g")</td>
+                    <td>@(m.FromBed != null ? m.FromBed.Ward?.Name + " / " + m.FromBed.BedNumber : "")</td>
+                    <td>@(m.ToBed != null ? m.ToBed.Ward?.Name + " / " + m.ToBed.BedNumber : "")</td>
+                    <td>@(m.MovedByUser?.UserName ?? "")</td>
+                    <td>@(m.Reason ?? "")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">No movements recorded.</p>
+    } *@
+}
+
