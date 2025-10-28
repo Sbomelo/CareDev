@@ -176,11 +176,20 @@
                     <span asp-validation-for="Input.Password" class="text-danger small"></span>
                 </div>
 
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe" class="form-label float-start">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                    <p>
+                        <a id="forgot-password" class="text-white-50 float-end" asp-page="./ForgotPassword">Forgot password?</a>
+                    </p>
+                </div>
+              @*   <div class="mb-3 text-end">
 
-                <div class="mb-3 text-end">
                     <a asp-page="./ForgotPassword" class="text-light">Forgot Password?</a>
                 </div>
-
+ *@
 
                 <div class="mb-3">
                     <button type="submit" class="btn login-btn">LOGIN</button>
