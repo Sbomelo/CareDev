@@ -33,40 +33,42 @@
             <a asp-action="Index" class="btn bg-secondary rounded-pill">Clear</a>
         </div>
     </form>
-
-    <table class="table table-bordered table-striped table-sm">
-        <thead>
-            <tr class="table-dark">
-                <th>Admission ID</th>
-                <th>Patient</th>
-                <th>Bed</th>
-                <th>Ward</th>
-                <th>Admitted</th>
-                <th>Discharged</th>
-                <th>Notes</th>
-@*                 <th>Discharged By</th> *@
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var a in Model)
-            {
-                <tr class="table-primary">
-                    <td>@a.AdmissionId</td>
-                    <td>@(a.Patient != null ? (a.Patient.Name + " " + a.Patient.SurName) : "")</td>
-                    <td>@(a.Bed?.BedNumber ?? " ")</td>
-                    <td>@(a.Ward?.Name ?? " ")</td>
-                    <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
-                    <td>@(a.DischargeDate.HasValue? a.DischargeDate.Value.ToLocalTime().ToString("g") : "")</td>
-                    <td>@(string.IsNullOrEmpty(a.DischargeNotes) ? "" : (a.DischargeNotes.Length > 80 ? a.DischargeNotes.Substring(0, 80) + "" : a.DischargeNotes))</td>
-@*                     <td>@(a.DischargedByUserId?.Name ?? a.DischargedByUserId.UserName ?? ) </td> *@
-                    <td>
-                        <a asp-action="Details" asp-route-id="@a.AdmissionId" class="btn btn-primary w-100 rounded-pill">Details</a>
-                    </td>
+    <div style="overflow-x:auto; overflow-y:auto;">
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr class="table-dark">
+                    <th>Admission ID</th>
+                    <th>Patient</th>
+                    <th>Bed</th>
+                    <th>Ward</th>
+                    <th>Admitted</th>
+                    <th>Discharged</th>
+                    <th>Notes</th>
+                    @*                 <th>Discharged By</th> *@
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr class="table-primary">
+                        <td>@a.AdmissionId</td>
+                        <td>@(a.Patient != null ? (a.Patient.Name + " " + a.Patient.SurName) : "")</td>
+                        <td>@(a.Bed?.BedNumber ?? " ")</td>
+                        <td>@(a.Ward?.Name ?? " ")</td>
+                        <td>@a.AdmissionDate.ToLocalTime().ToString("g")</td>
+                        <td>@(a.DischargeDate.HasValue? a.DischargeDate.Value.ToLocalTime().ToString("g") : "")</td>
+                        <td>@(string.IsNullOrEmpty(a.DischargeNotes) ? "" : (a.DischargeNotes.Length > 80 ? a.DischargeNotes.Substring(0, 80) + "" : a.DischargeNotes))</td>
+                        @*                     <td>@(a.DischargedByUserId?.Name ?? a.DischargedByUserId.UserName ?? ) </td> *@
+                        <td>
+                            <a asp-action="Details" asp-route-id="@a.AdmissionId" class="btn btn-primary w-100 rounded-pill">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
 
     <div class="text-center mt-2 d-flex justify-content-center align-content-center">
         <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-dark w-75 mx-2 rounded-pill">Bact To Menu</a>

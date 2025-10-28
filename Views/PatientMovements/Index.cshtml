@@ -9,48 +9,52 @@
                 <a asp-controller="Admissions" asp-action="ActiveAdmissions" class="btn btn-primary rounded-pill w-25">Move Patient</a>
             </p>
      </div>
-        
-<table class="table table-sm table-striped table-bordered">
-    <thead>
-        <tr class="table-dark">
-            <th>ID</th>
-            <th>Patient Name</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Moved At</th>
-            <th>By</th>
-            <th>Reason</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var m in Model)
-        {
-            <tr class="table-light">
-                <td>@m.MovementId</td>
-                <td>@(m.Patient != null ? $"{m.Patient.Name} {m.Patient.SurName}" : "—")</td>
-                <td>
-                    @if (m.FromBed != null)
-                    {
-                        @($"{m.FromBed.Ward?.Name ?? "—"} / {m.FromBed.BedNumber}")
-                    }
-                    else
-                    {
 
-                        @("—")
-                    }
-                </td>
-                <td>@($"{m.ToBed?.Ward?.Name ?? "—"} / {m.ToBed?.BedNumber ?? "—"}")</td>
-                <td>@m.MovedAt.ToLocalTime().ToString("g")</td>
-                <td>@(m.MovedByUser?.UserName ?? "—")</td>
-                <td>@(m.Reason)</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@m.MovementId" class="btn btn-primary rounded-pill">Details</a>
-                </td>
+    <div style="overflow-x:auto; overflow-y:auto;">
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+            <tr class="table-dark">
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Moved At</th>
+                <th>By</th>
+                <th>Reason</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr class="table-light">
+                    <td>@m.MovementId</td>
+                    <td>@(m.Patient != null ? $"{m.Patient.Name} {m.Patient.SurName}" : "—")</td>
+                    <td>
+                        @if (m.FromBed != null)
+                        {
+                            @($"{m.FromBed.Ward?.Name ?? "—"} / {m.FromBed.BedNumber}")
+                        }
+                        else
+                        {
+
+                            @("—")
+                        }
+                    </td>
+                    <td>@($"{m.ToBed?.Ward?.Name ?? "—"} / {m.ToBed?.BedNumber ?? "—"}")</td>
+                    <td>@m.MovedAt.ToLocalTime().ToString("g")</td>
+                    <td>@(m.MovedByUser?.UserName ?? "—")</td>
+                    <td>@(m.Reason)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@m.MovementId" class="btn btn-primary rounded-pill">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    
+
 <div class="text-center mt-2 d-flex justify-content-center align-content-center">
     <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-dark w-50 mx-2 rounded-pill">Bact To WardAdmin Menu</a>
 </div>
