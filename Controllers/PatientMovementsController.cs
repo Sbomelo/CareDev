@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-[Authorize(Roles = "WardAdmin,Admin,Doctor")]
-public class PatientMovementsController : Controller
+namespace CareDev.Controllers
 {
+  [Authorize(Roles = "WardAdmin,Admin,Doctor")]
+  public class PatientMovementsController : Controller
+  {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<PatientMovementsController> _logger;
 
@@ -198,4 +200,6 @@ public class PatientMovementsController : Controller
         if (movement == null) return NotFound();
         return View(movement);
     }
+  }
 }
+

@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-[Authorize] // restrict to authenticated users; optionally [Authorize(Roles="Patient")]
-public class PatientPortalController : Controller
+namespace CareDev.Controllers 
 {
+
+  [Authorize(Roles = "Patient")]
+  public class PatientPortalController : Controller
+  {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<PatientPortalController> _logger;
 
@@ -235,4 +238,6 @@ public class PatientPortalController : Controller
 
         return View(movement);
     }
+  } 
 }
+

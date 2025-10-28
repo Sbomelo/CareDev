@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CareDev.Controllers
 {
+    [Authorize(Roles = "WardAdmin")]
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -32,48 +33,49 @@ namespace CareDev.Controllers
         }
 
         //Patent Portal
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult PatientDashboard()
         {
             return View();
         }
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult MedicalInformation()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult ScheduledEvents()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult TrackJourney()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult Communicate()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult WriteFeedBack()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient")]
         public IActionResult PatientPortal()
         {
             return View();
         }
 
         // GET: Patients
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Patients.Include(p => p.Allergy).Include(p => p.ApplicationUser).Include(p => p.ChronicCondition).Include(p => p.Medications);
@@ -81,6 +83,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Details/5
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -103,6 +106,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Create
+        [Authorize(Roles = "WardAdmin")]
         public IActionResult Create()
         {
             ViewData["AllergyId"] = new SelectList(_context.Allergies, "AllergyId", "Name");
@@ -115,6 +119,7 @@ namespace CareDev.Controllers
         // POST: Patients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
@@ -135,6 +140,7 @@ namespace CareDev.Controllers
         }
 
         // GET: Patients/Edit/5
+        [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -157,6 +163,7 @@ namespace CareDev.Controllers
         // POST: Patients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
@@ -368,6 +375,7 @@ namespace CareDev.Controllers
         }
 
         // POST: Patients/Delete/5
+        [Authorize(Roles = "WardAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

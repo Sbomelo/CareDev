@@ -128,6 +128,7 @@ namespace CareDev.Controllers
         //}
 
         ////// POST: Employees/Edit/5
+        [Authorize(Roles = "Admin")]
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -156,6 +157,7 @@ namespace CareDev.Controllers
         }
 
         // POST: Employees/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EmployeeEditViewModel vm)
