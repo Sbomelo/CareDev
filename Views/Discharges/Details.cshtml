@@ -10,9 +10,7 @@
    </div>
 
    <hr />
-    <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Index" class="btn bg-primary rounded-pill text-white">Back to list</a>
-    </div>
+    
 
     <div class="card rounded-5 border-0 bg-white shadow-lg border-0">
         <div class="card-body">
@@ -50,6 +48,11 @@
 @*                 <dt class="col-sm-3">Discharged By</dt>
                 <dd class="col-sm-9">@Model.DischargedByUserId?.UserName ?? "—"</dd> *@
             </dl>
+            <hr />
+
+            <div class="text-center">
+                <a asp-action="Index" class="btn bg-secondary rounded-pill w-75">Back to list</a>
+            </div>
         </div>
     </div>
 

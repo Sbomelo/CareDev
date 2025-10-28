@@ -41,11 +41,14 @@ else
                 <dt class="col-sm-3">Discharge Notes </dt>
                 <dd class="col-sm-9">: @a.DischargeNotes</dd>
             </dl>
-        </div>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-secondary rounded-pill w-75">Back</a>
+            </div>
+        </div>   
+
     </div>
-    <div class="text-center mt-3">
-        <a asp-action="Index" class="btn btn-secondary rounded-pill w-75">Back</a>
-    </div>
+
 @*     <h5>Movement history</h5> *@
    @*  @if (Model.Movements.Any())
     {
