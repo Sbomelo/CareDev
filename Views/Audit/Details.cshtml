@@ -1,0 +1,73 @@
+﻿@model AuditEntry
+@{
+    ViewData["Title"] = "Audit Details";
+}
+<div class="text-center">
+    <h2>Audit Details</h2>
+</div>
+<hr />
+
+<div class="mb-3 ">
+    <a asp-action="Index" class="btn btn-secondary rounded-pill">Back</a>
+</div>
+
+<br />
+
+<div style="overflow-x:auto; overflow-y:auto;">
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <td>@Model.AuditEntryId</td>
+        </tr>
+        <tr>
+            <th>Table</th>
+            <td>@Model.TableName</td></tr>
+        <tr>
+            <th>Action</th>
+            <td>@Model.Action</td>
+        </tr>
+        <tr>
+            <th>User</th
+            ><td>@(Model.UserName ?? Model.UserId ?? "—")</td>
+            </tr>
+        <tr>
+            <th>When (UTC)</th>
+            <td>@Model.CreatedAt.ToString("u")</td>
+        </tr>
+        <tr>
+            <th>Changed columns</th>
+            <td>@Model.ChangedColumns</td>
+        </tr>
+    </table>
+</div>
+
+<hr />
+<br />
+
+<div class="text-center">
+    <h4>Old values</h4>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.PrettyOld))
+{
+    <pre style="white-space: pre-wrap; padding:1rem;" class="shadow-lg bg-white border-0 rounded-4">@Html.Raw(ViewBag.PrettyOld)</pre>
+}
+else
+{
+    <p><em>No old values</em></p>
+}
+<hr />
+<br />
+
+<div class="text-center">
+    <h4>New values</h4>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.PrettyNew))
+{
+    <pre style="white-space: pre-wrap; padding:1rem;" class="shadow-lg bg-white border-0 rounded-4">@Html.Raw(ViewBag.PrettyNew)</pre>
+}
+else
+{
+    <p><em>No new values</em></p>
+}

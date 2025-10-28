@@ -1,0 +1,80 @@
+﻿@model IEnumerable<AuditEntry>
+@{
+    ViewData["Title"] = "Audit log";
+    int page = (int)ViewBag.Page;
+    int pageSize = (int)ViewBag.PageSize;
+    int total = (int)ViewBag.Total;
+    int totalPages = (int)Math.Ceiling((double)total / pageSize);
+}
+<div class="text-center">
+
+    <h2>Audit log</h2>
+
+</div>
+<br />
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input name="tableName" value="@(ViewBag.TableName ?? "")" class="form-control" placeholder="Table name (e.g. Patient)" />
+    </div>
+    <div class="col-auto">
+        <input name="userId" value="@(ViewBag.UserId ?? "")" class="form-control" placeholder="UserId" />
+    </div>
+    <div class="col-auto">
+        <input name="from" type="date" class="form-control" value="@(ViewBag.From ?? "")" />
+    </div>
+    <div class="col-auto">
+        <input name="to" type="date" class="form-control" value="@(ViewBag.To ?? "")" />
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary rounded-pill">Filter</button>
+        <a asp-action="Index" class="btn btn-secondary rounded-pill ms-2">Clear</a>
+    </div>
+</form>
+
+@* <p><small>Showing page @page of @totalPages (total @total rows)</small></p> *@
+<div style="overflow-x:auto; overflow-y:auto;">
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr class="table-dark">
+                <th>Number</th>
+                <th>When (UTC)</th>
+                <th>Table</th>
+                <th>Action</th>
+                <th>Changed</th>
+                <th>User</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.AuditEntryId</td>
+                    <td>@a.CreatedAt.ToString("u")</td>
+                    <td>@a.TableName</td>
+                    <td>@a.Action</td>
+                    <td>@a.ChangedColumns</td>
+                    <td>@(a.UserName ?? a.UserId ?? "—")</td>
+                    <td><a asp-action="Details" asp-route-id="@a.AuditEntryId" class="btn btn-primary rounded-pill">View</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<nav>
+    <ul class="pagination">
+        @for (int p = 1; p <= totalPages; p++)
+        {
+            <li class="page-item @(p == page ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = p, pageSize = pageSize, tableName = ViewBag.TableName, userId = ViewBag.UserId, from = ViewBag.From, to = ViewBag.To })">@p</a>
+            </li>
+        }
+    </ul>
+</nav>
+<br />
+
+<div class="text-center">
+    <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-dark rounded-pill w-75">Back</a>
+</div>
