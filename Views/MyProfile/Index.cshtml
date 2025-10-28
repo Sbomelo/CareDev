@@ -1,0 +1,73 @@
+﻿@model CareDev.Models.ViewModels.UserProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+<div class="text-center">
+    <h2>My Profile</h2>
+</div>
+
+<hr />
+
+<div class="card mb-3 border-0 shadow-lg rounded-4">
+    <div class="card-body border-0 shadow-lg rounded-4">
+        <dl class="row">
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">: @Model.SurName @Model.Name</dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">: @Model.PhoneNumber </dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">: @ViewBag.Email </dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">: @Model.Address </dd>
+
+            <dt class="col-sm-3">City</dt>
+            <dd class="col-sm-9">: @Model.City </dd>
+
+            @if (Model.EntityKind == "Patient")
+            {
+                <dt class="col-sm-3">Emergency contact</dt>
+                <dd class="col-sm-9">: @Model.EmergencyContactName @("") (@Model.EmergencyContactPhone)</dd>
+            }
+            else if (Model.EntityKind == "Employee")
+            {
+                <dt class="col-sm-3">Job title</dt>
+                <dd class="col-sm-9">: @Model.JobTitle</dd>
+
+                <dt class="col-sm-3">Department</dt>
+                <dd class="col-sm-9">: @Model.Department</dd>
+            }
+        </dl>
+
+        <hr />
+        <div class="text-center">
+            @if (User.IsInRole("Patient"))
+            {
+                <a asp-action="Edit" class="btn btn-primary w-25 rounded-pill">Edit profile</a>
+                <a asp-controller="Patients" asp-action="PatientDashboard" class="btn btn-secondary w-25 rounded-pill">Back</a>
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" class="btn btn-primary w-25 rounded-pill">Edit profile</a>
+                <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-secondary w-25 rounded-pill">Back</a>
+            }
+
+            @if (User.IsInRole("WardAdmin"))
+            {
+                <a asp-action="Edit" class="btn btn-primary w-25 rounded-pill">Edit profile</a>
+                <a asp-controller="Employees" asp-action="WardAdminPortal" class="btn btn-secondary w-25 rounded-pill">Back</a>
+            }
+
+            @if (User.IsInRole("Nurse"))
+            {
+                <a asp-action="Edit" class="btn btn-primary w-25 rounded-pill">Edit profile</a>
+                <a asp-controller="Nurse" asp-action="Index" class="btn btn-secondary w-25 rounded-pill">Back</a>
+            }
+
+        </div>
+        
+    </div>
+</div>

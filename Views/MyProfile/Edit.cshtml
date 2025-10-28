@@ -1,0 +1,101 @@
+﻿@model CareDev.Models.ViewModels.UserProfileViewModel
+@{
+    ViewData["Title"] = "Edit profile";
+}
+
+<div class="text-center">
+
+    <h2>Edit profile</h2>
+
+</div>
+<br/>
+
+<form asp-action="Edit" method="post" class="needs-validation">
+    <input asp-for="EntityKind" type="hidden" />
+    <input asp-for="EntityId" type="hidden" />
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="SurName" class="form-label"></label>
+            <input asp-for="SurName" class="form-control" />
+            <span asp-validation-for="SurName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="PhoneNumber" class="form-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input class="form-control" value="@ViewBag.Email" disabled />
+            <div class="form-text">To change your email, use account settings.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="City" class="form-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        @if (Model.EntityKind == "Patient")
+        {
+            <div class="col-md-6">
+                <label asp-for="EmergencyContactName" class="form-label"></label>
+                <input asp-for="EmergencyContactName" class="form-control" />
+                <span asp-validation-for="EmergencyContactName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="EmergencyContactPhone" class="form-label"></label>
+                <input asp-for="EmergencyContactPhone" class="form-control" />
+                <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
+            </div>
+        }
+
+        @* Employee-specific fields. Only HR/Admin can change these server-side. *@
+        @if (Model.EntityKind == "Employee")
+        {
+            <div class="col-md-6">
+                <label asp-for="JobTitle" class="form-label">Job title</label>
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger"></span>
+                @if (!User.IsInRole("HR") && !User.IsInRole("Admin"))
+                {
+                    <div class="form-text text-muted">Only HR/Admin can change job title.</div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Department" class="form-label">Department</label>
+                <input asp-for="Department" class="form-control" />
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+        }
+    </div>
+    <hr />
+    <div class="mt-4 text-center">
+        <button type="submit" class="btn btn-primary w-25 rounded-pill">Save </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2 w-25 rounded-pill">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
