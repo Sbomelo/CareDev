@@ -29,6 +29,15 @@ namespace CareDev.Models
         [StringLength(10)]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [Required]
+        [Display(Name = "Address")]
+        [StringLength(250)]
+        public string? Address { get; set; }
+        
+        [Required]
+        [StringLength(50)]
+        public string? City { get; set; }
+
         //Foreign Keys
         [Display(Name="Medication")]
         public int? MedicationId { get; set; }
@@ -41,6 +50,15 @@ namespace CareDev.Models
         [Display(Name = "Chronic Condition")]
         public int? ChronicConditionId { get; set; }
         public ChronicCondition? ChronicCondition { get; set; }
+
+        [Display(Name = "Emergency contact name")]
+        [StringLength(100)]
+        public string? EmergencyContactName { get; set; }
+
+        [Display(Name = "Emergency contact phone")]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
+        [StringLength(10)]
+        public string? EmergencyContactPhone { get; set; }
 
         //Indicates if the patient is currently admitted
         public bool IsAdmitted { get; set; } = false;

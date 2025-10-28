@@ -30,9 +30,27 @@ namespace CareDev.Models
         public string PhoneNumber { get; set; }
 
         [Required]
+        [Display(Name = "Address")]
+        [StringLength(250)]
+        public string? Address { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string? City { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Job title")]
+        [StringLength(100)]
+        public string? JobTitle { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string? Department { get; set; }
 
         [Display(Name = "Role Name")]
         public int RoleId { get; set; }
