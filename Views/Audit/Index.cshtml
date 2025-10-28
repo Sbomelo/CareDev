@@ -41,7 +41,7 @@
                 <th>When (UTC)</th>
                 <th>Table</th>
                 <th>Action</th>
-                <th>Changed</th>
+@*                 <th>Changed</th> *@
                 <th>User</th>
                 <th>Details</th>
             </tr>
@@ -54,7 +54,7 @@
                     <td>@a.CreatedAt.ToString("u")</td>
                     <td>@a.TableName</td>
                     <td>@a.Action</td>
-                    <td>@a.ChangedColumns</td>
+@*                     <td>@a.ChangedColumns</td> *@
                     <td>@(a.UserName ?? a.UserId ?? "—")</td>
                     <td><a asp-action="Details" asp-route-id="@a.AuditEntryId" class="btn btn-primary rounded-pill">View</a></td>
                 </tr>

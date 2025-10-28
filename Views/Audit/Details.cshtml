@@ -1,4 +1,4 @@
-﻿@model AuditEntry
+﻿@* @model AuditEntry
 @{
     ViewData["Title"] = "Audit Details";
 }
@@ -70,4 +70,117 @@ else
 else
 {
     <p><em>No new values</em></p>
+} *@
+
+@model AuditDetailsViewModel
+@{
+    ViewData["Title"] = "Audit Details";
 }
+
+<div class="text-center">
+    <h2>Audit Details</h2>
+</div>
+
+<hr />
+
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-secondary rounded-pill">Back</a>
+</div>
+
+<br />
+
+<div class="card mb-3 shadow-lg border-0 rounded-4">
+    <div class="card-body shadow-lg border-0 rounded-4">
+        <dl class="row">
+            <dt class="col-sm-3">Id</dt>
+            <dd class="col-sm-9">@Model.AuditEntry.AuditEntryId</dd>
+
+            <dt class="col-sm-3">Table</dt>
+            <dd class="col-sm-9">@Model.AuditEntry.TableName</dd>
+
+            <dt class="col-sm-3">Action</dt>
+            <dd class="col-sm-9">@Model.AuditEntry.Action</dd>
+
+            <dt class="col-sm-3">User</dt>
+            <dd class="col-sm-9">@(Model.AuditEntry.UserName ?? Model.AuditEntry.UserId ?? "—")</dd>
+
+            <dt class="col-sm-3">When (UTC)</dt>
+            <dd class="col-sm-9">@Model.AuditEntry.CreatedAt.ToString("u")</dd>
+
+@*             <dt class="col-sm-3">Updatable Columns</dt>
+            <dd class="col-sm-9">@Model.AuditEntry.ChangedColumns</dd> *@
+        </dl>
+    </div>
+</div>
+
+@if (!Model.Changes.Any())
+{
+    <div class="alert alert-info">No changed fields detected (old and new values are identical or unavailable).</div>
+}
+else
+{
+    <div class="table-responsive" style="overflow-x:auto; overflow-y:auto;">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Old value</th>
+                    <th>New value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Changes)
+                {
+                    <tr>
+                        <td style="white-space:nowrap; font-weight:600;">@c.FieldName</td>
+
+                        <td style="width:45%; vertical-align:top;">
+                            @if (string.IsNullOrEmpty(c.OldValue))
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                            else if (IsJson(c.OldValue))
+                            {
+                                <div class="p-2 bg-light border rounded" style="font-family:monospace; white-space:pre-wrap;">
+                                    @Html.Raw(HttpUtility.HtmlEncode(c.OldValue))
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="p-2 rounded" style="background-color:#fdecea; color:#611a15;">@Html.Raw(HttpUtility.HtmlEncode(c.OldValue))</div>
+                            }
+                        </td>
+
+                        <td style="width:45%; vertical-align:top;">
+                            @if (string.IsNullOrEmpty(c.NewValue))
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                            else if (IsJson(c.NewValue))
+                            {
+                                <div class="p-2 bg-light border rounded" style="font-family:monospace; white-space:pre-wrap;">
+                                    @Html.Raw(HttpUtility.HtmlEncode(c.NewValue))
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="p-2 rounded" style="background-color:#edf7ed; color:#0b6638;">@Html.Raw(HttpUtility.HtmlEncode(c.NewValue))</div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+ @functions {
+    // quick check if string looks like pretty JSON (starts with { or [ and ends with } or ])
+    private static bool IsJson(string s)
+    {
+        s = s?.Trim() ?? string.Empty;
+        return (s.StartsWith("{") && s.EndsWith("}")) || (s.StartsWith("[") && s.EndsWith("]"));
+    }
+ }
+
+
