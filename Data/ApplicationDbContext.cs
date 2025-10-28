@@ -1,17 +1,27 @@
 ﻿using CareDev.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CareDev.Data
-{
+{   
+    
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> 
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly IHttpContextAccessor? _httpContextAccessor;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //Core entities
@@ -25,7 +35,7 @@ namespace CareDev.Data
         public DbSet<Admission> Admissions { get; set; }
         public DbSet<AdministerMeds> AdministeredMeds { get; set; }
         public DbSet<MedicationDispensation> MedicationDispensations { get; set; }
-
+        public DbSet<AuditEntry> AuditEntries { get; set; } = null;
         public DbSet<Discharge> Discharges { get; set; }
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientFolder> PatientFolders { get; set; }
@@ -40,6 +50,120 @@ namespace CareDev.Data
         public DbSet<ChronicCondition> ChronicConditions { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            // 1) Prepare audit entries
+            ChangeTracker.DetectChanges();
+
+            var auditEntries = new List<AuditEntry>();
+
+            // You can specify which entity types to audit; use All if you want every table.
+            // Here we audit Patient and Employee; change or expand as needed.
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added
+                         || e.State == EntityState.Modified
+                         || e.State == EntityState.Deleted)
+                .Where(e => e.Entity != null && !(e.Entity is AuditEntry)); // avoid auditing audit rows
+
+            foreach (var entry in entries)
+            {
+                var tableName = entry.Entity.GetType().Name; // simple table name; or use Model metadata
+
+                // optionally skip entities you don't want to audit:
+                var typeName = entry.Entity.GetType().Name;
+                if (typeName != "Patient" && typeName != "Employee")
+                {
+                    // if you want to audit all tables, remove this continue
+                    continue;
+                }
+
+                var audit = new AuditEntry
+                {
+                    TableName = tableName,
+                    Action = entry.State.ToString(),
+                    UserId = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier),
+                    UserName = _httpContextAccessor?.HttpContext?.User?.Identity?.Name,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                var keyVals = new Dictionary<string, object?>();
+
+                // capture primary key(s)
+                foreach (var prop in entry.Properties)
+                {
+                    if (prop.Metadata.IsPrimaryKey())
+                    {
+                        keyVals[prop.Metadata.Name] = prop.CurrentValue;
+                    }
+                }
+
+                audit.KeyValues = JsonSerializer.Serialize(keyVals);
+
+                // For deletes, record original values only
+                if (entry.State == EntityState.Deleted)
+                {
+                    var oldValues = new Dictionary<string, object?>();
+                    foreach (var prop in entry.Properties)
+                    {
+                        oldValues[prop.Metadata.Name] = prop.OriginalValue;
+                    }
+                    audit.OldValues = JsonSerializer.Serialize(oldValues);
+                    audit.ChangedColumns = string.Join(",", oldValues.Keys);
+                    audit.NewValues = null;
+                }
+                else if (entry.State == EntityState.Added)
+                {
+                    var newValues = new Dictionary<string, object?>();
+                    foreach (var prop in entry.Properties)
+                    {
+                        // You may want to skip navigation properties; we use scalar props only
+                        newValues[prop.Metadata.Name] = prop.CurrentValue;
+                    }
+                    audit.NewValues = JsonSerializer.Serialize(newValues);
+                    audit.ChangedColumns = string.Join(",", newValues.Keys);
+                    audit.OldValues = null;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    var oldValues = new Dictionary<string, object?>();
+                    var newValues = new Dictionary<string, object?>();
+                    var changedColumns = new List<string>();
+
+                    foreach (var prop in entry.Properties)
+                    {
+                        if (prop.IsModified)
+                        {
+                            var propName = prop.Metadata.Name;
+                            oldValues[propName] = prop.OriginalValue;
+                            newValues[propName] = prop.CurrentValue;
+                            changedColumns.Add(propName);
+                        }
+                    }
+
+                    // If no columns changed (possible for concurrency/no-op), skip
+                    if (changedColumns.Count == 0)
+                        continue;
+
+                    audit.OldValues = JsonSerializer.Serialize(oldValues);
+                    audit.NewValues = JsonSerializer.Serialize(newValues);
+                    audit.ChangedColumns = string.Join(",", changedColumns);
+                }
+
+                auditEntries.Add(audit);
+            }
+
+            // 2) Save the real entities first (so primary keys exist), but we can add audit entries to context as well.
+            // We'll add the audit entries now; EF will save both in one transaction.
+            if (auditEntries.Any())
+            {
+                AuditEntries.AddRange(auditEntries);
+            }
+
+            // 3) Proceed with the actual SaveChanges
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            return result;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
