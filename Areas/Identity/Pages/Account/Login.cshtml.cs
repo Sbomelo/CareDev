@@ -139,7 +139,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                         return RedirectToAction("WardAdminPortal", "Employees");
 
                     if (roles.Contains("Nurse"))
-                        return RedirectToAction("NursePortal", "Employees");
+                        return RedirectToAction("Index", "Nurse");
 
                     if (roles.Contains("Patient"))
                         return RedirectToAction("PatientDashboard", "Patients");
