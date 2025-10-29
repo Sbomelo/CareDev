@@ -5,76 +5,83 @@
 }
 <body style="background-color:#E0F7FA">
 
-    <h1>Patient Details</h1>
-
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.IsAdmitted)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.IsAdmitted)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SurName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SurName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Age)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Age)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Gender)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Gender)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhoneNumber)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Medications)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Medications.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Allergy)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Allergy.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ChronicCondition)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ChronicCondition.Name)
-            </dd>
-@*             <dt class="col-sm-2">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body shadow-lg border-0 rounded-4">
+            <div>
+                <div class="text-center">
+                    <h1>Patient Details</h1>
+                </div>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsAdmitted)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.IsAdmitted)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SurName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SurName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Age)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Age)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Gender)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Gender)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Medications)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Medications.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Allergy)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Allergy.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ChronicCondition)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ChronicCondition.Name)
+                    </dd>
+                    @*             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.ApplicationUser)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.ApplicationUser.Id)
             </dd> *@
-        </dl>
+                </dl>
+            </div>
+            <hr />
+            <div class="text-center">
+                <a asp-action="Edit" asp-route-id="@Model?.PatientId" class="btn btn-primary w-25 me-1 rounded-pill">Edit</a>
+                <a asp-action="Index" class="btn btn-dark w-25 me-1 rounded-pill">Back to List</a>
+            </div>
+        </div>
     </div>
-    <hr />
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model?.PatientId" class="btn btn-primary w-25 me-1 rounded-pill">Edit</a>
-        <a asp-action="Index" class="btn btn-dark w-25 me-1 rounded-pill">Back to List</a>
-    </div>
+    
 </body>
 

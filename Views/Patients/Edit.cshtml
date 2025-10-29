@@ -8,9 +8,9 @@
     <div class="d-flex justify-content-center text-center">
         <h1>Edit Admission</h1>
     </div>
-
+    <hr />
     <div class="d-flex justify-content-center align-content-center gap-2">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <form asp-action="Edit" method="post"
                   data-confirm-on-submit="true"
                   data-confirm-title="Save Changes"
@@ -20,7 +20,7 @@
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="PatientId" />
-                <div class="form-group mb-3">
+@*                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
@@ -29,8 +29,22 @@
                     <label asp-for="SurName" class="control-label"></label>
                     <input asp-for="SurName" class="form-control" />
                     <span asp-validation-for="SurName" class="text-danger"></span>
+                </div> *@
+
+                <div class="row g-3 mb-3 ">
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-bold">Name :</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="SurName" class="form-label fw-bold">SurName : </label>
+                        <input asp-for="SurName" class="form-control" />
+                        <span asp-validation-for="SurName" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group mb-3">
+   @*              <div class="form-group mb-3">
                     <label asp-for="Age" class="control-label"></label>
                     <input asp-for="Age" class="form-control" />
                     <span asp-validation-for="Age" class="text-danger"></span>
@@ -44,8 +58,57 @@
                     <label asp-for="PhoneNumber" class="control-label"></label>
                     <input asp-for="PhoneNumber" class="form-control" />
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div> *@
+                <div class="row g-3 mb-3 ">
+                    <div class="col-md-6">
+                        <label asp-for="Age" class="form-label fw-bold">Age :</label>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label fw-bold">Phone Number : </label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group mb-3">
+
+                <div class="row g-3 mb-3 ">
+                    <div class="col-md-6">
+                        <label asp-for="Gender" class="form-label fw-bold">Gender :</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="AllergyId" class="form-label fw-bold">Allergy : </label>
+                        <select asp-for="AllergyId" asp-items="ViewBag.AllergyId" class="form-control">
+                        </select>
+                        <span asp-validation-for="AllergyId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3 ">
+                    <div class="col-md-6">
+                        <label asp-for="ChronicConditionId" class="form-label fw-bold">Chronic Condition :</label>
+                        <select asp-for="ChronicConditionId" asp-items="ViewBag.ChronicConditionId" class="form-control">
+                        </select>
+                        <span asp-validation-for="ChronicConditionId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="MedicationId" class="form-label fw-bold">Medication : </label>
+                        <select asp-for="MedicationId" asp-items="ViewBag.MedicationId" class="form-control">
+                        </select>
+                        <span asp-validation-for="MedicationId" class="text-danger"></span>
+                    </div>
+                </div>
+@*                 <div class="form-group mb-3">
                     <label asp-for="MedicationId" class="control-label"></label>
                     <select asp-for="MedicationId" class="form-control" asp-items="ViewBag.MedicationId"></select>
                     <span asp-validation-for="MedicationId" class="text-danger"></span>
@@ -59,7 +122,7 @@
                     <label asp-for="ChronicConditionId" class="control-label"></label>
                     <select asp-for="ChronicConditionId" class="form-control" asp-items="ViewBag.ChronicConditionId"></select>
                     <span asp-validation-for="ChronicConditionId" class="text-danger"></span>
-                </div>
+                </div> *@
 @*                 <div class="form-group">
                     <label asp-for="ApplicationUserId" class="control-label"></label>
                     <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId">
