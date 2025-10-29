@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | MediCare Hospital</title>
+    <title>Our Team | MediCare Hospital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -124,7 +124,7 @@
 
         /* Page Header */
         .page-header {
-            background: linear-gradient(rgba(26, 115, 232, 0.9), rgba(26, 115, 232, 0.8)), url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background: linear-gradient(rgba(26, 115, 232, 0.9), rgba(26, 115, 232, 0.8)), url('https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -169,43 +169,100 @@
             padding: 80px 0;
         }
 
-        /* Privacy Policy Styles */
-        .privacy-content {
-            max-width: 800px;
-            margin: 0 auto;
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
         }
 
-        .policy-section {
-            margin-bottom: 40px;
-        }
-
-            .policy-section h3 {
-                font-size: 24px;
+            .section-title h2 {
+                font-size: 36px;
                 color: var(--dark);
                 margin-bottom: 15px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #eee;
             }
 
-            .policy-section p {
-                margin-bottom: 15px;
+            .section-title p {
+                max-width: 600px;
+                margin: 0 auto;
+                color: var(--text);
             }
 
-            .policy-section ul {
-                padding-left: 20px;
-                margin-bottom: 15px;
-            }
+        /* Developers Page Styles */
+        .developers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
 
-            .policy-section li {
-                margin-bottom: 8px;
-            }
-
-        .highlight-box {
-            background-color: var(--light);
-            padding: 20px;
+        .developer-card {
+            background: white;
             border-radius: 8px;
-            margin: 20px 0;
-            border-left: 4px solid var(--primary);
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+            .developer-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+
+        .developer-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 5px solid var(--light);
+        }
+
+            .developer-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .developer-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .developer-role {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .developer-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+            .developer-social a {
+                width: 40px;
+                height: 40px;
+                background-color: var(--light);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--dark);
+                transition: all 0.3s;
+            }
+
+                .developer-social a:hover {
+                    background-color: var(--primary);
+                    color: white;
+                }
+
+        /* Team Description */
+        .team-description {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            text-align: center;
         }
 
         /* Footer */
@@ -306,106 +363,105 @@
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
-            <h1 class="text-white">Privacy Policy</h1>
+            <h1 class="text-white">Our Development Team</h1>
             <ul class="breadcrumb">
                 <li><a asp-controller="Home">Home</a></li>
                 <li class="separator"><i class="fas fa-chevron-right"></i></li>
-                <li>Privacy Policy</li>
+                <li>Our Team</li>
             </ul>
         </div>
     </div>
 
-    <!-- Privacy Policy Content -->
+    <!-- Team Description -->
     <div class="section">
         <div class="container">
-            <div class="privacy-content">
-                <div class="highlight-box">
-                    <p><strong>Last Updated:</strong> October 30, 2025</p>
-                    <p>This Privacy Policy describes how CareDev Hospital collects, uses, and discloses your personal information when you use our services.</p>
+            <div class="team-description">
+                <h2>Meet Our Development Team</h2>
+                <p>The talented professionals behind CareDev's digital presence and healthcare technology solutions. Our team combines technical expertise with healthcare knowledge to create innovative solutions that enhance patient care and streamline medical operations.</p>
+            </div>
+
+            <div class="developers-grid">
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Alex Johnson">
+                    </div>
+                    <h3>Alex Johnson</h3>
+                    <div class="developer-role">Lead Web Developer</div>
+                    <p>Alex specializes in creating responsive, user-friendly healthcare websites with over 8 years of experience in medical technology solutions. He leads our frontend development team and ensures our digital platforms meet the highest standards of accessibility and usability.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h3>Introduction</h3>
-                    <p>At CareDev Hospital, we are committed to protecting the privacy and confidentiality of our patients' personal and health information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our website or use our services.</p>
-                    <p>We adhere to all applicable privacy laws and regulations, including HIPAA (Health Insurance Portability and Accountability Act) in the United States, to ensure your health information remains secure and confidential.</p>
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sarah Chen">
+                    </div>
+                    <h3>Sarah Chen</h3>
+                    <div class="developer-role">UI/UX Designer</div>
+                    <p>Sarah focuses on creating intuitive and accessible user interfaces for healthcare applications, with a background in healthcare informatics. She ensures that our digital solutions are both aesthetically pleasing and functionally effective for patients and medical staff.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h3>Information We Collect</h3>
-                    <p>We may collect the following types of information:</p>
-                    <ul>
-                        <li><strong>Personal Identification Information:</strong> Name, date of birth, address, phone number, email address, insurance information</li>
-                        <li><strong>Health Information:</strong> Medical history, symptoms, diagnoses, treatments, test results, and other health-related information</li>
-                        <li><strong>Technical Information:</strong> IP address, browser type, device information, and website usage data through cookies and similar technologies</li>
-                        <li><strong>Payment Information:</strong> Credit card details, billing address, and insurance payment information</li>
-                    </ul>
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Michael Rodriguez">
+                    </div>
+                    <h3>Michael Rodriguez</h3>
+                    <div class="developer-role">Backend Developer</div>
+                    <p>Michael ensures the security and reliability of our healthcare systems with expertise in database management and healthcare compliance. He architects our backend infrastructure to handle sensitive medical data with the highest security standards.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-stack-overflow"></i></a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h3>How We Use Your Information</h3>
-                    <p>We use the information we collect for various purposes, including:</p>
-                    <ul>
-                        <li>Providing medical treatment and healthcare services</li>
-                        <li>Processing payments and insurance claims</li>
-                        <li>Communicating with you about appointments, test results, and health information</li>
-                        <li>Improving our services and website functionality</li>
-                        <li>Conducting research and statistical analysis (anonymized where possible)</li>
-                        <li>Complying with legal obligations and regulatory requirements</li>
-                    </ul>
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Emily Watson">
+                    </div>
+                    <h3>Emily Watson</h3>
+                    <div class="developer-role">Healthcare Systems Analyst</div>
+                    <p>Emily bridges the gap between clinical needs and technical solutions, with experience as a former nurse and healthcare IT specialist. She translates complex medical workflows into efficient digital processes that enhance patient care.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-medium"></i></a>
+                        <a href="#"><i class="fas fa-globe"></i></a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h3>Information Sharing and Disclosure</h3>
-                    <p>We do not sell or rent your personal information to third parties. We may share your information in the following circumstances:</p>
-                    <ul>
-                        <li>With healthcare providers involved in your treatment</li>
-                        <li>With insurance companies for payment processing</li>
-                        <li>When required by law or regulatory authorities</li>
-                        <li>In emergency situations where disclosure is necessary to protect your health</li>
-                        <li>With business associates who provide services on our behalf under strict confidentiality agreements</li>
-                    </ul>
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="David Kim">
+                    </div>
+                    <h3>David Kim</h3>
+                    <div class="developer-role">Mobile App Developer</div>
+                    <p>David creates patient-friendly mobile applications that enhance the healthcare experience through innovative digital solutions. He specializes in developing cross-platform apps that provide seamless experiences across all devices.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-app-store-ios"></i></a>
+                        <a href="#"><i class="fab fa-google-play"></i></a>
+                    </div>
                 </div>
 
-                <div class="policy-section">
-                    <h3>Data Security</h3>
-                    <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include encryption, access controls, secure network infrastructure, and regular security assessments.</p>
-                    <p>All our staff members receive training on privacy and confidentiality obligations, and we maintain physical, electronic, and procedural safeguards that comply with federal regulations to protect your information.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h3>Your Rights</h3>
-                    <p>You have certain rights regarding your health information, including:</p>
-                    <ul>
-                        <li>The right to access and obtain a copy of your health records</li>
-                        <li>The right to request corrections to your health information</li>
-                        <li>The right to request restrictions on certain uses and disclosures</li>
-                        <li>The right to receive confidential communications of your health information</li>
-                        <li>The right to obtain an accounting of disclosures of your health information</li>
-                    </ul>
-                    <p>To exercise these rights, please contact our Privacy Officer using the contact information provided below.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h3>Cookies and Tracking Technologies</h3>
-                    <p>Our website uses cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and personalize content. You can control the use of cookies through your browser settings.</p>
-                    <p>We use both session cookies (which expire when you close your browser) and persistent cookies (which remain on your device for a set period) to provide a more personalized experience.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h3>Changes to This Policy</h3>
-                    <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. We will post any changes on our website and indicate the effective date of the revised policy. We encourage you to review this policy periodically.</p>
-                </div>
-
-                <div class="policy-section">
-                    <h3>Contact Us</h3>
-                    <p>If you have any questions or concerns about this Privacy Policy or our privacy practices, please contact our Privacy Officer:</p>
-                    <div class="highlight-box">
-                        <p>
-                            CareDev Hospital Privacy Officer<br>
-                            123 Healthcare Avenue, Port Elizabeth, PE 12345<br>
-                            Email: privacy@caredev.com<br>
-                            Phone: +27 78 968 9875
-                        </p>
+                <div class="developer-card">
+                    <div class="developer-image">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Priya Patel">
+                    </div>
+                    <h3>Priya Patel</h3>
+                    <div class="developer-role">Data Security Specialist</div>
+                    <p>Priya ensures the highest standards of data protection and privacy compliance for all our healthcare information systems. She implements robust security measures to safeguard patient data and maintain regulatory compliance.</p>
+                    <div class="developer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fas fa-shield-alt"></i></a>
+                        <a href="#"><i class="fab fa-keybase"></i></a>
                     </div>
                 </div>
             </div>

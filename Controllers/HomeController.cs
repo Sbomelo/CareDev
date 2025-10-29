@@ -24,6 +24,16 @@ namespace CareDev.Controllers
             return View();
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult Developers()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult UserAndRoleManagement()
         {

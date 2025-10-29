@@ -1,7 +1,558 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Hospital | Advanced Healthcare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome To CareDev Hospital</h1>
-</div>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #fbbc05;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --text: #5f6368;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .logo i {
+                color: var(--primary);
+                font-size: 28px;
+            }
+
+            .logo h1 {
+                color: var(--primary);
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+            .nav-menu a {
+                text-decoration: none;
+                color: var(--dark);
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+
+                .nav-menu a:hover {
+                    color: var(--primary);
+                }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #0d5bb9;
+            }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+            .btn-outline:hover {
+                background-color: rgba(26, 115, 232, 0.1);
+            }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+            .hero h2 {
+                font-size: 48px;
+                color: var(--dark);
+                margin-bottom: 20px;
+                line-height: 1.2;
+            }
+
+            .hero p {
+                font-size: 20px;
+                max-width: 700px;
+                margin: 0 auto 30px;
+                color: var(--text);
+            }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Services Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+            .section-title h2 {
+                font-size: 36px;
+                color: var(--dark);
+                margin-bottom: 15px;
+            }
+
+            .section-title p {
+                max-width: 600px;
+                margin: 0 auto;
+                color: var(--text);
+            }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+            .service-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(26, 115, 232, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+            .service-icon i {
+                font-size: 30px;
+                color: var(--primary);
+            }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .feature-card i {
+                font-size: 40px;
+                color: var(--primary);
+                margin-bottom: 20px;
+            }
+
+            .feature-card h3 {
+                font-size: 20px;
+                margin-bottom: 15px;
+                color: var(--dark);
+            }
+
+             .feature-card:hover {
+                 transform: translateY(-5px);
+                 box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+             }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), #0d5bb9);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+            .cta h2 {
+                font-size: 36px;
+                margin-bottom: 20px;
+            }
+
+            .cta p {
+                max-width: 600px;
+                margin: 0 auto 30px;
+                font-size: 18px;
+            }
+
+        .btn-light {
+            background-color: white;
+            color: var(--primary);
+        }
+
+            .btn-light:hover {
+                background-color: #f0f0f0;
+            }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+            .footer-col h3::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 50px;
+                height: 2px;
+                background-color: var(--primary);
+            }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+            .footer-col ul li {
+                margin-bottom: 12px;
+            }
+
+                .footer-col ul li a {
+                    color: #b0b3b8;
+                    text-decoration: none;
+                    transition: color 0.3s;
+                }
+
+                    .footer-col ul li a:hover {
+                        color: white;
+                    }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                transition: background-color 0.3s;
+            }
+
+                .social-links a:hover {
+                    background-color: var(--primary);
+                }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b3b8;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .nav-menu
+
+        {
+            display: none;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+        }
+
+        .hero p {
+            font-size: 18px;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 250px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Advanced Healthcare With Compassion</h2>
+            <p>We provide world-class medical care with state-of-the-art technology and a team of experienced healthcare professionals dedicated to your well-being.</p>
+            <div class="hero-buttons">
+                <a class="btn btn-primary rounded-pill" href="#whyChooseUs">Why Choose Us</a>
+                <a class="btn btn-outline rounded-pill" href="#services">View Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section">
+        <div class="container" id="services">
+            <div class="section-title">
+                <h2 >Our Medical Services</h2>
+                <p>We offer comprehensive healthcare services to meet all your medical needs with the highest standards of care.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Cardiology</h3>
+                    <p>Comprehensive heart care with advanced diagnostic and treatment options for all cardiac conditions.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Neurology</h3>
+                    <p>Expert diagnosis and treatment for disorders of the nervous system, brain, and spinal cord.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h3>Pediatrics</h3>
+                    <p>Specialized medical care for infants, children, and adolescents in a child-friendly environment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-bone"></i>
+                    </div>
+                    <h3>Orthopedics</h3>
+                    <p>Treatment for musculoskeletal injuries and conditions, from sports injuries to joint replacement.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Ophthalmology</h3>
+                    <p>Complete eye care services including vision correction, cataract surgery, and retinal treatments.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-teeth"></i>
+                    </div>
+                    <h3>Dental Care</h3>
+                    <p>Comprehensive dental services for all ages, from routine cleanings to advanced restorative procedures.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features">
+        <div class="container" id="whyChooseUs">
+            <div class="section-title">
+                <h2 >
+                    Why Choose CareDev</h2>
+                <p>We are committed to providing exceptional healthcare with a focus on patient-centered care and medical excellence.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Expert Doctors</h3>
+                    <p>Our team includes board-certified physicians with extensive experience in their specialties.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clinic-medical"></i>
+                    <h3>Advanced Technology</h3>
+                    <p>We utilize the latest medical technology for accurate diagnosis and effective treatments.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-ambulance"></i>
+                    <h3>Emergency Care</h3>
+                    <p>24/7 emergency services with rapid response times and specialized trauma care.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Patient-Centered</h3>
+                    <p>We prioritize your comfort and well-being with personalized care plans and support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Need Immediate Medical Assistance?</h2>
+            <p>Our emergency department is open 24/7 with specialized medical staff ready to provide immediate care.</p>
+            <button class="btn btn-light rounded-pill">Emergency Contact +27 55 084 </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>CareDev Hospital</h3>
+                    <p>Providing exceptional healthcare services with compassion and cutting-edge technology since 1995.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a asp-controller="Home">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="AboutUs">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                        <li><a asp-controller="Home" asp-action="Developers">Developers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3><a href="#services">Services</a></h3>
+                    <ul>
+                        <li>Cardiology</li>
+                        <li>Neurology</li>
+                        <li>Orthopedics</li>
+                        <li>Pediatrics</li>
+                        <li>Dental Care</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Port Elizabeth</li>
+                        <li><i class="fas fa-phone"></i> +27 78 968 9875</li>
+                        <li><i class="fas fa-envelope"></i> info@caredev.com</li>
+                        <li><i class="fas fa-clock"></i> Open 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p> At <span class="fw-bold">CareDev</span> We Are Always Striving for Your Speedy Recovery <i class="bi bi-heart-fill"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script for smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
