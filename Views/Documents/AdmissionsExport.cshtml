@@ -1,0 +1,61 @@
+﻿@model DownloadFilteredAdmission
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<h2>Export Admissions</h2>
+
+<form method="get" asp-action="DownloadFilteredAdmissions" asp-controller="Documents" class="row g-2">
+    <div class="col-md-2">
+        <label class="form-label">From</label>
+        <input asp-for="From" type="date" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">To</label>
+        <input asp-for="To" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Ward</label>
+        <select asp-for="WardId" asp-items="Model.Wards" class="form-select"></select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Doctor</label>
+
+        <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select"></select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Format</label>
+        <select asp-for="Format" class="form-select">
+            <option value="csv">CSV</option>
+            <option value="json">JSON</option>
+            <option value="pdf">PDF</option>
+        </select>
+    </div>
+
+    <div class="col-12 mt-2">
+        <button type="submit" class="btn btn-primary">Export</button>
+        <a asp-action="Index" asp-controller="Admissions" class="btn btn-secondary ms-2">Back to Admissions</a>
+    </div>
+</form>
+
+<hr />
+
+@if (Model.Results?.Any() == true)
+{
+    <h4>Preview (first 50)</h4>
+    <table class="table table-sm">
+        <thead><tr><th>ID</th><th>Patient</th><th>Admitted</th><th>Discharged</th><th>Ward</th><th>Doctor</th></tr></thead>
+        <tbody>
+            @foreach (var r in Model.Results.Take(50))
+            {
+                <tr>
+                    <td>@r.AdmissionId</td>
+                    <td>@r.PatientName (@r.PatientId)</td>
+                    <td>@r.AdmittedAt.ToString("g")</td>
+                    <td>@(r.DischargedAt?.ToString("g") ?? "-")</td>
+                    <td>@r.Ward</td>
+                    <td>@r.DoctorName</td>
+                    <td>@r.Reason</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
