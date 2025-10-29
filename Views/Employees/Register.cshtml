@@ -5,7 +5,13 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Register" method="post">
+<form asp-action="Register" method="post"
+      data-confirm-on-submit="true"
+      data-confirm-title="Create new Employee"
+      data-confirm-message="Are you sure you want to create a new EMPLOYEE"
+      data-confirm-text="Yes"
+      data-confirm-class="btn-primary">
+    @Html.AntiForgeryToken()
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="row">

@@ -10,7 +10,13 @@
 </div>
 <br/>
 
-<form asp-action="Edit" method="post" class="needs-validation">
+<form asp-action="Edit" method="post" class="needs-validation"
+      data-confirm-on-submit="true"
+      data-confirm-title="Save Changes"
+      data-confirm-message="Are you sure you want to save updates"
+      data-confirm-text="Save"
+      data-confirm-class="btn-primary">
+    @Html.AntiForgeryToken()
     <input asp-for="EntityKind" type="hidden" />
     <input asp-for="EntityId" type="hidden" />
 

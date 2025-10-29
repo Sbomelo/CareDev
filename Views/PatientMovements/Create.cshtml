@@ -21,7 +21,13 @@
     </dl>
 </div>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post"
+      data-confirm-on-submit="true"
+      data-confirm-title="Move Patient"
+      data-confirm-message="Are you sure you want to move @Model.PatientName"
+      data-confirm-text="Yes"
+      data-confirm-class="btn-primary">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="AdmissionId" />
     <input type="hidden" asp-for="PatientId" />
 

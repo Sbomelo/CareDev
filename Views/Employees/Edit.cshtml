@@ -97,7 +97,13 @@
 
 
 
-    <form asp-action="Edit" asp-comtroller="Employees" method="post">
+    <form asp-action="Edit" asp-comtroller="Employees" method="post"
+          data-confirm-on-submit="true"
+          data-confirm-title="Save Changes"
+          data-confirm-message="Are you sure you want to save updates for @Model.Name?"
+          data-confirm-text="Save"
+          data-confirm-class="btn-primary">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="EmployeeId" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

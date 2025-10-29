@@ -9,7 +9,13 @@
   </div>
 
 <hr />
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post"
+      data-confirm-on-submit="true"
+      data-confirm-title="Create Admission"
+      data-confirm-message="Are you sure you want to Create an Admission"
+      data-confirm-text="Yes"
+      data-confirm-class="btn-primary">
+    @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
   
         <div class="col-md-6 mb-3 mt-3">

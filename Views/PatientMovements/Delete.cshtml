@@ -31,7 +31,13 @@
 
         </dl>
 
-        <form asp-action="Delete">
+        <form asp-action="Delete" method="post"
+              data-confirm-on-submit="true"
+              data-confirm-title="Confirm Delete"
+              data-confirm-message="Are you sure you want to delete this record? This action cannot be undone."
+              data-confirm-text="Delete"
+              data-confirm-class="btn-danger">
+            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="MovementId" />
             <hr />
             <input type="submit" value="Delete" class="btn btn-danger rounded-pill w-25 me-1" />

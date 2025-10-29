@@ -100,7 +100,13 @@
 </div>
 
 <hr />
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post"
+      data-confirm-on-submit="true"
+      data-confirm-title="Save Changes"
+      data-confirm-message="Are you sure you want to save updates for this Admission"
+      data-confirm-text="Save"
+      data-confirm-class="btn-primary">
+    @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="AdmissionId" />
 
