@@ -121,7 +121,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
+        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,DateOfBirth,IDNumber,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +165,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
+        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,DateOfBirth,IDNumber,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
         {
             if (id != patient.PatientId)
             {
@@ -203,7 +203,6 @@ namespace CareDev.Controllers
         }
 
         //Get Patient/Register
-        [Authorize(Roles = "WardAdmin, Admin")]
         [HttpGet]
         public async Task<IActionResult> Register()
         {
@@ -224,7 +223,6 @@ namespace CareDev.Controllers
         }
 
         //POST Patient/Register
-        [Authorize(Roles = "WardAdmin, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Models.ViewModels.PatientRegisterViewModel vm)
@@ -277,6 +275,10 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
+                    City = vm.City,
+                    Address = vm.Address,
                     Gender = vm.Gender,
                     MedicationId = vm.MedicationId,
                     AllergyId = vm.AllergyId,
@@ -316,7 +318,11 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
                     Gender = vm.Gender,
+                    City = vm.City,
+                    Address = vm.Address,
                     MedicationId = vm.MedicationId,
                     AllergyId = vm.AllergyId,
                     ChronicConditionId = vm.ChronicConditionId,
