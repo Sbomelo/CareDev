@@ -33,6 +33,20 @@
             <span asp-validation-for="SurName" class="text-danger"></span>
         </div>
 
+        <div class="row g-3 mb-3">
+            <div class="form-group col-md-6">
+                <label asp-for="IDNumber"></label>
+                <input asp-for="IDNumber" class="form-control" />
+                <span asp-validation-for="IDNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label asp-for="DateOfBirth" class="control-label fw-bold">Date Of Birth:</label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+
         <div class="col-md-6">
             <label asp-for="PhoneNumber" class="form-label"></label>
             <input asp-for="PhoneNumber" class="form-control" />
