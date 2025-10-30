@@ -19,6 +19,13 @@ namespace CareDev.Models
         [Required]
         [Range(0, 120)]
         public int Age { get; set; }
+        //Date of birth
+        [Required]
+        public DateTime? DateOfBirth { get; set; }
+        [Required]
+        [Display(Name = "ID Number")]
+        [StringLength(13, ErrorMessage ="ID Number Must be 13 digits")]
+        public string IDNumber { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100)]
