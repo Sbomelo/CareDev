@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Calendar";
+}
+@{
+    ViewData["Title"] = "Appointments Calendar";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
+<div id="calendar" style="max-width:1100px;margin:20px auto;"></div>
+<div id="calendarError" class="text-danger text-center" style="display:none;"></div>
+
+@section Scripts {
+    <!-- global bundle that exposes FullCalendar on window.FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
+
+            // Basic options — change initialView if you want week/time grid
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                // where to fetch events (must return JSON array)
+                events: '/Calendar/GetEvents',
+                // show a spinner while loading
+                loading: function(isLoading) {
+                    if (isLoading) calendarEl.style.opacity = 0.6;
+                    else calendarEl.style.opacity = 1;
+                },
+                eventDidMount: function(info) {
+                    // optional: add tooltip
+                    info.el.setAttribute('title', info.event.title + ' (' + (info.event.extendedProps?.status ?? '') + ')');
+                },
+                // error callback when fetching events
+                eventFetchError: function(error) {
+                    console.error('FullCalendar event fetch error:', error);
+                    var err = document.getElementById('calendarError');
+                    if (err) { err.style.display = 'block'; err.innerText = 'Failed to load calendar events. See console/network.'; }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+}
+

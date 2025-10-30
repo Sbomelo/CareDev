@@ -1,46 +1,80 @@
-﻿@model AppointmentCreateViewModel 
+﻿@model CareDev.Models.ViewModels.AppointmentCreateViewModel
 @using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
     ViewData["Title"] = "Book an Appointment";
 }
 
-<form asp-action="Create" method="post" @* data-confirm-on-submit="true"
-      data-confirm-title="Create Appointment"
-      data-confirm-message="Are you sure you want to book an appointment"
-      data-confirm-text="Yes"
-      data-confirm-class="btn-primary" *@>
-    @Html.AntiForgeryToken()
-    <div class="mb-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <label asp-for="DoctorId" class="form-label"></label>
-        <select asp-for="DoctorId" class="form-select" asp-items="Model.Doctors"></select>
-        <span asp-validation-for="DoctorId" class="text-danger"></span>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+    <div class="text-center">
+
+        <h3 class="text-warning">It is your Duty and responsibilty to check the calendar and see which day and time is free to book an appointment at</h3>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Start" class="form-label"></label>
-        <input asp-for="Start" class="form-control" type="datetime-local" />
-        <span asp-validation-for="Start" class="text-danger"></span>
-    </div>
+<hr />
+<div class="align-self-center">
+    <div class="card border-0 shadow-lg rounded-4 ">
+        <div class="card-body border-0 shadow-lg rounded-4">
+            <form asp-action="Create" method="post" id="appointmentCreateForm" data-confirm-on-submit="true"
+                  data-confirm-title="Create Appointment"
+                  data-confirm-message="Are you sure you want to create an appointment"
+                  data-confirm-text="Yes"
+                  data-confirm-class="btn-primary">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="mb-3">
-        <label asp-for="End" class="form-label"></label>
-        <input asp-for="End" class="form-control" type="datetime-local" />
-        <span asp-validation-for="End" class="text-danger"></span>
-    </div>
+                <div class="mb-3">
+                    <label asp-for="DoctorId" class="form-label">Doctor Name</label>
+                    <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select">
+                        <option value="">-- Select doctor --</option>
+                    </select>
+                    <span asp-validation-for="DoctorId" class="text-danger"></span>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Notes" class="form-label"></label>
-        <textarea asp-for="Notes" class="form-control"></textarea>
-        <span asp-validation-for="Notes" class="text-danger"></span>
-    </div>
+                <div class="mb-3">
+                    <label asp-for="Start" class="form-label"> Start Time</label>
+                    <input asp-for="Start" type="datetime-local" class="form-control"
+                           value="@(Model?.Start.ToString("yyyy-MM-ddTHH:mm") ?? string.Empty)" />
+                    <span asp-validation-for="Start" class="text-danger"></span>
+                </div>
 
-    <button type="submit" class="btn btn-primary">Request Appointment</button>
-</form>
+                <div class="mb-3">
+                    <label asp-for="End" class="form-label">End Time</label>
+                    <input asp-for="End" type="datetime-local" class="form-control"
+                           value="@(Model?.End.ToString("yyyy-MM-ddTHH:mm") ?? string.Empty)" />
+                    <span asp-validation-for="End" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Notes" class="form-label">Notes or Reason</label>
+                    <textarea asp-for="Notes" class="form-control"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="text-center">
+
+                    <button type="submit" class="btn btn-primary rounded-pill w-25 me-2">Request</button>
+                    <a asp-controller="PatientAppointment" asp-action="MyAppointments" class="btn btn-secondary rounded-pill w-25">Cancel</a>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+      // tiny debug helper — opens console message when the form is submitted
+      document.getElementById('appointmentCreateForm').addEventListener('submit', function () {
+        console.log('Appointment form submitted');
+      });
+    </script>
 }
-
-

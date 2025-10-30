@@ -76,6 +76,7 @@
                         }
 
                     </ul>
+                    <ul id="notificationsList" class="list-unstyled"></ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -100,7 +101,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/fullcalendar.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="~/js/notification.js"></script>
+
   
     <script>
         const connection = new signalR.HubConnectionBuilder()

@@ -3,43 +3,43 @@ using CareDev.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static CareDev.Models.ApplicationUser;
-using CareDev.Data;
 
-
-[Authorize(Roles = "Doctor")]
-public class DoctorAppointmentController : Controller
+namespace YourNamespace.Controllers
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IAppointmentService _appointmentService;
-    private readonly UserManager<ApplicationUser> _userManager;
-    public DoctorAppointmentController(IAppointmentService appointmentService,
-                                       UserManager<ApplicationUser> userManager,
-                                       ApplicationDbContext context)
+    [Authorize(Roles = "Doctor")]
+    public class DoctorAppointmentController : Controller
     {
-        _appointmentService = appointmentService;
-        _userManager = userManager;
-        _context = context;
-    }
+        private readonly IAppointmentService _appointmentService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly INotificationService _notificationService;
 
-    // View own schedule
-    public async Task<IActionResult> MySchedule()
-    {
-        var doctorId = _userManager.GetUserId(User);
-        var schedule = await _appointmentService.GetDoctorScheduleAsync(doctorId);
-        return View(schedule);
-    }
+        public DoctorAppointmentController(IAppointmentService appointmentService, UserManager<ApplicationUser> userManager, INotificationService notificationService)
+        {
+            _appointmentService = appointmentService;
+            _userManager = userManager;
+            _notificationService = notificationService;
+        }
 
-    // Confirm a pending appointment
-    [HttpPost]
-    public async Task<IActionResult> Confirm(int id)
-    {
-        var appt = await _context.Appointments.FindAsync(id);
-        if (appt == null) return NotFound();
-        appt.Status = AppointmentStatus.Confirmed;
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(MySchedule));
+        public async Task<IActionResult> MySchedule()
+        {
+            var doctorId = _userManager.GetUserId(User);
+            var schedule = await _appointmentService.GetDoctorScheduleAsync(doctorId);
+            return View(schedule);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Confirm(int appointmentId)
+        {
+            var appt = await _appointmentService.GetByIdAsync(appointmentId);
+            if (appt == null) return NotFound();
+
+            appt.Status = AppointmentStatus.Confirmed;
+            await _appointmentService.RescheduleAsync(appointmentId, appt.Start, appt.End); // reuse Reschedule or add Confirm method
+
+            await _notificationService.NotifyAsync(appt.PatientId, $"Your appointment at {appt.Start.ToLocalTime():f} is confirmed.");
+            return RedirectToAction(nameof(MySchedule));
+        }
     }
 }
-
