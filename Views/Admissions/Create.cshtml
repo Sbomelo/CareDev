@@ -51,8 +51,8 @@
 
         <div class="col-md-6">
             <label asp-for="EmployeeId" class="form-label fw-bold">Admitting Staff : </label>
-            <select asp-for="EmployeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees" disabled>
-                @* <option value="">-- Select Staff (optional) --</option> *@
+            <select asp-for="EmployeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees">
+             <option value="">-- Select Staff (optional) --</option>
             </select>
             <span asp-validation-for="EmployeeId" class="text-danger"></span>
         </div>

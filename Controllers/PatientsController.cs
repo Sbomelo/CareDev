@@ -351,7 +351,7 @@ namespace CareDev.Controllers
                 await tx.CommitAsync();
 
                 TempData["success"] = "Registration successful. Patient account created.";
-                return RedirectToAction("Index");
+                return RedirectToAction("PatientDashboard");
             }
             catch (Exception ex)
             {
