@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR.Protocol;
+using CareDev.Heplers;
 
 namespace CareDev.Models.ViewModels
 {
@@ -18,16 +19,20 @@ namespace CareDev.Models.ViewModels
         [Required, EmailAddress]
         [Display(Name = "Email Adress")]
         public string Email { get; set; }
+
         [Required]
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
+        [MatchesIdDob ("IDNumber")]
         public DateTime? DateOfBirth { get; set; }
+
         [Required,Range(0,100)]
         public int Age { get; set; }
 
         [Required]
         [Display(Name = "ID Number")]
         [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
+        
         public string IDNumber { get; set; } = string.Empty;
 
         [Required]

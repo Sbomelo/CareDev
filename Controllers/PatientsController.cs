@@ -238,6 +238,20 @@ namespace CareDev.Controllers
             // If model is NOT valid -> repopulate dropdowns and return view
             if (!ModelState.IsValid)
             {
+                // Server-side password strength check using zxcvbn.net (optional) or simple rules:
+                var pwd = vm.Password ?? "";
+                var score = 0;
+                if (pwd.Length >= 8) score++;
+                if (Regex.IsMatch(pwd, "[A-Z]")) score++;
+                if (Regex.IsMatch(pwd, "[0-9]")) score++;
+                if (Regex.IsMatch(pwd, "[^A-Za-z0-9]")) score++;
+
+                if (score < 3)
+                {
+                    ModelState.AddModelError("Password", "Password is too weak. Use at least 8 characters, including letters and numbers.");
+                    return View(vm);
+                }
+
                 foreach (var kvp in ModelState)
                 {
                     foreach (var err in kvp.Value.Errors)

@@ -403,7 +403,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label asp-for="Password" for="password">Password</label>
-                                <input asp-for="Password" type="password" id="password" class="form-control" placeholder="Create a password" required>
+                                <input asp-for="Password" id="Password" class="form-control" placeholder="Create a password" required>
+                                <div id="pw-strength">
+                                    <meter max="4" id="password-strength-meter"></meter>
+                                    <span id="password-strength-text"></span>
+                                </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -433,24 +437,7 @@
     </section>
 
     <script>
-        // // Form validation
-        // document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        //     e.preventDefault();
-
-        //     const password = document.getElementById('password').value;
-        //     const confirmPassword = document.getElementById('confirmPassword').value;
-
-        //     if (password !== confirmPassword) {
-        //         alert('Passwords do not match. Please try again.');
-        //         return;
-        //     }
-
-        //     // In a real application, you would submit the form to a server here
-        //     alert('Registration submitted successfully! We will contact you shortly.');
-        //     this.reset();
-        // });
-
-        // Add some interactivity to form fields
+        
         const formControls = document.querySelectorAll('.form-control');
         formControls.forEach(control => {
             control.addEventListener('focus', function() {
@@ -464,6 +451,48 @@
             });
         });
     </script>
+
+    <!-- add in your view or layout (before your init script) -->
+ @*   
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" id="Password" />
+        <div id="pw-strength" >
+            <meter max="4" id="password-strength-meter"></meter>
+            <span id="password-strength-text"></span>
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div> *@
+
+    <script>
+        $(function(){
+            var meter = document.getElementById('password-strength-meter');
+            var text = document.getElementById('password-strength-text');
+
+            $('#Password').on('input', function () {
+                var val = $(this).val();
+                if (!window.zxcvbn) {
+                    // fallback: simple heuristic
+                    var score = 0;
+                    if (val.length >= 8) score++;
+                    if (/[A-Z]/.test(val)) score++;
+                    if (/[0-9]/.test(val)) score++;
+                    if (/[^A-Za-z0-9]/.test(val)) score++;
+                    if (score > 4) score = 4;
+                    meter.value = score;
+                    text.innerHTML = ['Very weak','Weak','Fair','Good','Strong'][score] || '';
+                    return;
+                }
+                var result = zxcvbn(val);
+                meter.value = result.score; // 0-4
+                var feedback = result.feedback && result.feedback.warning ? result.feedback.warning : '';
+                var suggestions = result.feedback && result.feedback.suggestions ? result.feedback.suggestions.join(' ') : '';
+                var label = ['Very weak','Weak','Fair','Good','Strong'][result.score];
+                text.innerHTML = label + (feedback ? ' — ' + feedback : '') + (suggestions ? ' ' + suggestions : '');
+            });
+        });
+    </script>
+
 </body>
 </html>
 @* <style>
