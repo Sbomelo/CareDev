@@ -11,6 +11,7 @@ using CareDev.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace CareDev.Controllers
 {
