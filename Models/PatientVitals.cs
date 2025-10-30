@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CareDev.Models
 {
@@ -7,10 +7,20 @@ namespace CareDev.Models
     {
         [Key]
         public int VitalID { get; set; }
-        public User Patient { get; set; }
-        public string PatientUserId { get; set; }
-        public User Nurse { get; set; }
-        public string NurseUserId { get; set; }
+
+        // 🔹 Foreign key to Patient (ApplicationUser in role "Patient")
+        [Required]
+        [ForeignKey(nameof(Patient))]
+        public string PatientUserId { get; set; } = string.Empty;
+        public ApplicationUser Patient { get; set; } = null!;
+
+        // 🔹 Foreign key to Nurse (ApplicationUser in role "Nurse")
+        [Required]
+        [ForeignKey(nameof(Nurse))]
+        public string NurseUserId { get; set; } = string.Empty;
+        public ApplicationUser Nurse { get; set; } = null!;
+
+        // 🔹 Vital signs
         [Required]
         [Display(Name = "Temperature (°C)")]
         [Range(30.0, 45.0)]
@@ -28,7 +38,7 @@ namespace CareDev.Models
 
         [Required]
         [Display(Name = "Blood Pressure")]
-        public string BloodPressure { get; set; } // e.g. "120/80"
+        public string BloodPressure { get; set; } = string.Empty; // e.g. "120/80"
 
         [Display(Name = "Oxygen Saturation (%)")]
         [Range(50, 100)]
@@ -37,8 +47,7 @@ namespace CareDev.Models
         [Display(Name = "Glucose Level (mmol/L)")]
         [Range(1.0, 25.0)]
         public double? GlucoseLevel { get; set; }
-        public DateTime RecordedDate { get; set; }
 
+        public DateTime RecordedDate { get; set; } = DateTime.Now;
     }
 }
-
