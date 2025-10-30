@@ -140,8 +140,11 @@
 
     <script>
         $(document).ready(function () {
+
+            // Initialize Select2
             $("#patientSelect").select2({
-                placeholder: 'Type Name, Surname, IDNumber, Phone',
+                placeholder: 'Type name,Surname ,ID number, phone ',
+                allowClear: true,
                 minimumInputLength: 2,
                 ajax: {
                     url: '@Url.Action("SearchPatients", "Admissions")',
@@ -149,7 +152,7 @@
                     delay: 250,
                     data: function (params) {
                         return {
-                            q: params.term, // search term
+                            q: params.term,
                             page: params.page || 1
                         };
                     },
@@ -161,21 +164,29 @@
                         };
                     },
                     cache: true
-                }
+                },
+                width: 'resolve'
             });
 
+            // When a patient is selected, set hidden field
             $("#patientSelect").on('select2:select', function (e) {
                 var data = e.params.data;
                 $("#PatientId").val(data.id);
-                $("#patientSummaryText").text(data.text);
-                $("#patientSummary").show();
             });
 
-            // if cleared
             $("#patientSelect").on('select2:clear', function () {
                 $("#PatientId").val('');
-                $("#patientSummary").hide();
             });
+
+            // ---- AUTO FOCUS ON LOAD ----
+            // Wait briefly to ensure Select2 is fully rendered
+            setTimeout(function () {
+                // Trigger focus on the Select2 search input
+                // $("#patientSelect").select2('open');
+        $('#patientSelect').next('.select2').find('.select2-selection').focus();
+
+            }, 300);
         });
     </script>
+
 }
