@@ -25,6 +25,8 @@ namespace CareDev.Data
         }
 
         //Core entities
+        public DbSet<PatsVitals> PatsVitals { get; set; }
+
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
@@ -42,7 +44,7 @@ namespace CareDev.Data
         public DbSet<Vital> Vitals { get; set; }  
         public DbSet<TreatPatient> TreatPatients { get; set; }
         public DbSet<DoctorInstruction> DoctorInstructions { get; set; }
-        public DbSet<PatientVitals> PatientVitals { get; set; }
+        //public DbSet<PatientVitals> PatientVitals { get; set; }
 
         //look-up tables
         public DbSet<Medication> Medications { get; set; }
@@ -391,6 +393,20 @@ namespace CareDev.Data
                 .WithMany()
                 .HasForeignKey(pm => pm.MovedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PatsVitals>()
+                .HasOne(v => v.Patient)
+                .WithMany()
+                .HasForeignKey(v => v.PatientUserId)
+                .OnDelete(DeleteBehavior.Restrict); // 🚫 no cascade here
+
+            modelBuilder.Entity<PatsVitals>()
+                .HasOne(v => v.Nurse)
+                .WithMany()
+                .HasForeignKey(v => v.NurseUserId)
+                .OnDelete(DeleteBehavior.Cascade); // ✅ only one cascade allowed
+
+
             //modelBuilder.Entity<PatientMovement>()
             //   .HasOne(pm => pm.Ward)
             //   .WithMany(p => p.Movement)
