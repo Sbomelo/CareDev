@@ -4,6 +4,7 @@ using CareDev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareDev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251030025332_UpdatedAppointmentsColumnsMadeSomeOfThemNullable")]
+    partial class UpdatedAppointmentsColumnsMadeSomeOfThemNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,11 +181,6 @@ namespace CareDev.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<int>("Age")
                         .HasMaxLength(100)
                         .HasColumnType("int");
@@ -193,18 +191,9 @@ namespace CareDev.Data.Migrations
                     b.Property<int?>("ChronicConditionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -216,11 +205,6 @@ namespace CareDev.Data.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -556,10 +540,6 @@ namespace CareDev.Data.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -567,11 +547,6 @@ namespace CareDev.Data.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -699,10 +674,6 @@ namespace CareDev.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Department")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -715,11 +686,6 @@ namespace CareDev.Data.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("JobTitle")
                         .IsRequired()
@@ -963,10 +929,6 @@ namespace CareDev.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("EmergencyContactName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -979,11 +941,6 @@ namespace CareDev.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("IDNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<bool>("IsAdmitted")
                         .HasColumnType("bit");

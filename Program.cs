@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Models;
+using CareDev.Services.IService;         // namespace of IAppointmentService
+using CareDev.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+// register your appointment service (add this)
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+// register notification service if you have one
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+builder.Services.AddSignalR();  // for real-time notifications:contentReference[oaicite:5]{index=5}
 
 builder.Services.AddRazorPages();
 
@@ -72,5 +81,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapHub<NotificationHub>("/notificationHub");  // SignalR hub endpoint:contentReference[oaicite:6]{index=6}
 
 app.Run();

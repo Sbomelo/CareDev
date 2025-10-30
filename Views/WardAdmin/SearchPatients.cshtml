@@ -1,0 +1,83 @@
+﻿@model CareDev.Models.ViewModels.AdmitPatientViewModel
+@{
+    ViewData["Title"] = "Admit Patient";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<form asp-action="Admit" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="patientSelect">Search registered (not yet admitted) patient</label>
+        <select id="patientSelect" style="width:100%" aria-label="Search patient"></select>
+        <input type="hidden" id="PatientId" name="PatientId" />
+    </div>
+
+    <div id="patientSummary" style="margin-top:10px; display:none;">
+        <strong>Selected patient:</strong>
+        <div id="patientSummaryText"></div>
+    </div>
+
+    <!-- other admission fields -->
+    <div class="form-group">
+        <label>Ward</label>
+        <select asp-for="WardId" asp-items="ViewBag.Wards" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Bed (optional)</label>
+        <select asp-for="BedId" asp-items="ViewBag.Beds" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Notes</label>
+        <textarea asp-for="AdmissionReason" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Admit</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#patientSelect").select2({
+            placeholder: 'Type name, national ID, phone or MRN',
+            minimumInputLength: 2,
+            ajax: {
+                url: '@Url.Action("SearchPatients", "WardAdmin")',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.results,
+                        pagination: data.pagination
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $("#patientSelect").on('select2:select', function (e) {
+            var data = e.params.data;
+            $("#PatientId").val(data.id);
+            $("#patientSummaryText").text(data.text);
+            $("#patientSummary").show();
+        });
+
+        // if cleared
+        $("#patientSelect").on('select2:clear', function () {
+            $("#PatientId").val('');
+            $("#patientSummary").hide();
+        });
+    });
+</script>
+

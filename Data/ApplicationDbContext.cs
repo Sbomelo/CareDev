@@ -50,6 +50,11 @@ namespace CareDev.Data
         public DbSet<ChronicCondition> ChronicConditions { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
 
+        //appoint ment tables
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             // 1) Prepare audit entries
@@ -417,7 +422,27 @@ namespace CareDev.Data
                    .HasForeignKey(b => b.WardId);
                     
             });
-           
+
+            // Appointment -> Patient (no cascade)
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany()      
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Appointment -> Doctor (no cascade)
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany()   
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.User)
+                .WithMany()
+                .HasForeignKey(n => n.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //seed look up data
             SeedLookupData(modelBuilder);
