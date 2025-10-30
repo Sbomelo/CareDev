@@ -97,7 +97,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,Name,SurName,Age,Gender,PhoneNumber,Email,Active")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,Name,SurName,Age,DateOfBirth,IDNumber,Gender,PhoneNumber,Email,Active")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -146,6 +146,8 @@ namespace CareDev.Controllers
                 Name = employee.Name,
                 SurName = employee.SurName,
                 Age = employee.Age,
+                DateOfBirth = employee.DateOfBirth,
+                IDNumber = employee.IDNumber,
                 Gender = employee.Gender,
                 PhoneNumber = employee.PhoneNumber,
                 Email = employee.Email,
@@ -239,6 +241,8 @@ namespace CareDev.Controllers
                 employee.Name = vm.Name;
                 employee.SurName = vm.SurName;
                 employee.Age = vm.Age ?? employee.Age;
+                employee.DateOfBirth = vm.DateOfBirth;
+                employee.IDNumber = vm.IDNumber;
                 employee.Gender = vm.Gender;
                 employee.PhoneNumber = vm.PhoneNumber;
                 employee.Email = vm.Email;
@@ -462,6 +466,8 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age ?? 0,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
                     Gender = vm.Gender,
                     PhoneNumber = vm.PhoneNumber,
                     PhoneNumberConfirmed = true,
@@ -497,10 +503,16 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age ?? 0,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
                     Gender = vm.Gender,
+                    City = vm.City,
+                    Address = vm.Address,
                     RoleId = roleEntity.RoleId,
                     PhoneNumber = vm.PhoneNumber,
                     Email = vm.Email,
+                    JobTitle = vm.JobTitle,
+                    Department = vm.Department,
                     ApplicationUserId = user.Id,
                     Active = true
                 };

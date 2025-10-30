@@ -19,8 +19,23 @@ namespace CareDev.Models
         [Required]
         [StringLength(100)]
         [Display(Name = "Age")]
-        public int Age { get; set; } 
+        public int Age { get; set; }
+        //Date of birth
+        [Required]
+        public DateTime? DateOfBirth { get; set; }
+        [Required]
+        [Display(Name = "ID Number")]
+        [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
+        public string IDNumber { get; set; } = string.Empty;
 
+        [Required]
+        [Display(Name = "Address")]
+        [StringLength(250)]
+        public string? Address { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string? City { get; set; }
 
         [Required]
         [Display(Name = "Gender")]
@@ -44,6 +59,14 @@ namespace CareDev.Models
 
         [ForeignKey(nameof(ChronicConditionId))]
         public virtual ChronicCondition? ChronicCondition { get; set; }
+
+        public enum AppointmentStatus
+        {
+            Pending,    // patient requested, awaiting confirmation
+            Confirmed,  // doctor approved
+            Cancelled
+        }
+
 
         public bool MustChangePassword { get; set; } = false;
 

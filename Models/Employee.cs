@@ -16,10 +16,17 @@ namespace CareDev.Models
         [Required]
         [StringLength(30, ErrorMessage = "The Name Cannnot Be Longer than 30 Characters")]
         public string SurName { get; set; }
-
+        //Date of birth
+        [Required]
+        public DateTime? DateOfBirth { get; set; }
         [Required]
         [Range(1, 100, ErrorMessage = "Age Must Be Between 1 AND 100 Years Old")]
         public int Age { get; set; }
+
+        [Required]
+        [Display(Name = "ID Number")]
+        [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
+        public string IDNumber { get; set; } = string.Empty;
 
         [Required]
         public string Gender { get; set; }

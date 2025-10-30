@@ -19,6 +19,14 @@ namespace CareDev.Models.ViewModels
         [StringLength(100)]
         public string? SurName { get; set; }
 
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
+
+        [Display(Name = "ID Number")]
+        [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
+        public string? IDNumber { get; set; }
+
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
         [StringLength(10)]

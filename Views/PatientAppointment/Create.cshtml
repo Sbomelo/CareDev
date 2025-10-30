@@ -1,0 +1,46 @@
+﻿@model AppointmentCreateViewModel 
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Book an Appointment";
+}
+
+<form asp-action="Create" method="post" @* data-confirm-on-submit="true"
+      data-confirm-title="Create Appointment"
+      data-confirm-message="Are you sure you want to book an appointment"
+      data-confirm-text="Yes"
+      data-confirm-class="btn-primary" *@>
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <label asp-for="DoctorId" class="form-label"></label>
+        <select asp-for="DoctorId" class="form-select" asp-items="Model.Doctors"></select>
+        <span asp-validation-for="DoctorId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Start" class="form-label"></label>
+        <input asp-for="Start" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Start" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="End" class="form-label"></label>
+        <input asp-for="End" class="form-control" type="datetime-local" />
+        <span asp-validation-for="End" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Request Appointment</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

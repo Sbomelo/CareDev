@@ -87,6 +87,8 @@ namespace YourProjectNamespace.Controllers
                     // Map allowed fields
                     patient.Name = model.Name;
                     patient.SurName = model.SurName;
+                    patient.DateOfBirth = model.DateOfBirth;
+                    patient.IDNumber = model.IDNumber;
                     patient.PhoneNumber = model.PhoneNumber;
                     patient.Address = model.Address;
                     patient.City = model.City;
@@ -101,6 +103,8 @@ namespace YourProjectNamespace.Controllers
                     // Map allowed fields
                     employee.Name = model.Name;
                     employee.SurName = model.SurName;
+                    employee.DateOfBirth = model.DateOfBirth;
+                    employee.IDNumber = model.IDNumber;
                     employee.PhoneNumber = model.PhoneNumber;
                     employee.Address = model.Address;
                     employee.City = model.City;
@@ -170,6 +174,8 @@ namespace YourProjectNamespace.Controllers
                 vm.EntityId = p.PatientId;
                 vm.Name = p.Name;
                 vm.SurName = p.SurName;
+                vm.DateOfBirth = p.DateOfBirth;
+                vm.IDNumber = p.IDNumber;
                 vm.PhoneNumber = p.PhoneNumber;
                 vm.Address = p.Address;
                 vm.City = p.City;
@@ -182,6 +188,8 @@ namespace YourProjectNamespace.Controllers
                 vm.EntityId = e.EmployeeId;
                 vm.Name = e.Name;
                 vm.SurName = e.SurName;
+                vm.DateOfBirth = e.DateOfBirth;
+                vm.IDNumber = e.IDNumber;
                 vm.PhoneNumber = e.PhoneNumber;
                 vm.Address = e.Address;
                 vm.City = e.City;

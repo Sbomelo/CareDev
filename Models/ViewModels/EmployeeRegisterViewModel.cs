@@ -23,12 +23,40 @@ namespace CareDev.Models.ViewModels
         public int? Age { get; set; }
 
         [Required]
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
+
+        [Required]
+        [Display(Name = "ID Number")]
+        [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
+        public string IDNumber { get; set; } = string.Empty;
+
+        [Required]
         public string Gender { get; set; }
+
+        [Required]
+        [Display(Name = "Address")]
+        [StringLength(250)]
+        public string? Address { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string? City { get; set; }
 
         [Required]
         [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must be 10 digits and start with 0.")]
         [StringLength(10)]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Job title")]
+        [StringLength(100)]
+        public string? JobTitle { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string? Department { get; set; }
 
         [Required (ErrorMessage ="Please Select Role")]
         [Display(Name = "Role")]
