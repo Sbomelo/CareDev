@@ -74,6 +74,18 @@ namespace CareDev.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Patient")]
+        public IActionResult UploadInsuranceDoc()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Patient")]
+        public IActionResult PayBill()
+        {
+            return View();
+        }
+
         // GET: Patients
         [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Index()
