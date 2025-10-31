@@ -6,46 +6,55 @@
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Doctor</th>
-            <th>Patient</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var a in Model)
-        {
-            <tr id="appt-row-@a.Id">
-                <td>@a.Doctor?.Name</td>
-                <td>@a.Patient?.Name</td>
-                <td>@a.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@a.End.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
-                <td id="status-@a.Id">@a.Status</td>
-                <td>
-                    <!-- Reschedule button -->
-                    <button class="btn btn-sm btn-outline-primary"
-                            data-id="@a.Id" data-start="@a.Start.ToString("s")" data-end="@a.End.ToString("s")"
-                            onclick="openRescheduleModal(this)">
-                        Reschedule
-                    </button>
-
-                    <!-- Cancel button -->
-                    <button class="btn btn-sm btn-outline-danger"
-                            data-id="@a.Id" onclick="openCancelModal(this)">
-                        Cancel
-                    </button>
-                </td>
+<div class="text-center">
+    <h3>Manage Appointments for Doctor</h3>
+</div>
+<hr />
+<div style="overflow-x:auto; overflow-y:auto;">
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-dark">
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr id="appt-row-@a.Id">
+                    <td>@a.Doctor?.Name</td>
+                    <td>@a.Patient?.Name</td>
+                    <td>@a.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@a.End.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td id="status-@a.Id">@a.Status</td>
+                    <td>
+                        <!-- Reschedule button -->
+                        <button class="btn btn-sm btn-primary rounded-pill"
+                                data-id="@a.Id" data-start="@a.Start.ToString("s")" data-end="@a.End.ToString("s")"
+                                onclick="openRescheduleModal(this)">
+                            Reschedule
+                        </button>
+
+                        <!-- Cancel button -->
+                        <button class="btn btn-sm btn-danger rounded-pill"
+                                data-id="@a.Id" onclick="openCancelModal(this)">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+
+<div class="text-center">
+    <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-primary w-75 rounded-pill">Back</a>
+</div>
 
 <!-- Reschedule Modal -->
 <div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-hidden="true">

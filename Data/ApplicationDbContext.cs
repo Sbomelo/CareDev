@@ -57,6 +57,9 @@ namespace CareDev.Data
         public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
         public DbSet<Notification> Notifications { get; set; }
 
+        //Password reset
+        public DbSet<PasswordHistory> PasswordHistories { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             // 1) Prepare audit entries

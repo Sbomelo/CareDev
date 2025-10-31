@@ -35,6 +35,8 @@ builder.Services.AddControllersWithViews();
 
 // register your appointment service (add this)
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IPasswordHistoryService, PasswordHistoryService>();
+
 
 // register notification service if you have one
 builder.Services.AddScoped<INotificationService, NotificationService>();

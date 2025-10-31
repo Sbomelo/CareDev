@@ -31,8 +31,8 @@
     </div>
 
     <div class="col-12 mt-2">
-        <button type="submit" class="btn btn-primary">Export</button>
-        <a asp-action="Index" asp-controller="Admissions" class="btn btn-secondary ms-2">Back to Admissions</a>
+        <button type="submit" class="btn btn-primary rounded-pill">Export</button>
+        <a asp-action="Index" asp-controller="Admissions" class="btn btn-secondary ms-2 rounded-pill">Back to Admissions</a>
     </div>
 </form>
 
@@ -41,21 +41,33 @@
 @if (Model.Results?.Any() == true)
 {
     <h4>Preview (first 50)</h4>
-    <table class="table table-sm">
-        <thead><tr><th>ID</th><th>Patient</th><th>Admitted</th><th>Discharged</th><th>Ward</th><th>Doctor</th></tr></thead>
-        <tbody>
-            @foreach (var r in Model.Results.Take(50))
-            {
-                <tr>
-                    <td>@r.AdmissionId</td>
-                    <td>@r.PatientName (@r.PatientId)</td>
-                    <td>@r.AdmittedAt.ToString("g")</td>
-                    <td>@(r.DischargedAt?.ToString("g") ?? "-")</td>
-                    <td>@r.Ward</td>
-                    <td>@r.DoctorName</td>
-                    <td>@r.Reason</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div style="overflow-x:auto; overflow-y:auto;">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-dark"><th>ID</th><th>Patient</th><th>Admitted</th><th>Discharged</th><th>Ward</th><th>Doctor</th></tr>
+
+    </thead>
+            <tbody>
+                @foreach (var r in Model.Results.Take(50))
+                {
+                    <tr class="table-bordered ">
+                        <td>@r.AdmissionId</td>
+                        <td>@r.PatientName (@r.PatientId)</td>
+                        <td>@r.AdmittedAt.ToString("g")</td>
+                        <td>@(r.DischargedAt?.ToString("g") ?? "-")</td>
+                        <td>@r.Ward</td>
+                        <td>@r.DoctorName</td>
+                        <td>@r.Reason</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
 }
+<br />
+<hr />
+    <div class="text-center">
+        <a asp-controller="Employees" asp-action="AdminPortal" class="btn btn-primary rounded-pill w-75">Back</a>
+    </div>

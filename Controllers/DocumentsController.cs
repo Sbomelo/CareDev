@@ -21,6 +21,7 @@ public class DocumentsController : Controller
         _db = db;
     }
     // GET: /Documents
+    [Authorize(Roles="Patient")]
     public async Task<IActionResult> Index()
     {
         var model = new DownloadOptionsViewModel();
