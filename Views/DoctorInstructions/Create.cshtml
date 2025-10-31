@@ -1,63 +1,58 @@
 ﻿@model CareDev.Models.DoctorInstruction
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Leave New Instruction";
 }
 
-<h1>Create</h1>
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">🩺 Leave New Instruction for Nurse</h2>
+    <hr />
 
-<h4>DoctorInstruction</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <input asp-for="PatientId" class="form-control" />
-                <span asp-validation-for="PatientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InstructionDate" class="control-label"></label>
-                <input asp-for="InstructionDate" class="form-control" />
-                <span asp-validation-for="InstructionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Instructions" class="control-label"></label>
-                <textarea asp-for="Instructions" class="form-control"></textarea>
-                <span asp-validation-for="Instructions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Medication" class="control-label"></label>
-                <input asp-for="Medication" class="form-control" />
-                <span asp-validation-for="Medication" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FollowUpDate" class="control-label"></label>
-                <input asp-for="FollowUpDate" class="form-control" />
-                <span asp-validation-for="FollowUpDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdditionalNotes" class="control-label"></label>
-                <textarea asp-for="AdditionalNotes" class="form-control"></textarea>
-                <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+    <form asp-action="Create" method="post" class="card p-4 shadow-sm rounded-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <div class="mb-3">
+            <label asp-for="PatientId" class="form-label fw-bold">Select Patient</label>
+            <select asp-for="PatientId" class="form-select" asp-items="ViewBag.PatientId">
+                <option value="">-- Choose Patient --</option>
+            </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Instructions" class="form-label fw-bold">Doctor’s Instructions</label>
+            <textarea asp-for="Instructions" class="form-control" rows="4" placeholder="Enter detailed medical or care instructions..."></textarea>
+            <span asp-validation-for="Instructions" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Medication" class="form-label fw-bold">Prescribed Medication</label>
+            <input asp-for="Medication" class="form-control" placeholder="E.g. Paracetamol 500mg every 8 hours" />
+            <span asp-validation-for="Medication" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FollowUpDate" class="form-label fw-bold">Follow-up Date</label>
+            <input asp-for="FollowUpDate" class="form-control" type="date" />
+            <span asp-validation-for="FollowUpDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AdditionalNotes" class="form-label fw-bold">Additional Notes (Optional)</label>
+            <textarea asp-for="AdditionalNotes" class="form-control" rows="3" placeholder="Any extra notes for the nurse..."></textarea>
+            <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-send-fill"></i> Submit Instruction
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

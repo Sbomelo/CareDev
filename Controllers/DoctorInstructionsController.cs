@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +10,7 @@ using CareDev.Models;
 
 namespace CareDev.Controllers
 {
+    //[Authorize(Roles = "Doctor")] // Only doctors can access this controller
     public class DoctorInstructionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,131 +23,61 @@ namespace CareDev.Controllers
         // GET: DoctorInstructions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DoctorInstructions.ToListAsync());
-        }
+            // Show all doctor’s own instructions (if logged in user is a doctor)
+            var userId = User.Identity?.Name; // Or however you identify logged-in users
+            var instructions = await _context.DoctorInstructions
+                .Include(d => d.Patient)
+                .Where(d => d.UserId == userId)
+                .OrderByDescending(d => d.InstructionDate)
+                .ToListAsync();
 
-        // GET: DoctorInstructions/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var doctorInstruction = await _context.DoctorInstructions
-                .FirstOrDefaultAsync(m => m.InstructionId == id);
-            if (doctorInstruction == null)
-            {
-                return NotFound();
-            }
-
-            return View(doctorInstruction);
+            return View(instructions);
         }
 
         // GET: DoctorInstructions/Create
         public IActionResult Create()
         {
+            // Load patients list for selection
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "FullName");
             return View();
         }
 
         // POST: DoctorInstructions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructionId,PatientId,UserId,InstructionDate,Instructions,Medication,FollowUpDate,AdditionalNotes")] DoctorInstruction doctorInstruction)
+        public async Task<IActionResult> Create([Bind("PatientId,Instructions,Medication,FollowUpDate,AdditionalNotes")] DoctorInstruction doctorInstruction)
         {
             if (ModelState.IsValid)
             {
+                doctorInstruction.InstructionDate = DateTime.Now;
+                doctorInstruction.UserId = User.Identity?.Name; // Link instruction to logged-in doctor
+                doctorInstruction.IsCompleted = false; // Default to not completed
+
                 _context.Add(doctorInstruction);
                 await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Instruction successfully added for the nurse to carry out.";
                 return RedirectToAction(nameof(Index));
             }
+
+            // Reload patient dropdown if something fails
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "FullName", doctorInstruction.PatientId);
             return View(doctorInstruction);
         }
 
-        // GET: DoctorInstructions/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        // Optional: Doctor can see instruction details
+        public async Task<IActionResult> Details(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var doctorInstruction = await _context.DoctorInstructions.FindAsync(id);
-            if (doctorInstruction == null)
-            {
-                return NotFound();
-            }
-            return View(doctorInstruction);
-        }
-
-        // POST: DoctorInstructions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("InstructionId,PatientId,UserId,InstructionDate,Instructions,Medication,FollowUpDate,AdditionalNotes")] DoctorInstruction doctorInstruction)
-        {
-            if (id != doctorInstruction.InstructionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(doctorInstruction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DoctorInstructionExists(doctorInstruction.InstructionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(doctorInstruction);
-        }
-
-        // GET: DoctorInstructions/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var doctorInstruction = await _context.DoctorInstructions
+            var instruction = await _context.DoctorInstructions
+                .Include(d => d.Patient)
                 .FirstOrDefaultAsync(m => m.InstructionId == id);
-            if (doctorInstruction == null)
-            {
+
+            if (instruction == null)
                 return NotFound();
-            }
 
-            return View(doctorInstruction);
-        }
-
-        // POST: DoctorInstructions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var doctorInstruction = await _context.DoctorInstructions.FindAsync(id);
-            if (doctorInstruction != null)
-            {
-                _context.DoctorInstructions.Remove(doctorInstruction);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View(instruction);
         }
 
         private bool DoctorInstructionExists(long id)

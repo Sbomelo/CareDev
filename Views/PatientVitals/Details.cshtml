@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CareDev.Models.PatientVitals>
+﻿@model IEnumerable<CareDev.Models.PatsVitals>
 
 @{
     ViewData["Title"] = "Patient Vitals";
@@ -36,7 +36,7 @@ else
                     <td>@v.HeartRate</td>
                     <td>@v.RespiratoryRate</td>
                     <td>@v.OxygenSaturation</td>
-                    <td>@(v.GlucoseLevel.HasValue? v.GlucoseLevel.Value.ToString() : "N/A")</td>
+                    <td>@(v.GlucoseLevel.HasValue? v.GlucoseLevel.Value.ToString("F1") : "N/A")</td>
                     <td>@(v.Nurse != null ? v.Nurse.Name ?? v.Nurse.UserName : v.NurseUserId)</td>
                 </tr>
             }
