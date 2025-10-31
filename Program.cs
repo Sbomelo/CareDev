@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Models;
+using CareDev.Services.IService;         // namespace of IAppointmentService
+using CareDev.Services;
+using YourNamespace.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +16,34 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = false; // set as desired
+    options.Password.RequireNonAlphanumeric = false;
+});
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddControllersWithViews();
+
+// register your appointment service (add this)
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+// register notification service if you have one
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+builder.Services.AddSignalR();  // for real-time notifications:contentReference[oaicite:5]{index=5}
+
 builder.Services.AddRazorPages();
 
-builder.Services.AddControllersWithViews();
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -32,7 +54,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
-
 
 //Seeding roles
  using (var scope = app.Services.CreateScope())
@@ -72,5 +93,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapHub<NotificationHub>("/notificationHub");  // SignalR hub endpoint:contentReference[oaicite:6]{index=6}
 
 app.Run();

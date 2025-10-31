@@ -4,6 +4,10 @@
     var wards = (SelectList)ViewBag.Wards;
     var beds = (List<Bed>)ViewBag.Beds;
 }
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
   <div class="text-center">
       <h2>Admit Patient</h2>
   </div>
@@ -17,14 +21,24 @@
       data-confirm-class="btn-primary">
     @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-  
+@*   
         <div class="col-md-6 mb-3 mt-3">
             <label asp-for="PatientId" class="form-label fw-bold">Patient Name :</label>
             <select asp-for="PatientId" class="form-select" asp-items="(SelectList)ViewBag.Patients">
                 <option value="">-- Select Patient --</option>
             </select>
             <span asp-validation-for="PatientId" class="text-danger"></span>
-        </div>
+        </div> *@
+    <div class="form-group">
+        <label for="patientSelect">Search Patient</label>
+        <select id="patientSelect" style="width:100%" aria-label="Search patient"></select>
+        <input type="hidden" id="PatientId" name="PatientId" />
+    </div>
+
+    <div id="patientSummary" style="margin-top:10px; display:none;">
+        <strong>Selected patient:</strong>
+        <div id="patientSummaryText"></div>
+    </div>
 
     <div class="row g-3 mb-3 ">
         <div class="col-md-6">
@@ -38,7 +52,7 @@
         <div class="col-md-6">
             <label asp-for="EmployeeId" class="form-label fw-bold">Admitting Staff : </label>
             <select asp-for="EmployeeId" class="form-select" asp-items="(SelectList)ViewBag.Employees">
-                <option value="">-- Select Staff (optional) --</option>
+             <option value="">-- Select Staff (optional) --</option>
             </select>
             <span asp-validation-for="EmployeeId" class="text-danger"></span>
         </div>
@@ -99,6 +113,8 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     const wardSelect = document.getElementById('wardSelect');
     const bedSelect = document.getElementById('bedSelect');
@@ -121,4 +137,56 @@
     wardSelect.addEventListener('change', filterBeds);
     window.addEventListener('load', filterBeds);
 </script>
+
+    <script>
+        $(document).ready(function () {
+
+            // Initialize Select2
+            $("#patientSelect").select2({
+                placeholder: 'Type name,Surname ,ID number, phone ',
+                allowClear: true,
+                minimumInputLength: 2,
+                ajax: {
+                    url: '@Url.Action("SearchPatients", "Admissions")',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.results,
+                            pagination: data.pagination
+                        };
+                    },
+                    cache: true
+                },
+                width: 'resolve'
+            });
+
+            // When a patient is selected, set hidden field
+            $("#patientSelect").on('select2:select', function (e) {
+                var data = e.params.data;
+                $("#PatientId").val(data.id);
+            });
+
+            $("#patientSelect").on('select2:clear', function () {
+                $("#PatientId").val('');
+            });
+
+            // ---- AUTO FOCUS ON LOAD ----
+            // Wait briefly to ensure Select2 is fully rendered
+            setTimeout(function () {
+                // Trigger focus on the Select2 search input
+                // $("#patientSelect").select2('open');
+        $('#patientSelect').next('.select2').find('.select2-selection').focus();
+
+            }, 300);
+        });
+    </script>
+
 }

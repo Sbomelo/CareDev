@@ -1,0 +1,183 @@
+﻿@model IEnumerable<CareDev.Models.Appointment>
+@using Microsoft.AspNetCore.Authorization
+
+@{
+    ViewData["Title"] = "All Appointments";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>Patient</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr id="appt-row-@a.Id">
+                <td>@a.Doctor?.Name</td>
+                <td>@a.Patient?.Name</td>
+                <td>@a.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@a.End.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td id="status-@a.Id">@a.Status</td>
+                <td>
+                    <!-- Reschedule button -->
+                    <button class="btn btn-sm btn-outline-primary"
+                            data-id="@a.Id" data-start="@a.Start.ToString("s")" data-end="@a.End.ToString("s")"
+                            onclick="openRescheduleModal(this)">
+                        Reschedule
+                    </button>
+
+                    <!-- Cancel button -->
+                    <button class="btn btn-sm btn-outline-danger"
+                            data-id="@a.Id" onclick="openCancelModal(this)">
+                        Cancel
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Reschedule Modal -->
+<div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="rescheduleForm" onsubmit="submitReschedule(event)">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reschedule Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="rescheduleAppointmentId" name="appointmentId" />
+                    <div class="mb-3">
+                        <label for="newStart">New Start</label>
+                        <input id="newStart" name="newStart" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="newEnd">New End</label>
+                        <input id="newEnd" name="newEnd" class="form-control" />
+                    </div>
+                    <div id="rescheduleError" class="text-danger"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="cancelForm" onsubmit="submitCancel(event)">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Cancellation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="cancelAppointmentId" name="appointmentId" />
+                    <p>Are you sure you want to cancel this appointment?</p>
+                    <div id="cancelError" class="text-danger"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@section Scripts {
+    <script>
+        // bootstrap 5 modal instances
+        var rescheduleModal = new bootstrap.Modal(document.getElementById('rescheduleModal'));
+        var cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
+
+        function openRescheduleModal(btn) {
+          const id = btn.getAttribute('data-id');
+          const start = btn.getAttribute('data-start'); // ISO string
+          const end = btn.getAttribute('data-end');
+          document.getElementById('rescheduleAppointmentId').value = id;
+          document.getElementById('rescheduleError').innerText = '';
+
+          // Initialize flatpickr (datetime) with current values
+          flatpickr('#newStart', { enableTime: true, dateFormat: "Y-m-d H:i", defaultDate: start });
+          flatpickr('#newEnd', { enableTime: true, dateFormat: "Y-m-d H:i", defaultDate: end });
+
+          rescheduleModal.show();
+        }
+
+        async function submitReschedule(e) {
+          e.preventDefault();
+          const id = document.getElementById('rescheduleAppointmentId').value;
+          const newStart = document.getElementById('newStart').value;
+          const newEnd = document.getElementById('newEnd').value;
+
+          try {
+            const resp = await fetch('/AdminAppointment/Reschedule', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': getToken() },
+              body: JSON.stringify({ appointmentId: parseInt(id), newStart, newEnd })
+            });
+            if (resp.ok) {
+              // update row visually or reload
+              rescheduleModal.hide();
+              location.reload(); // simplest option
+            } else {
+              const txt = await resp.text();
+              document.getElementById('rescheduleError').innerText = txt || 'Failed to reschedule';
+            }
+          } catch (ex) {
+            document.getElementById('rescheduleError').innerText = ex.toString();
+          }
+        }
+
+        function openCancelModal(btn) {
+          const id = btn.getAttribute('data-id');
+          document.getElementById('cancelAppointmentId').value = id;
+          document.getElementById('cancelError').innerText = '';
+          cancelModal.show();
+        }
+
+        async function submitCancel(e) {
+          e.preventDefault();
+          const id = document.getElementById('cancelAppointmentId').value;
+          try {
+            const resp = await fetch('/AdminAppointment/Cancel', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': getToken() },
+              body: JSON.stringify({ appointmentId: parseInt(id) })
+            });
+            if (resp.ok) {
+              cancelModal.hide();
+              // optimistic: remove row
+              document.getElementById('appt-row-' + id)?.remove();
+            } else {
+              const txt = await resp.text();
+              document.getElementById('cancelError').innerText = txt || 'Failed to cancel';
+            }
+          } catch (ex) {
+            document.getElementById('cancelError').innerText = ex.toString();
+          }
+        }
+
+        // helper to get the antiforgery token from the page (aspnetcore automatically adds it to a hidden input inside forms)
+        function getToken() {
+          const el = document.querySelector('input[name="__RequestVerificationToken"]');
+          return el ? el.value : '';
+        }
+    </script>
+}

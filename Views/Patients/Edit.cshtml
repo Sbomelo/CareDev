@@ -44,21 +44,36 @@
                         <span asp-validation-for="SurName" class="text-danger"></span>
                     </div>
                 </div>
-   @*              <div class="form-group mb-3">
-                    <label asp-for="Age" class="control-label"></label>
-                    <input asp-for="Age" class="form-control" />
-                    <span asp-validation-for="Age" class="text-danger"></span>
+
+                <div class="row g-3 mb-3">
+                    <div class="form-group col-md-6">
+                        <label asp-for="IDNumber"></label>
+                        <input asp-for="IDNumber" class="form-control" />
+                        <span asp-validation-for="IDNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label asp-for="DateOfBirth" class="control-label fw-bold"> Admission Date:</label>
+                        <input asp-for="DateOfBirth" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group mb-3">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <input asp-for="Gender" class="form-control" />
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div> *@
+
+              <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <label asp-for="Address" for="address">Address</label>
+                    <input asp-for="Address" type="text" id="address" class="form-control" placeholder="Enter your address" required>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                  </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="City" for="city">City</label>
+                        <input asp-for="City" type="text" id="city" class="form-control" placeholder="Enter your city" required>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+              </div>
+
+
                 <div class="row g-3 mb-3 ">
                     <div class="col-md-6">
                         <label asp-for="Age" class="form-label fw-bold">Age :</label>

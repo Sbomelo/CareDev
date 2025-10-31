@@ -11,6 +11,7 @@ using CareDev.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace CareDev.Controllers
 {
@@ -73,6 +74,18 @@ namespace CareDev.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Patient")]
+        public IActionResult UploadInsuranceDoc()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Patient")]
+        public IActionResult PayBill()
+        {
+            return View();
+        }
+
         // GET: Patients
         [Authorize(Roles = "WardAdmin")]
         public async Task<IActionResult> Index()
@@ -121,7 +134,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
+        public async Task<IActionResult> Create([Bind("PatientId,Name,SurName,Age,DateOfBirth,IDNumber,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +178,7 @@ namespace CareDev.Controllers
         [Authorize(Roles = "WardAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
+        public async Task<IActionResult> Edit(int id, [Bind("PatientId,Name,SurName,Age,DateOfBirth,IDNumber,Gender,PhoneNumber,MedicationId,AllergyId,ChronicConditionId,ApplicationUserId")] Patient patient)
         {
             if (id != patient.PatientId)
             {
@@ -203,7 +216,6 @@ namespace CareDev.Controllers
         }
 
         //Get Patient/Register
-        [Authorize(Roles = "WardAdmin, Admin")]
         [HttpGet]
         public async Task<IActionResult> Register()
         {
@@ -224,7 +236,6 @@ namespace CareDev.Controllers
         }
 
         //POST Patient/Register
-        [Authorize(Roles = "WardAdmin, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Models.ViewModels.PatientRegisterViewModel vm)
@@ -240,6 +251,20 @@ namespace CareDev.Controllers
             // If model is NOT valid -> repopulate dropdowns and return view
             if (!ModelState.IsValid)
             {
+                // Server-side password strength check using zxcvbn.net (optional) or simple rules:
+                var pwd = vm.Password ?? "";
+                var score = 0;
+                if (pwd.Length >= 8) score++;
+                if (Regex.IsMatch(pwd, "[A-Z]")) score++;
+                if (Regex.IsMatch(pwd, "[0-9]")) score++;
+                if (Regex.IsMatch(pwd, "[^A-Za-z0-9]")) score++;
+
+                if (score < 3)
+                {
+                    ModelState.AddModelError("Password", "Password is too weak. Use at least 8 characters, including letters and numbers.");
+                    return View(vm);
+                }
+
                 foreach (var kvp in ModelState)
                 {
                     foreach (var err in kvp.Value.Errors)
@@ -277,6 +302,10 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
+                    City = vm.City,
+                    Address = vm.Address,
                     Gender = vm.Gender,
                     MedicationId = vm.MedicationId,
                     AllergyId = vm.AllergyId,
@@ -316,7 +345,11 @@ namespace CareDev.Controllers
                     Name = vm.Name,
                     SurName = vm.Surname,
                     Age = vm.Age,
+                    DateOfBirth = vm.DateOfBirth,
+                    IDNumber = vm.IDNumber,
                     Gender = vm.Gender,
+                    City = vm.City,
+                    Address = vm.Address,
                     MedicationId = vm.MedicationId,
                     AllergyId = vm.AllergyId,
                     ChronicConditionId = vm.ChronicConditionId,
@@ -330,7 +363,7 @@ namespace CareDev.Controllers
                 await tx.CommitAsync();
 
                 TempData["success"] = "Registration successful. Patient account created.";
-                return RedirectToAction("Index");
+                return RedirectToAction("PatientDashboard");
             }
             catch (Exception ex)
             {

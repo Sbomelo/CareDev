@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Doctor Calendar";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+<div id="doctorCalendar" style="max-width:1100px;margin:20px auto;"></div>
+
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="appointmentActionForm" onsubmit="return false;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="appointmentModalTitle" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="appointmentModalBody"></p>
+                    <div id="rescheduleFields" style="display:none;">
+                        <label>New Start</label>
+                        <input type="datetime-local" id="newStart" class="form-control mb-2" />
+                        <label>New End</label>
+                        <input type="datetime-local" id="newEnd" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="confirmBtn">Confirm</button>
+                    <button type="button" class="btn btn-warning" id="rescheduleBtn">Reschedule</button>
+                    <button type="button" class="btn btn-danger" id="cancelBtn">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const calendarEl = document.getElementById('doctorCalendar');
+          const modalEl = document.getElementById('appointmentModal');
+          const modal = new bootstrap.Modal(modalEl);
+
+          let currentAppointmentId = null;
+
+          const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: '/DoctorAppointment/GetDoctorEvents',
+            eventClick: function (info) {
+              currentAppointmentId = info.event.id;
+              const patient = info.event.title;
+              const start = new Date(info.event.start).toLocaleString();
+              const end = new Date(info.event.end).toLocaleString();
+              const status = info.event.extendedProps.status;
+              document.getElementById('appointmentModalTitle').innerText = `Appointment with ${patient}`;
+              document.getElementById('appointmentModalBody').innerHTML = `
+                <b>Start:</b> ${start}<br>
+                <b>End:</b> ${end}<br>
+                <b>Status:</b> ${status}
+              `;
+              document.getElementById('rescheduleFields').style.display = 'none';
+              modal.show();
+            }
+          });
+          calendar.render();
+
+                  function getToken() {
+          // Try hidden input first
+          const el = document.querySelector('input[name="__RequestVerificationToken"]');
+          if (el) return el.value;
+          // Try meta or token holder text fallback
+          const holder = document.getElementById('antiforgeryTokenHolder');
+          if (holder) {
+            // if you used raw token text inside holder, return trimmed content
+            const maybe = holder.querySelector('input[name="__RequestVerificationToken"]');
+            if (maybe) return maybe.value;
+            return holder.textContent.trim();
+          }
+          return '';
+        }
+
+
+          // Confirm
+          document.getElementById('confirmBtn').onclick = async () => {
+            const token = getToken();
+            const resp = await fetch('/DoctorAppointment/Confirm', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+              body: JSON.stringify({ appointmentId: parseInt(currentAppointmentId) })
+            });
+            if (resp.ok) {
+              modal.hide();
+              calendar.refetchEvents();
+            } else alert('Failed to confirm');
+          };
+
+          // Reschedule (show inputs)
+          document.getElementById('rescheduleBtn').onclick = () => {
+            const fields = document.getElementById('rescheduleFields');
+            fields.style.display = fields.style.display === 'none' ? 'block' : 'none';
+            if (fields.style.display === 'block') {
+              document.getElementById('rescheduleBtn').innerText = 'Save';
+              document.getElementById('rescheduleBtn').onclick = async () => {
+                const newStart = document.getElementById('newStart').value;
+                const newEnd = document.getElementById('newEnd').value;
+                const token = getToken();
+                const resp = await fetch('/DoctorAppointment/Reschedule', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                  body: JSON.stringify({ appointmentId: parseInt(currentAppointmentId), newStartUtc: newStart, newEndUtc: newEnd })
+                });
+                if (resp.ok) {
+                  modal.hide();
+                  calendar.refetchEvents();
+                } else alert('Failed to reschedule');
+              };
+            }
+          };
+
+          // Cancel
+          document.getElementById('cancelBtn').onclick = async () => {
+            const token = getToken();
+            const resp = await fetch('/DoctorAppointment/Cancel', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+              body: JSON.stringify({ appointmentId: parseInt(currentAppointmentId) })
+            });
+            if (resp.ok) {
+              modal.hide();
+              calendar.refetchEvents();
+            } else alert('Failed to cancel');
+          };
+        });
+    </script>
+}
+

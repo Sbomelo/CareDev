@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CareDev.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Appointments";
+    var list = Model?.ToList() ?? new List<CareDev.Models.Appointment>();
+}
+
+<div class="mb-4">
+    <div class="float-start">
+        <h3>My Appointments</h3>
+    </div>
+
+    <div class="float-end">
+        <a asp-controller="Calendar" asp-action="Index" class="btn btn-info rounded-pill me-1">View Calendar</a>
+        <a class="btn btn-secondary rounded-pill" asp-controller="PatientAppointment" asp-action="Create">Create appointment</a>
+    </div>
+</div>
+<br />
+<br />
+
+@if (!list.Any())
+{
+    <div class="alert alert-info">You have no upcoming appointments.</div>
+}
+else
+{
+    <div style="overflow-x:auto; overflow-y:auto;">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in list)
+                {
+                    <tr>
+                        <td>@(a.Doctor?.Name ?? @a.Doctor?.SurName ?? "Unknown")</td>
+                        <td>@a.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@a.End.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@a.Status.ToString()</td>
+                        <td>@(string.IsNullOrWhiteSpace(a.Notes) ? "-" : a.Notes)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+<hr />
+<div class="text-center">
+    <a class="btn btn-primary rounded-pill w-75" asp-action="PatientDashboard" asp-controller="Patients">Back</a>
+</div>

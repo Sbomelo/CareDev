@@ -1,50 +1,65 @@
 ﻿@model CareDev.Models.ViewModels.DownloadOptionsViewModel
 @{
-    ViewBag.Title = "Download my data";
+    ViewBag.Title = "Download your data";
 }
 
-<div class="text-center">
-    <h2>Download your data</h2>
+<div class=mb-4>
+    <div class="text-center float-start">
+
+        <h2>Download your data</h2>
+
+    </div>
+
+    <div class="float-end">
+
+        <a asp-controller="Patients" asp-action="PatientPortal" class="btn btn-primary rounded-pill">Back</a>
+
+    </div>
 </div>
 
-<hr />
+<br />
+<br />
 
 <form method="get" asp-action="DownloadMyData">
-    <div class="card-body shadow-lg border-0 rounded-4">
+    <div class="card shadow-lg border-0 rounded-4">
         <div class="card-body shadow-lg border-0 rounded-4">
 
-            <div class="form-group mb-3">
+            <div class="form-group m-3">
                 <lable class="control-label">Format :</lable>
                 <select asp-for="Format" asp-items="Model.AvailableFormats" class="form-select"></select>
             </div>
-            
-            <div class="form-group mb-3">
+
+            <div class="form-group m-3">
+                <label class="contreol-label">Include Audits?</label>
                 <input type="checkbox" asp-for="IncludeAudits" />
-                <lable class="control-label"> Date Of Admission :</lable>
-                <input asp-for="From" type="date" class="form-control" />
             </div>
 
-            <div class="form-group mb-3">
+            <div class="form-group m-3">
+                <lable class="control-label"> Date Of Admission :</lable>
+                <input asp-for="From" type="date" class="form-control" />
+
+            </div>
+
+            <div class="form-group m-3">
                 <label class="control-label">Discharge Date: </label>
                 <input asp-for="To" type="date" class="form-control" />
             </div>
 
-            <div class="form-group mb-3">
+            <div class="form-group m-3">
                 <lable class="control-label">Ward :</lable>
                 <select asp-for="WardId" asp-items="Model.Wards" class="form-select form-control"></select>
            </div>
 
-            <div class="form-group mb-3 mt-3">
+            <div class="form-group m-3">
                 <label class="control-label">Doctor :</label>
                 <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select form-control"></select>
            </div>
 
             <hr />
             <div class="text-center">
-                <button type="submit" class="btn btn-primary w-75">Download</button>
+                <button type="submit" class="btn btn-primary w-75 rounded-pill ">Download</button>
             </div>
 
         </div>
     </div>
-   
 </form>

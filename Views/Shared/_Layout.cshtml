@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/fullcalendar.min.css" rel="stylesheet" />
 
     <style>
         a {
@@ -67,6 +68,19 @@
                                 <a class="nav-link text-dark" asp-controller="Patients" asp-action="PatientDashboard">Patient Menu</a>
                             </li>
                         }
+                        @if (User.IsInRole("Doctor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="DoctorAppointment" asp-action="MySchedule">Schedules</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Doctor"))
+                        {
+                           <li class="nav-item"> 
+                                <a class="nav-link text-dark" asp-controller="DoctorAppointment" asp-action="Calendar">Calander</a>
+                           </li>
+                        }
+
                         @if (User.IsInRole("Nurse"))
                         {
                             <li class="nav-item">
@@ -75,11 +89,14 @@
                         }
 
                     </ul>
+                    <ul id="notificationsList" class="list-unstyled"></ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
+    @Html.AntiForgeryToken()
+
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_Notification"/>
@@ -92,10 +109,83 @@
             At <span class="fw-bold">CareDev</span> We Are Always Striving for Your Speedy Recovery <i class="bi bi-heart-fill"></i>
         </div>*@
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/confirmModal.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="~/js/notification.js"></script>
+
+  
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .build();
+        connection.on("ReceiveNotification", message => {
+            // Display the message (e.g. append to a notification list or alert)
+            console.log("Notification:", message);
+            // e.g. show a toast or update a notifications dropdown
+        });
+        connection.start().catch(err => console.error(err));
+    </script>
+    <script>
+        (function ($) {
+            // Parse SA ID's first 6 digits YYMMDD -> Date object or null
+            function parseSaIdDob(IDNumber) {
+                if (!IDNumber || IDdNumber.length < 6) return null;
+                var yy = IDNumber.substring(0,2);
+                var mm = IDNumber.substring(2,4);
+                var dd = IDNumber.substring(4,6);
+
+                if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return null;
+
+                var y = parseInt(yy, 10), m = parseInt(mm, 10), d = parseInt(dd, 10);
+                var now = new Date();
+                var currentTwoDigitYear = now.getFullYear() % 100;
+                var fullYear = (y > currentTwoDigitYear) ? 1900 + y : 2000 + y;
+
+                var dt = new Date(fullYear, m - 1, d);
+                if (dt && dt.getFullYear() === fullYear && (dt.getMonth()+1) === m && dt.getDate() === d)
+                    return dt;
+
+                return null;
+            }
+
+            // Unobtrusive validator adapter
+            $.validator.unobtrusive.adapters.add('matchesiddob', ['idprop'], function (options) {
+                var element = options.element;
+                options.rules['matchesiddob'] = { idprop: options.params.idprop };
+                options.messages['matchesiddob'] = options.message;
+            });
+
+            $.validator.addMethod('matchesiddob', function (value, element, params) {
+                var form = $(element).closest('form');
+                var idSelector = '[name="' + params.idprop + '"]';
+                var idValue = form.find(idSelector).val();
+
+                if (!value || !idValue) return true; // required handled elsewhere
+
+                var dob = new Date(value);
+                var parsed = parseSaIdDob(idValue);
+
+                if (!parsed) return false; // invalid id format
+                // Compare only date parts
+                return parsed.getFullYear() === dob.getFullYear()
+                    && parsed.getMonth() === dob.getMonth()
+                    && parsed.getDate() === dob.getDate();
+            }, '');
+
+            // Optional: live feedback when either field changes
+            $(document).on('blur change keyup', '[name="IDNumber"], [name="DateOfBirth"]', function () {
+                var form = $(this).closest('form');
+                form.validate().element('[name="DateOfBirth"]');
+            });
+
+        })(jQuery);
+    </script>
 
     @await Html.PartialAsync("_ConfirmModal")
     @await RenderSectionAsync("Scripts", required: false)

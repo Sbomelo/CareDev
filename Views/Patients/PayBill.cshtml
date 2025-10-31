@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .checkout-form {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .order-summary {
+            flex: 0 0 300px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+            input:focus {
+                outline: none;
+                border-color: #6a11cb;
+                box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+            }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+            .row .form-group {
+                flex: 1;
+            }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 30px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-size: 20px;
+            border: 1px solid #ddd;
+        }
+
+            .card-icon.active {
+                border-color: #6a11cb;
+                color: #6a11cb;
+            }
+
+        .btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+            }
+
+        .secure-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+            .secure-notice i {
+                margin-right: 8px;
+                color: #4CAF50;
+            }
+
+        .order-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .benefits {
+            margin-top: auto;
+            padding-top: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+            .benefit i {
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+        @@media (max-width: 768px) {
+            .container
+
+        {
+            flex-direction: column;
+        }
+
+        .order-summary {
+            flex: 1;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="checkout-form">
+            <h1>Checkout</h1>
+            <p class="subtitle">Complete your purchase securely</p>
+
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+
+                <div class="form-group">
+                    <label for="cardholder-name">Cardholder Name</label>
+                    <input type="text" id="cardholder-name" placeholder="John Doe">
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="expiry-date">Expiry Date</label>
+                        <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Accepted Cards</label>
+                    <div class="card-icons">
+                        <div class="card-icon active"><i class="fab fa-cc-visa"></i></div>
+                        <div class="card-icon"><i class="fab fa-cc-mastercard"></i></div>
+                        <div class="card-icon"><i class="fab fa-cc-amex"></i></div>
+                        <div class="card-icon"><i class="fab fa-cc-discover"></i></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn rounded-pill">Pay</button>
+
+                <div class="secure-notice">
+                    <i class="fas fa-lock"></i>
+                    Your payment information is secure and encrypted
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <hr />
+        <div class="text-center">
+            <a asp-controller="Patients" asp-action="PatientPortal" class="btn btn-primary rounded-pill w-75">Back</a>
+        </div>
+
+    <script>
+        // Format card number with spaces
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ');
+            if (formattedValue) {
+                e.target.value = formattedValue;
+            }
+        });
+
+        // Format expiry date
+        document.getElementById('expiry-date').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+        });
+
+        // Only allow numbers in CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Form submission
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Payment processed successfully! Thank you for your purchase.');
+        });
+    </script>
+</body>
+</html>

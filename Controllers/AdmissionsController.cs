@@ -290,6 +290,39 @@ namespace CareDev.Controllers
             ViewBag.Beds = await _context.Beds.Include(b => b.Ward).OrderBy(b => b.BedNumber).ToListAsync();
         }
 
+        [Authorize(Roles = "WardAdmin,Admin")]
+        [HttpGet]
+        public async Task<IActionResult> SearchPatients(string q, int page = 1, int pageSize = 20)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Json(new { results = new object[0], pagination = new { more = false } });
+
+            q = q.Trim();
+
+            var query = _context.Patients
+                .AsNoTracking()
+                .Where(p => !p.IsAdmitted &&
+                           (EF.Functions.Like(p.Name, $"%{q}%") ||
+                            EF.Functions.Like(p.IDNumber, $"%{q}%") ||
+                            EF.Functions.Like(p.PhoneNumber, $"%{q}%") ||
+                            EF.Functions.Like(p.SurName, $"%{q}%")));
+
+            var total = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(p => p.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new {
+                    id = p.PatientId,
+                    text = p.Name + (string.IsNullOrEmpty(p.IDNumber) ? "" : " — " + p.IDNumber)
+                })
+                .ToListAsync();
+
+            var more = (page * pageSize) < total;
+            return Json(new { results = items, pagination = new { more } });
+        }
+
         //Get Admnissions
         public async Task<IActionResult> Edit(int? id)
         {
