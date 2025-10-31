@@ -9,7 +9,9 @@
 
 <div id="calendar" style="max-width:1100px;margin:20px auto;"></div>
 <div id="calendarError" class="text-danger text-center" style="display:none;"></div>
-
+<div class="text-center">
+    <a asp-controller="PatientAppointment" asp-action="MyAppointments" class="btn btn-primary rounded-pill w-50">Back</a>
+</div>
 @section Scripts {
     <!-- global bundle that exposes FullCalendar on window.FullCalendar -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>

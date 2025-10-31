@@ -121,7 +121,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                     
                     _logger.LogInformation("User logged in.");
 
-                    TempData["success"] = "You have logged in successfully.";
+                    
                     //Get Current User
                     var user = await _userManager.FindByEmailAsync(Input.Email);
                     var roles = await _userManager.GetRolesAsync(user);
@@ -144,6 +144,7 @@ namespace CareDev.Areas.Identity.Pages.Account
                     if (roles.Contains("Patient"))
                         return RedirectToAction("PatientDashboard", "Patients");
 
+                    TempData["success"] = "You have logged in successfully.";
                     return LocalRedirect(returnUrl);
 
                 }

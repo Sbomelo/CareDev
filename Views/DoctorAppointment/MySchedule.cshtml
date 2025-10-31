@@ -1,0 +1,154 @@
+﻿@using static CareDev.Models.ApplicationUser
+@using static CareDev.Models.ApplicationUser
+@model IEnumerable<CareDev.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Schedule";
+    var list = Model?.ToList() ?? new List<CareDev.Models.Appointment>();
+}
+
+<h3>My Schedule</h3>
+
+@if (!list.Any())
+{
+    <div class="alert alert-info">You have no scheduled appointments.</div>
+}
+else
+{
+    <table class="table table-hover table-bordered" style="overflow-x:auto; overflow-y:auto;">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in list)
+            {
+                <tr id="appt-row-@a.Id">
+                    <td>@(a.Patient?.Name ?? a.Patient?.UserName ?? "Unknown")</td>
+                    <td>@a.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@a.End.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td id="status-@a.Id">@a.Status</td>
+                    <td>@(string.IsNullOrWhiteSpace(a.Notes) ? "-" : a.Notes)</td>
+                    <td>
+                        @if (a.Status != AppointmentStatus.Confirmed)
+                        {
+                            <button class="btn btn-sm btn-success me-1 rounded-pill" data-id="@a.Id" onclick="confirmAppointment(this)">Confirm</button>
+                        }
+                        <button class="btn btn-sm btn-danger rounded-pill" data-id="@a.Id" onclick="cancelAppointment(this)">Cancel</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- simple confirmation modal (Bootstrap) -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="actionForm" onsubmit="return false;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="actionModalTitle" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="actionModalBody"></p>
+                    <input type="hidden" id="actionAppointmentId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="actionCancelBtn" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">No</button>
+                    <button type="button" id="actionConfirmBtn" class="btn btn-primary rounded-pill">Yes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // helper to read antiforgery token from forms
+        function getRequestVerificationToken() {
+            const el = document.querySelector('input[name="__RequestVerificationToken"]');
+            return el ? el.value : '';
+        }
+
+        // Show confirm modal for confirming appointment
+        function confirmAppointment(btn) {
+            const id = btn.getAttribute('data-id');
+            document.getElementById('actionAppointmentId').value = id;
+            document.getElementById('actionModalTitle').innerText = 'Confirm appointment';
+            document.getElementById('actionModalBody').innerText = 'Do you want to confirm this appointment?';
+            const modal = new bootstrap.Modal(document.getElementById('actionModal'));
+            document.getElementById('actionConfirmBtn').onclick = () => performConfirm(id, modal);
+            modal.show();
+        }
+
+        async function performConfirm(id, modal) {
+            const token = getRequestVerificationToken();
+            try {
+                const resp = await fetch('/DoctorAppointment/Confirm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({ appointmentId: parseInt(id) })
+                });
+                if (resp.ok) {
+                    // update UI: status and remove modal
+                    document.getElementById('status-' + id).innerText = 'Confirmed';
+                    modal.hide();
+                } else {
+                    const txt = await resp.text();
+                    alert(txt || 'Failed to confirm');
+                }
+            } catch (ex) {
+                console.error(ex);
+                alert('Error: ' + ex);
+            }
+        }
+
+        // Cancel modal + action
+        function cancelAppointment(btn) {
+            const id = btn.getAttribute('data-id');
+            document.getElementById('actionAppointmentId').value = id;
+            document.getElementById('actionModalTitle').innerText = 'Cancel appointment';
+            document.getElementById('actionModalBody').innerText = 'Are you sure you want to cancel this appointment?';
+            const modal = new bootstrap.Modal(document.getElementById('actionModal'));
+            document.getElementById('actionConfirmBtn').onclick = () => performCancel(id, modal);
+            modal.show();
+        }
+
+        async function performCancel(id, modal) {
+            const token = getRequestVerificationToken();
+            try {
+                const resp = await fetch('/DoctorAppointment/Cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({ appointmentId: parseInt(id) })
+                });
+                if (resp.ok) {
+                    // update UI: remove or mark cancelled
+                    document.getElementById('status-' + id).innerText = 'Cancelled';
+                    modal.hide();
+                } else {
+                    const txt = await resp.text();
+                    alert(txt || 'Failed to cancel');
+                }
+            } catch (ex) {
+                console.error(ex);
+                alert('Error: ' + ex);
+            }
+        }
+    </script>
+}
+

@@ -87,6 +87,15 @@ namespace CareDev.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task ConfirmAsync(int appointmentId)
+        {
+            var appt = await _context.Appointments.FindAsync(appointmentId);
+            if (appt == null) throw new KeyNotFoundException("Appointment not found");
+            appt.Status = AppointmentStatus.Confirmed;
+            appt.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task CancelAsync(int appointmentId)
         {
             var appt = await _context.Appointments.FindAsync(appointmentId);

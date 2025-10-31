@@ -10,7 +10,6 @@ using System.IO;
 public static class PdfExport
 {
     // Public: create a PDF for a PersonalExportPackage (patient + admissions + discharges)
-    // This method is defensive: if p.Patient is null it will still render admissions/discharges.
     public static byte[] CreatePersonalPdf(PersonalExportPackage p)
     {
         if (p == null) throw new ArgumentNullException(nameof(p));
@@ -73,8 +72,6 @@ public static class PdfExport
         doc.Save(ms);
         return ms.ToArray();
     }
-
-    // ---------- Helpers ----------
 
     private static void RenderAdmissionsSection(PdfDocument doc, IEnumerable<AdmissionDto> admissions, XFont headerFont, XFont font)
     {
