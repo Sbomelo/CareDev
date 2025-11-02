@@ -132,11 +132,14 @@
         async function submitReschedule(e) {
           e.preventDefault();
           const id = document.getElementById('rescheduleAppointmentId').value;
+           const confirmUrl = document.body.dataset.confirmUrl;
+                const rescheduleUrl = document.body.dataset.rescheduleUrl;
+                const adminRescheduleUrl = document.body.dataset.adminRescheduleUrl;
           const newStart = document.getElementById('newStart').value;
           const newEnd = document.getElementById('newEnd').value;
 
           try {
-            const resp = await fetch('/AdminAppointment/Reschedule', {
+            const resp = await fetch(adminRescheduleUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': getToken() },
               body: JSON.stringify({ appointmentId: parseInt(id), newStart, newEnd })

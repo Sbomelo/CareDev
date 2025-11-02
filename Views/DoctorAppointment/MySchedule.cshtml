@@ -128,7 +128,11 @@ else
         async function performCancel(id, modal) {
             const token = getRequestVerificationToken();
             try {
-                const resp = await fetch('/DoctorAppointment/Cancel', {
+                const confirmUrl = document.body.dataset.confirmUrl;
+                const rescheduleUrl = document.body.dataset.rescheduleUrl;
+                const adminRescheduleUrl = document.body.dataset.adminRescheduleUrl;
+
+                const resp = await fetch(confirmUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

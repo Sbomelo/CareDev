@@ -87,10 +87,16 @@
 
           // Confirm
           document.getElementById('confirmBtn').onclick = async () => {
+
+               const confirmUrl = document.body.dataset.confirmUrl;
+                const rescheduleUrl = document.body.dataset.rescheduleUrl;
+                const adminRescheduleUrl = document.body.dataset.adminRescheduleUrl;
+
             const token = getToken();
-            const resp = await fetch('/DoctorAppointment/Confirm', {
+            const resp = await fetch(confirmUrl, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+              headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() 
+              },
               body: JSON.stringify({ appointmentId: parseInt(currentAppointmentId) })
             });
             if (resp.ok) {
