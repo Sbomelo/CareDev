@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Registration | MediCare Hospital</title>
+    <title>Patient Registration | CareDev Hospital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -370,7 +370,7 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label asp-for="MedicationId" for="insurance">Meidcation</label>
+                                <label asp-for="MedicationId" for="insurance">Medication</label>
                                 <div class="select-wrapper">
                                     <select asp-for="MedicationId" asp-items="Model.Medications" id="insurance" class="form-control"> 
                                         <option value="" selected>Select Allergy</option>
@@ -419,16 +419,20 @@
 
                         <div class="checkbox-group">
                             <input type="checkbox" id="terms" required>
-                            <label for="terms">I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
+                            <label for="terms">I agree to the <a asp-controller="Home" asp-action="Privacy">Terms of Service</a> and <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></label>
                         </div>
 
-                        <div class="form-actions">
+
+                          <div class="login-link">
+                              Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in here</a>
+                          </div>
+
+                          <div class="form-actions">
                             <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-                        </div>
+                          </div>
 
-                        <div class="login-link">
-                            Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Log in here</a>
-                        </div>
+
+
 
                     </form>
                 </div>
