@@ -28,12 +28,10 @@ namespace CareDev.Models
         [StringLength(13, ErrorMessage = "ID Number Must be 13 digits")]
         public string IDNumber { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Address")]
         [StringLength(250)]
         public string? Address { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string? City { get; set; }
 

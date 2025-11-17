@@ -421,17 +421,40 @@ namespace CareDev.Controllers
             // If model is NOT valid -> repopulate dropdowns and return the view
             if (!ModelState.IsValid)
             {
-                // log ModelState errors for easier debugging
-                foreach (var kvp in ModelState)
+                //// log ModelState errors for easier debugging
+                //foreach (var kvp in ModelState)
+                //{
+                //    foreach (var err in kvp.Value.Errors)
+                //    {
+                //        _logger.LogWarning("ModelState error - {Field}: {Error}", kvp.Key, err.ErrorMessage);
+                //    }
+                //}
+
+                //await PopulateDropdowns(vm);
+                //return View(vm);
+
+                // after ModelState.IsValid
+                if (string.IsNullOrWhiteSpace(vm.RoleName))
                 {
-                    foreach (var err in kvp.Value.Errors)
-                    {
-                        _logger.LogWarning("ModelState error - {Field}: {Error}", kvp.Key, err.ErrorMessage);
-                    }
+                    ModelState.AddModelError(nameof(vm.RoleName), "Please select a role.");
+                    await PopulateDropdowns(vm);
+                    return View(vm);
                 }
 
-                await PopulateDropdowns(vm);
-                return View(vm);
+                // validate lengths to avoid DB errors
+                if (vm.Name?.Length > 30)
+                    ModelState.AddModelError(nameof(vm.Name), "Name must be 30 characters or fewer.");
+                if (vm.Surname?.Length > 30)
+                    ModelState.AddModelError(nameof(vm.Surname), "Surname must be 30 characters or fewer.");
+                if (vm.Age <= 0)
+                    ModelState.AddModelError(nameof(vm.Age), "Age must be between 1 and 100.");
+
+                if (!ModelState.IsValid)
+                {
+                    await PopulateDropdowns(vm);
+                    return View(vm);
+                }
+
             }
 
             // PREVENT DUPLICATE EMAILS
@@ -524,14 +547,35 @@ namespace CareDev.Controllers
                 TempData["success"] = $"Employee '{employee.Name} {employee.SurName}' Registered Successfully";
                 return RedirectToAction("Index");
             }
+            //catch (Exception ex)
+            //{
+            //    await tx.RollbackAsync();
+            //    _logger.LogError(ex, "Error during employee registration");
+            //    ModelState.AddModelError("", "An error occurred while processing your registration. Please try again.");
+            //    await PopulateDropdowns(vm);
+            //    return View(vm);
+
+            //}
+
             catch (Exception ex)
             {
                 await tx.RollbackAsync();
-                _logger.LogError(ex, "Error during employee registration");
-                ModelState.AddModelError("", "An error occurred while processing your registration. Please try again.");
-                await PopulateDropdowns(vm);
-                return View(vm);
+
+                // Log everything we can
+                _logger.LogError(ex, "Error during employee registration: {Message}", ex.Message);
+                if (ex is DbUpdateException dbEx)
+                {
+                    _logger.LogError("DbUpdateException inner: {Inner}", dbEx.InnerException?.ToString() ?? "<no inner>");
+                    foreach (var entry in dbEx.Entries)
+                        _logger.LogError("Problem entity: {Entity} state {State}", entry.Entity.GetType().Name, entry.State);
+                }
+
+                // DEBUG ONLY: return full exception details in response so you can copy/paste them here
+                var detail = ex.ToString();
+                return Content($"DEBUG EXCEPTION:\n\n{detail}", "text/plain");
             }
+
+
         }
 
         //Helper method to repopulate dropdowns

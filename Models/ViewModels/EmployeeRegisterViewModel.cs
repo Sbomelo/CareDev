@@ -7,11 +7,11 @@ namespace CareDev.Models.ViewModels
 {
     public class EmployeeRegisterViewModel
     {
-        [Required, StringLength(50)]
+        [Required, StringLength(30)]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required, StringLength(50)]
+        [Required, StringLength(30)]
         [Display(Name = "Surname")]
         public string Surname { get; set; }
 
@@ -19,7 +19,7 @@ namespace CareDev.Models.ViewModels
         [Display(Name = "Email Adress")]
         public string Email { get; set; }
 
-        [Required, Range(0, 100)]
+        [Required, Range(1, 100)]
         public int? Age { get; set; }
 
         [Required]
