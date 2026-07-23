@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using CareDev.Models;
-using CareDev.Services.IService;         // namespace of IAppointmentService
+using CareDev.Services.IService;     
 using CareDev.Services;
 using YourNamespace.Services.Implementation;
 
@@ -21,7 +21,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
     options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = false; // set as desired
+    options.Password.RequireUppercase = false; 
     options.Password.RequireNonAlphanumeric = false;
 });
 
@@ -33,15 +33,15 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddControllersWithViews();
 
-// register your appointment service (add this)
+// register appointment service
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IPasswordHistoryService, PasswordHistoryService>();
 
 
-// register notification service if you have one
+// register notification
 builder.Services.AddScoped<INotificationService, NotificationService>();
 
-builder.Services.AddSignalR();  // for real-time notifications:contentReference[oaicite:5]{index=5}
+builder.Services.AddSignalR();  
 
 builder.Services.AddRazorPages();
 
@@ -79,7 +79,7 @@ var app = builder.Build();
     else
     {
         app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+       
         app.UseHsts();
     }
 
@@ -95,6 +95,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapHub<NotificationHub>("/notificationHub");  // SignalR hub endpoint:contentReference[oaicite:6]{index=6}
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();

@@ -23,7 +23,7 @@
                     <option value="">All admissions</option>
                     @foreach(var a in Model.Admissions)
                     {
-                        <option value="@a.AdmissionId" @* @(Model.AdmissionId == a.AdmissionId ? "selected" : "") *@>
+                        <option value="@a.AdmissionId">
                             @a.AdmissionId - @a.AdmissionDate.ToLocalTime().ToString("g")
                             @(a.Ward != null ? "-" + (a.Ward?.Name ?? "") : "")
                             @(a.Bed != null ? "-" + a.Bed?.BedNumber : "")
