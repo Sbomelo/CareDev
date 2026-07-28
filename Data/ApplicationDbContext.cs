@@ -98,7 +98,7 @@ namespace CareDev.Data
 
                 var keyVals = new Dictionary<string, object?>();
 
-                // capture primary key(s)
+                // capture primary keys
                 foreach (var prop in entry.Properties)
                 {
                     if (prop.Metadata.IsPrimaryKey())
@@ -109,7 +109,7 @@ namespace CareDev.Data
 
                 audit.KeyValues = JsonSerializer.Serialize(keyVals);
 
-                // For deletes, record original values only
+                // For deletes, recordS original values only
                 if (entry.State == EntityState.Deleted)
                 {
                     var oldValues = new Dictionary<string, object?>();
@@ -126,7 +126,7 @@ namespace CareDev.Data
                     var newValues = new Dictionary<string, object?>();
                     foreach (var prop in entry.Properties)
                     {
-                        // You may want to skip navigation properties; we use scalar props only
+                        
                         newValues[prop.Metadata.Name] = prop.CurrentValue;
                     }
                     audit.NewValues = JsonSerializer.Serialize(newValues);
@@ -150,7 +150,7 @@ namespace CareDev.Data
                         }
                     }
 
-                    // If no columns changed (possible for concurrency/no-op), skip
+                    // If no columns changed, skip
                     if (changedColumns.Count == 0)
                         continue;
 
@@ -162,14 +162,13 @@ namespace CareDev.Data
                 auditEntries.Add(audit);
             }
 
-            // 2) Save the real entities first (so primary keys exist), but we can add audit entries to context as well.
-            // We'll add the audit entries now; EF will save both in one transaction.
+            
             if (auditEntries.Any())
             {
                 AuditEntries.AddRange(auditEntries);
             }
 
-            // 3) Proceed with the actual SaveChanges
+            
             var result = await base.SaveChangesAsync(cancellationToken);
 
             return result;
@@ -183,13 +182,13 @@ namespace CareDev.Data
             modelBuilder.Ignore<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
 
             //configure compositr keys for junction tables
-            modelBuilder.Entity<PatientFolder>().HasKey(pf => new { pf.PatientId, pf.PatientFolderId });
+            //modelBuilder.Entity<PatientFolder>().HasKey(pf => new { pf.PatientId, pf.PatientFolderId });
            // modelBuilder.Entity<Allergy>().HasKey(pa => new { pa.Patients, pa.AllergyId });
             modelBuilder.Entity<PatientAllergy>().HasKey(pa => new { pa.PatientId, pa.AllergyId });
             modelBuilder.Entity<PatientCondition>().HasKey(pc => new { pc.PatientId, pc.ChronicConditionId });
             //modelBuilder.Entity<ChronicCondition>().HasKey(pc => new { pc.Patients, pc.ChronicConditionId });
            // modelBuilder.Entity<Medication>().HasKey(m => new { m.Patients, m.MedicationId });
-           modelBuilder.Entity<MedicationAdministration>().HasKey(ma => new { ma.PatientId, ma.MedicationId});
+           //modelBuilder.Entity<MedicationAdministration>().HasKey(ma => new { ma.PatientId, ma.MedicationId});
 
             //PATIENT relationships
             /* modelBuilder.Entity<Patient>()
@@ -357,7 +356,7 @@ namespace CareDev.Data
             //PatinetMovement relationships
             modelBuilder.Entity<PatientMovement>()
             .HasOne(pm => pm.Admission)
-            .WithMany() // or .WithMany(a => a.PatientMovements) if you add that collection
+            .WithMany()
             .HasForeignKey(pm => pm.AdmissionId)
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -401,13 +400,13 @@ namespace CareDev.Data
                 .HasOne(v => v.Patient)
                 .WithMany()
                 .HasForeignKey(v => v.PatientUserId)
-                .OnDelete(DeleteBehavior.Restrict); // 🚫 no cascade here
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PatsVitals>()
                 .HasOne(v => v.Nurse)
                 .WithMany()
                 .HasForeignKey(v => v.NurseUserId)
-                .OnDelete(DeleteBehavior.Cascade); // ✅ only one cascade allowed
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             //modelBuilder.Entity<PatientMovement>()
@@ -442,14 +441,14 @@ namespace CareDev.Data
                     
             });
 
-            // Appointment -> Patient (no cascade)
+            // Appointment -> Patient
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Patient)
                 .WithMany()      
                 .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Appointment -> Doctor (no cascade)
+            // Appointment -> Doctor
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Doctor)
                 .WithMany()   

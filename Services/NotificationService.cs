@@ -5,7 +5,6 @@ using CareDev.Hubs;
 using CareDev.Models;
 using CareDev.Services;
 using CareDev.Services.IService;
-using NotificationHub = CareDev.Models.NotificationHub;
 
 namespace YourNamespace.Services.Implementation
 {
@@ -44,13 +43,13 @@ namespace YourNamespace.Services.Implementation
             n.IsRead = true;
             await _context.SaveChangesAsync();
         }
-        // inside NotificationService class (Services/Implementation/NotificationService.cs)
+       
 
         public async Task MarkAsReadAsync(int notificationId)
         {
             // find the notification
             var notification = await _context.Notifications.FindAsync(notificationId);
-            if (notification == null) return; // or throw if you prefer
+            if (notification == null) return; 
 
             if (!notification.IsRead)
             {
@@ -58,8 +57,8 @@ namespace YourNamespace.Services.Implementation
                 await _context.SaveChangesAsync();
             }
 
-            // Optionally notify the user real-time that the notification was marked read
-            // await _hubContext.Clients.User(notification.UserId).SendAsync("NotificationMarkedRead", notificationId);
+           
+            await _hubContext.Clients.User(notification.UserId).SendAsync("NotificationMarkedRead", notificationId);
         }
 
     }
