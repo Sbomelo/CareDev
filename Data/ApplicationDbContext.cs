@@ -44,7 +44,6 @@ namespace CareDev.Data
         public DbSet<Vital> Vitals { get; set; }  
         public DbSet<TreatPatient> TreatPatients { get; set; }
         public DbSet<DoctorInstruction> DoctorInstructions { get; set; }
-        //public DbSet<PatientVitals> PatientVitals { get; set; }
 
         //look-up tables
         public DbSet<Medication> Medications { get; set; }
@@ -216,11 +215,6 @@ namespace CareDev.Data
                .WithMany(p => p.PatientConditions)
                .HasForeignKey(pa => pa.ChronicConditionId);
 
-            //modelBuilder.Entity<PatientVitals>()
-            //    .HasOne(pv => pv.Patient)
-            //    .WithMany()
-            //    .HasForeignKey(pv => pv.Patient)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<MedicationDispensation>()
                 .HasOne(md => md.Patient)
@@ -239,28 +233,6 @@ namespace CareDev.Data
                 .WithMany()
                 .HasForeignKey(am => am.AdministeredById)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<PatientVitals>()
-            //    .HasOne(pv => pv.Nurse)
-            //    .WithMany()
-            //    .HasForeignKey(pv => pv.NurseUserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-
-            /*modelBuilder.Entity<Patient>()
-             .HasMany(p => p.Allergies)
-             .WithOne(a => a.Patient)
-             .HasForeignKey(pa => pa.PatientId); */
-
-            /* modelBuilder.Entity<Patient>()
-               .HasMany(p => p.ChronicConditions)
-               .WithOne(pc => pc.Patient) 
-               .HasForeignKey(pc => pc.PatientId);*/
-            //modelBuilder.Entity<PatientVitals>()
-            //    .HasOne(pv => pv.Nurse)
-            //    .WithMany()
-            //    .HasForeignKey(pv => pv.NurseUserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PatientAllergy>()
                 .HasOne(pa => pa.Patient)

@@ -6,6 +6,7 @@ using CareDev.Models;
 using CareDev.Services.IService;     
 using CareDev.Services;
 using YourNamespace.Services.Implementation;
+using CareDev.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
