@@ -30,7 +30,9 @@
 
             <div class="form-group mb-3 mt-3">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" class="form-control" data-val="true"
+                       data-val-matchesiddob="The date of birth does not match the ID number."
+                       data-val-matchesiddob-idprop="IDNumber" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">

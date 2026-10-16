@@ -1,65 +1,129 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Configuration;
-using System.Drawing;
-using CareDev.Models;
+﻿using CareDev.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CareDev.Data
 {
     public class DbInitializer
     {
-        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        // Internal record to hold seed user data with all required fields
+        private record SeedUser(
+            string Role,
+            string Email,
+            string Password,
+            string Name,
+            string SurName,
+            DateTime DateOfBirth,
+            string IDNumber,
+            string Gender,
+            string? Address = null,
+            string? City = null
+        );
+
+        public static async Task InitializeAsync(
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager,
+            ILogger? logger = null)  
         {
-            //seeding roles
+            // 1. Seed roles
             string[] roleNames = { "Admin", "WardAdmin", "Doctor", "Nurse", "Patient" };
-            foreach(var role in roleNames)
+            foreach (var role in roleNames)
             {
-                if(!await roleManager.RoleExistsAsync(role))
+                if (!await roleManager.RoleExistsAsync(role))
                 {
                     await roleManager.CreateAsync(new IdentityRole(role));
+                    logger?.LogInformation($"Role '{role}' created.");
                 }
             }
 
-            //seeding default roles for each user
-            var defaultUsers = new List<(string Role, string Email, string Password)>
+            // 2. Seed default users with full ApplicationUser data
+            var defaultUsers = new List<SeedUser>
             {
-                ("Admin", "admin@site.com", "Admin@123!"),
-                ("WardAdmin", "wardAdmin@admin.com", "WardAdmin@123!"),
-                ("Doctor", "doctor@doctor.com", "Doctor@123!"),
-                ("Nurse", "nurse@nurse.com", "Nurse@123!"),
-                ("Patient", "patient@gmail.com", "Patient@123!")
+                new("Admin", "admin@site.com", "Admin@123!",
+                    "System", "Admin", new DateTime(1985, 5, 15), "8505151234567", "Male"),
+
+                new("WardAdmin", "wardAdmin@wadmin.com", "WardAdmin@123!",
+                    "Ward", "Manager", new DateTime(1990, 8, 22), "9008229876543", "Female"),
+
+                new("Doctor", "doctor@doctor.com", "Doctor@123!",
+                    "Gregory", "House", new DateTime(1970, 6, 11), "7006111234987", "Male"),
+
+                new("Nurse", "nurse@nurse.com", "Nurse@123!",
+                    "Jackie", "Peyton", new DateTime(1982, 11, 2), "8211025678123", "Female"),
+
+                new("Patient", "patient@gmail.com", "Patient@123!",
+                    "John", "Doe", new DateTime(2000, 1, 1), "0001017890123", "Male",
+                    "123 Main St", "Springfield")  // Optional Address & City
             };
 
-            foreach(var (role, email, password) in defaultUsers)
+            foreach (var userData in defaultUsers)
             {
-                //check if user exists
-                var existingUser = await userManager.FindByEmailAsync(email);
-                if (existingUser == null)
+                // Check if user already exists
+                var existingUser = await userManager.FindByEmailAsync(userData.Email);
+                if (existingUser != null)
                 {
-                    //Creating User
-                    var user = new IdentityUser
-                    {
-                        UserName = email,
-                        Email = email,
-                        EmailConfirmed = true
+                    logger?.LogInformation($"User '{userData.Email}' already exists. Skipping.");
+                    continue;
+                }
 
-                    };
-                    var createResult = await userManager.CreateAsync((ApplicationUser)user, password);
-                    if (createResult.Succeeded)
+                // Calculate age from DateOfBirth
+                var today = DateTime.Today;
+                var age = today.Year - userData.DateOfBirth.Year;
+                if (userData.DateOfBirth.Date > today.AddYears(-age)) age--;
+
+                // Build ApplicationUser with all required fields
+                var user = new ApplicationUser
+                {
+                    UserName = userData.Email,
+                    Email = userData.Email,
+                    EmailConfirmed = true,
+
+                    // Required properties from ApplicationUser
+                    Name = userData.Name,
+                    SurName = userData.SurName,
+                    Age = age,
+                    DateOfBirth = userData.DateOfBirth,
+                    IDNumber = userData.IDNumber,
+                    Gender = userData.Gender,
+
+                    // Optional fields
+                    Address = userData.Address,
+                    City = userData.City,
+
+                    // Defaults for nullable FK properties 
+                    MedicationId = null,
+                    AllergyId = null,
+                    ChronicConditionId = null,
+
+                    MustChangePassword = false  
+                };
+
+                // Create the user
+                var createResult = await userManager.CreateAsync(user, userData.Password);
+                if (createResult.Succeeded)
+                {
+                    // Assign role
+                    await userManager.AddToRoleAsync(user, userData.Role);
+                    logger?.LogInformation($"User '{userData.Email}' created and assigned to role '{userData.Role}'.");
+                }
+                else
+                {
+                    // Log errors 
+                    foreach (var error in createResult.Errors)
                     {
-                        //Assign role
-                        await userManager.AddToRoleAsync((ApplicationUser)user, role);
-                    }
-                    else
-                    {
-                        //Debbuuing purposes - log if user creation failed
-                        foreach(var error in createResult.Errors)
-                        {
-                            Console.WriteLine($"Error creating {role} user : {error.Description}");
-                        }
+                        var msg = $"Error creating {userData.Role} user '{userData.Email}': {error.Description}";
+                        if (logger != null)
+                            logger.LogError(msg);
+                        else
+                            Console.WriteLine(msg);
                     }
                 }
             }
+
+            logger?.LogInformation("Database initialization completed.");
         }
     }
-
 }
