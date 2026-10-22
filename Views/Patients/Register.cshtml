@@ -364,28 +364,24 @@
                                 <input asp-for="City" type="text" id="city" class="form-control" placeholder="Enter your city" required>
                                 <span asp-validation-for="City" class="text-danger"></span>
                             </div>
-@*                             <div class="form-group">
-                                <label for="zipCode">ZIP Code</label>
-                                <input type="text" id="zipCode" class="form-control" placeholder="ZIP code" required>
-                            </div> *@
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label asp-for="MedicationId" for="insurance">Medication</label>
+                                <label asp-for="MedicationId" for="medication">Medication</label>
                                 <div class="select-wrapper">
-                                    <select asp-for="MedicationId" asp-items="Model.Medications" id="insurance" class="form-control"> 
-                                        <option value="" selected>Select Allergy</option>
+                                    <select asp-for="MedicationId" asp-items="Model.Medications" id="medication" class="form-control"> 
+                                        <option value="" selected>Select Medication</option>
                                     </select>
                                 </div>
-                                <span asp-validation-for="AllergyId" class="text-danger" ></span>
+                                <span asp-validation-for="MedicationId" class="text-danger" ></span>
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="AllergyId" for="insurance">Allergy</label>
+                                <label asp-for="AllergyId" for="allergy">Allergy</label>
                                 <div class="select-wrapper">
-                                    <select asp-for="AllergyId" asp-items="Model.Allergies" id="insurance" class="form-control">
-                                        <option value="" selected>Select Medication</option>
+                                    <select asp-for="AllergyId" asp-items="Model.Allergies" id="allergy" class="form-control">
+                                        <option value="" selected>Select Allergy</option>
                                     </select>
                                 </div>
                                 <span asp-validation-for="AllergyId" class="text-danger"></span>
@@ -395,7 +391,7 @@
                         <div class="form-group">
                             <label asp-for="ChronicConditionId" for="insurance">Chronic Condition</label>
                             <div class="select-wrapper">
-                                <select asp-for="ChronicConditionId" asp-items="Model.ChronicConditions" id="insurance" class="form-control">
+                                <select asp-for="ChronicConditionId" asp-items="Model.ChronicConditions" id="condition" class="form-control">
                                     <option value="" selected>Select Chronic Condition</option>
                                 </select>
                             </div>
@@ -406,10 +402,6 @@
                             <div class="form-group">
                                 <label asp-for="Password" for="password">Password</label>
                                 <input asp-for="Password" id="Password" class="form-control" placeholder="Create a password" required>
-                                <div id="pw-strength">
-                                    <meter max="4" id="password-strength-meter"></meter>
-                                    <span id="password-strength-text"></span>
-                                </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -420,7 +412,7 @@
                         </div>
 
                         <div class="checkbox-group">
-                            <input type="checkbox" id="terms" required>
+                            <input type="checkbox" id="terms" name="terms" required>
                             <label for="terms">I agree to the <a asp-controller="Home" asp-action="Privacy">Terms of Service</a> and <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a></label>
                         </div>
 
@@ -432,10 +424,6 @@
                           <div class="form-actions">
                             <button type="submit" class="btn btn-primary btn-block">Create Account</button>
                           </div>
-
-
-
-
                     </form>
                 </div>
             </div>
@@ -458,207 +446,9 @@
         });
     </script>
 
-    <!-- add in your view or layout (before your init script) -->
- @*   
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" id="Password" />
-        <div id="pw-strength" >
-            <meter max="4" id="password-strength-meter"></meter>
-            <span id="password-strength-text"></span>
-        </div>
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div> *@
-
-    <script>
-        $(function(){
-            var meter = document.getElementById('password-strength-meter');
-            var text = document.getElementById('password-strength-text');
-
-            $('#Password').on('input', function () {
-                var val = $(this).val();
-                if (!window.zxcvbn) {
-                    // fallback: simple heuristic
-                    var score = 0;
-                    if (val.length >= 8) score++;
-                    if (/[A-Z]/.test(val)) score++;
-                    if (/[0-9]/.test(val)) score++;
-                    if (/[^A-Za-z0-9]/.test(val)) score++;
-                    if (score > 4) score = 4;
-                    meter.value = score;
-                    text.innerHTML = ['Very weak','Weak','Fair','Good','Strong'][score] || '';
-                    return;
-                }
-                var result = zxcvbn(val);
-                meter.value = result.score; // 0-4
-                var feedback = result.feedback && result.feedback.warning ? result.feedback.warning : '';
-                var suggestions = result.feedback && result.feedback.suggestions ? result.feedback.suggestions.join(' ') : '';
-                var label = ['Very weak','Weak','Fair','Good','Strong'][result.score];
-                text.innerHTML = label + (feedback ? ' — ' + feedback : '') + (suggestions ? ' ' + suggestions : '');
-            });
-        });
-    </script>
-
 </body>
 </html>
-@* <style>
-    .register-container {
-        background-color: rgba(25,25,25,0.3);
-        border-radius: 40px;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-        color: white;
-    }
-</style>
-<div class="text-center">
-    <h2>@ViewData["Title"]</h2>
-</div>
-
-<hr />
-<div class="register-container p-5 m-5">
-    <form asp-action="Register" method="post">
-          data-confirm-on-submit="true"
-          data-confirm-title="Patient Register"
-          data-confirm-message="Are you sure you want to register "
-          data-confirm-text="Yes"
-          data-confirm-class="btn-primary">
-        @Html.AntiForgeryToken()
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="Name" class="form-label fw-bold">Name :</label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Surname" class="form-label fw-bold">SurName : </label>
-                        <input asp-for="Surname" class="form-control" />
-                        <span asp-validation-for="Surname" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="form-group col-md-6">
-                        <label asp-for="IDNumber"></label>
-                        <input asp-for="IDNumber" class="form-control" />
-                        <span asp-validation-for="IDNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label asp-for="DateOfBirth" class="control-label fw-bold">Date Of Birth:</label>
-                        <input asp-for="DateOfBirth" class="form-control" />
-                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="Age" class="form-label fw-bold">Age :</label>
-                        <input asp-for="Age" class="form-control" />
-                        <span asp-validation-for="Age" class="text-danger"></span>
-                    </div>
-
-
-
-                    <div class="col-md-6">
-                        <label asp-for="PhoneNumber" class="form-label fw-bold">Phone Number : </label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="Address" class="form-label"></label>
-                        <input asp-for="Address" class="form-control" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="City" class="form-label"></label>
-                        <input asp-for="City" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="Gender" class="form-label fw-bold">Gender :</label>
-                        <select asp-for="Gender" class="form-control">
-                            <option value="">-- Select Gender --</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <span asp-validation-for="Gender" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="AllergyId" class="form-label fw-bold">Allergy : </label>
-                        <select asp-for="AllergyId" asp-items="Model.Allergies" class="form-control">
-                            <option value="">-- Select Allergy --</option>
-                        </select>
-                        <span asp-validation-for="AllergyId" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="ChronicConditionId" class="form-label fw-bold">Chronic Condition :</label>
-                        <select asp-for="ChronicConditionId" asp-items="Model.ChronicConditions" class="form-control">
-                            <option value="">-- Select Condition --</option>
-                        </select>
-                        <span asp-validation-for="ChronicConditionId" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="MedicationId" class="form-label fw-bold">Medication : </label>
-                        <select asp-for="MedicationId" asp-items="Model.Medications" class="form-control">
-                            <option value="">-- Select Medication --</option>
-                        </select>
-                        <span asp-validation-for="MedicationId" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group col-md-12">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-
-                <div class="row g-3 mb-3 ">
-                    <div class="col-md-6">
-                        <label asp-for="Password" class="form-label fw-bold">Password :</label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="ConfirmPassword" class="form-label fw-bold">Password : </label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <hr />
-                <div class=" text-center col-md-12">
-                    <button type="submit" class="btn btn-primary mt-3 rounded-pill w-25">Register</button>
-                    <a asp-action="Index" class="btn btn-secondary mt-3 rounded-pill w-25">Back to List</a>
-                </div>
-
-            </div>
-        </div>
-    </form>
-</div> *@
-
-
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 

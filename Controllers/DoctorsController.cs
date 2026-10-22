@@ -57,7 +57,7 @@ namespace CareDev.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DoctorId,Name,SurName,Age,Gender,PhoneNumber,Email,Specialization")] Doctor doctor)
+        public async Task<IActionResult> Create([Bind("DoctorId,Name,SurName,Age,Gender,DateOfBirth,IDNumber,PhoneNumber,Email,Specialization")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {

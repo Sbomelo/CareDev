@@ -20,14 +20,16 @@ namespace CareDev.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<PatientsController> _logger;
 
         public PatientsController(ApplicationDbContext context, 
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager, ILogger<PatientsController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
         }
@@ -239,19 +241,10 @@ namespace CareDev.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Models.ViewModels.PatientRegisterViewModel vm)
-        {
-            // Optional debug logging of posted form values (remove in production)
-            _logger.LogDebug("POST Patients/Register called. Content-Type: {ct}", Request.ContentType);
-            if (Request.HasFormContentType)
-            {
-                foreach (var kv in Request.Form)
-                    _logger.LogDebug("FORM: {Key} = {Value}", kv.Key, kv.Value);
-            }
-
-            // If model is NOT valid -> repopulate dropdowns and return view
+        {   
             if (!ModelState.IsValid)
             {
-                // Server-side password strength check using zxcvbn.net (optional) or simple rules:
+                // Server-side password strength check using zxcvbn.net
                 var pwd = vm.Password ?? "";
                 var score = 0;
                 if (pwd.Length >= 8) score++;
@@ -313,7 +306,7 @@ namespace CareDev.Controllers
                     PhoneNumber = vm.PhoneNumber,
                     PhoneNumberConfirmed = true,
                     EmailConfirmed = true,
-                    MustChangePassword = false // keep current behaviour; set true if you want them to change at first login
+                    MustChangePassword = false
                 };
 
                 var createUser = await _userManager.CreateAsync(user, vm.Password);
@@ -361,6 +354,8 @@ namespace CareDev.Controllers
                 await _context.SaveChangesAsync();
 
                 await tx.CommitAsync();
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
                 TempData["success"] = "Registration successful. Patient account created.";
                 return RedirectToAction("PatientDashboard");
