@@ -13,9 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString));*/
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -58,13 +61,24 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-//Seeding roles
+//Seeding roles and apply pending EF migrations automatically on startup
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    var logger = scope.ServiceProvider.GetService<ILogger<DbInitializer>>();
-    await DbInitializer.InitializeAsync(roleManager, userManager, logger);
+    try
+    {
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var logger = scope.ServiceProvider.GetService<ILogger<DbInitializer>>();
+        
+        await DbInitializer.InitializeAsync(roleManager, userManager, logger);
+    }
+    catch(Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+    
 }
 
 // Configure the HTTP request pipeline.
@@ -79,21 +93,6 @@ else
     app.UseHsts();
 }
 
-
-// Apply pending EF migrations automatically on startup
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        db.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        // Log and handle migration failure
-        throw;
-    }
-}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
