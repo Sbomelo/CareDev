@@ -20,6 +20,7 @@ This leads to real problems like:
  
 **CareDev** is a web-based system that gives clinics a way to store their data electronically and easily record and track data .
 
+- Proper Appointment booking
 - Reduce manual paperwork in ward administration.
 - Improve patient admission and discharge efficiency.
 - Provide secure, auditable access to patient data.
@@ -47,6 +48,10 @@ This project serves two purposes:
 | Security | Authentication & authorization, Role based access control, Auditing|
 
 ## Key capabilities:
+**Appointment Booking**
+- Patients can book, reschedule and cancel appointments
+- Doctors can approve or cancel apointments
+
 **Patient Management**
 - Patient registration and profile management
 
